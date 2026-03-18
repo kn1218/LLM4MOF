@@ -1,0 +1,427 @@
+# =============================================================================
+# LLM2POR Autonomous System - Matchmaker Engine
+# =============================================================================
+# Ported from: Pilot project/LLM2PORMAKE_Trial10_20251217.ipynb (Block 2)
+# =============================================================================
+
+import pandas as pd
+import re
+import ast
+import os
+import sys
+import json
+
+# Add parent directory to path for config import
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import TOPO_DICTIONARY_V3_PATH
+from core.name_resolver import get_name_resolver
+from core.constraint_utils import canon, get_item_features, parse_functional_groups, check_global_requirements, check_negative_tags, get_approved_vocab
+
+
+class Matchmaker:
+    """
+    The Matchmaker Engine connects Agent's constraints to the Database.
+    It discovers valid topologies, nodes, and linkers based on the 
+    specifications provided by Agent 2.
+    """
+    
+    def __init__(self):
+        """Load the building block and topology dictionaries."""
+        print("--- LOADING MATCHMAKER DATABASES ---")
+        
+        try:
+            # 1. Load Topology Dictionary V3 (JSON — mandatory)
+            if os.path.exists(TOPO_DICTIONARY_V3_PATH):
+                print(f"Loading V3 Topology Database from: {TOPO_DICTIONARY_V3_PATH}")
+                with open(TOPO_DICTIONARY_V3_PATH, 'r', encoding='utf-8') as f:
+                    self.topo_data = json.load(f)
+                # Create lookup for O(1) access
+                self.topo_lookup = {t['ID']: t for t in self.topo_data}
+                print(f"Topologies Loaded (V3): {len(self.topo_data)} entries")
+            else:
+                raise FileNotFoundError(f"V3 Topology DB not found at {TOPO_DICTIONARY_V3_PATH}")
+            
+            # 2. Connect to NameResolver Singleton for BB Data
+            # (Eliminates redundant JSON loading and ensures single-source-of-truth)
+            print("Connecting to NameResolver Singleton...")
+            resolver = get_name_resolver()
+            self.bb_data = resolver.bb_data
+            self.bb_lookup = resolver.bb_lookup
+            print(f"Matchmaker connected. Access to {len(self.bb_data)} Building Blocks.")
+                
+        except Exception as e:
+            print(f"CRITICAL ERROR LOADING MATCHMAKER DATA: {e}")
+            raise
+            
+        # Load approved vocabulary from ontology
+        self.approved_vocab = get_approved_vocab()
+
+    def get_valid_topologies(self, available_cns: list, target_edge_cn: int = 2) -> tuple:
+        """
+        V3 Topology Matching with Single-Component Constraint.
+        
+        Finds topologies that:
+        1. Are a SUBSET of available connectivities (we have the parts).
+        2. Are STRICTLY SINGLE-COMPONENT (require only 1 node type and 1 edge type).
+        3. Match the required edge connectivity (target_edge_cn).
+        
+        Args:
+            available_cns: List of node connectivities we can provide (e.g., [12, 4])
+            target_edge_cn: The linker connectivity we are restricted to (usually 2).
+        
+        Returns:
+            (valid_codes_list, topology_by_cn_map)
+        """
+        valid_codes = []
+        topology_by_cn = {}  # {node_cn: [topo_id, ...]}
+        
+        # Normalize input to set
+        if isinstance(available_cns, int):
+            available_set = {available_cns}
+        elif isinstance(available_cns, list):
+            available_set = set(available_cns)
+        else:
+            print(f"[Matchmaker] WARNING: Invalid connectivity type: {type(available_cns)}")
+            return [], {}
+        
+        # Use JSON topology data
+        if hasattr(self, 'topo_data') and self.topo_data is not None:
+            for item in self.topo_data:
+                # 1. Get Requirements from JSON
+                # We use a set to ignore site indices (e.g., [3, 3] becomes {3})
+                req_nodes = set(item.get('node_connectivities', []))
+                req_edges = set(item.get('edge_connectivities', []))
+                
+                if not req_nodes:
+                    continue  # Skip topologies with no node info
+                
+                # 2. The "Bag of Parts" Check (Robustness)
+                # We still check this to ensure we actually have the specific node needed.
+                if not req_nodes.issubset(available_set):
+                    continue
+                    
+                # 3. The "Simplicity" Filter (Constraint)
+                # STRICTLY enforce Single-Node and Single-Edge for now.
+                if len(req_nodes) != 1:
+                    continue  # Reject multi-node topologies (e.g., tbo needs 12+4)
+                    
+                if len(req_edges) != 1:
+                    continue  # Reject multi-edge topologies
+                
+                # --- Edge Connectivity Check ---
+                # Ensure the topology is compatible with our linker (e.g. 2-connected)
+                # STRICT check: topology must require EXACTLY this edge connectivity
+                if req_edges != {target_edge_cn}:
+                    continue
+
+
+                valid_codes.append(item['ID'])
+                
+                # Build Map
+                node_cn = list(req_nodes)[0] # Safe because len=1 check passed
+                if node_cn not in topology_by_cn:
+                    topology_by_cn[node_cn] = []
+                topology_by_cn[node_cn].append(item['ID'])
+        
+        return valid_codes, topology_by_cn
+    
+    def _search_nodes(self, specs: dict, req_cn: int) -> tuple:
+        """Search nodes using V3 JSON logic."""
+        node_candidates = []
+        metal_query = specs['node_query']['metals_include']
+        
+        # Normalize Query
+        target_metals = []
+        if isinstance(metal_query, list): 
+            target_metals = [m.strip().capitalize() for m in metal_query]
+        elif isinstance(metal_query, str): 
+            target_metals = [m.strip().capitalize() for m in metal_query.split(',')]
+        
+        is_any = any(m.lower() == "any" for m in target_metals)
+        
+        # Nuclearity Filter
+        req_nuclearity = specs['node_query'].get('nuclearity')
+        target_nuclearity = int(req_nuclearity) if (req_nuclearity is not None and str(req_nuclearity).isdigit() and int(req_nuclearity) > 0) else None
+
+
+
+        # Prepare Negative Filters (Global "Avoid" Logic)
+        vocab_set = getattr(self, 'approved_vocab', None)
+        _, _, negative_tags = parse_functional_groups(specs, vocab_set)
+
+        # --- Ligand Chemistry Prep (OR Logic) ---
+        req_ligand_chem = specs['node_query'].get('ligand_chemistry', [])
+        target_ligand_chem = set(l.lower() for l in req_ligand_chem)
+
+        for item in self.bb_data:
+            if item.get('Type', 'Node') != 'Node': continue
+            
+            # --- Connectivity ---
+            raw_cn = item.get('connectivity')
+            
+            if isinstance(raw_cn, int): cns = {raw_cn}
+            elif isinstance(raw_cn, list): cns = set(raw_cn)
+            else: cns = set()
+                
+            if req_cn not in cns: continue
+            
+            # --- ROBUST NUCLEARITY ---
+            if target_nuclearity:
+                item_nuc = item.get('nuclearity', 0)
+                if item_nuc != target_nuclearity: continue
+
+            # --- Metals ---
+            if not is_any:
+                item_metals = item.get('metals', [])
+                match = any(tm in item_metals for tm in target_metals)
+                if not match: continue
+
+            # --- Ligand Chemistry ---
+            if target_ligand_chem:
+                # Get item chemistry (try various V3/V2 fields)
+                item_chem = item.get('ligand_chemistry', []) or item.get('connection_chemistry', [])
+                if isinstance(item_chem, str): item_chem = [item_chem]
+                
+                # Check intersection
+                item_chem_lower = set(c.lower() for c in item_chem)
+                if not target_ligand_chem.intersection(item_chem_lower): continue
+            
+            # --- NEGATIVE FILTER (The "Bouncer") ---
+            # If node has Forbidden Group, remove it immediately.
+            if not check_negative_tags(item, negative_tags):
+                continue
+
+            # Note: Positive checks are deferred to Assembly Stage (Union Logic).
+
+
+            node_candidates.append(item['ID'])
+            
+        return node_candidates, target_metals
+
+    def _search_linkers(self, specs: dict) -> tuple:
+        """
+        Search linkers using V3 JSON logic (Semantic Search).
+        Returns: (candidates_list, diagnostics_dict)
+        """
+        linker_ads = []
+        lspecs = specs['linker_query']
+        
+        # filters
+        req_cn = int(lspecs.get('connectivity', 2))
+        
+        # --- ROBUST LENGTH PARSING (Fix for NoneType Error) ---
+        req_len_min = float(lspecs.get('length_min') or 0.0)
+        req_len_max = float(lspecs.get('length_max') or 999.0)
+        req_rigid = lspecs.get('is_rigid') 
+
+        
+        # Get Tags (Split Positive/Negative)
+        vocab_set = getattr(self, 'approved_vocab', None)
+        _, _, negative_tags = parse_functional_groups(specs, vocab_set)
+
+        # Diagnostics counters
+        diag = {
+            "total_linkers": 0, "cn_match": 0, "len_match": 0,
+            "rigid_match": 0, "chem_match": 0, "final_match": 0
+        }
+        
+        for item in self.bb_data:
+            if item['Type'] != 'Edge': continue
+            diag["total_linkers"] += 1
+            
+            # 1. Connectivity
+            if item.get('connectivity') != req_cn: continue
+            diag["cn_match"] += 1
+            
+            # 2. Length (Precise)
+            length = item.get('length', 0.0)
+            if not (req_len_min <= length <= req_len_max): continue
+            diag["len_match"] += 1
+            
+            # 3. Rigidity (Optional)
+            if req_rigid is not None:
+                if item.get('is_rigid') != req_rigid: continue
+            diag["rigid_match"] += 1
+
+            if not check_negative_tags(item, negative_tags):
+                continue
+
+            # Note: Positive checks are deferred to Union Logic.
+                
+
+            diag["chem_match"] += 1
+            linker_ads.append(item['ID'])
+        
+        diag["final_match"] = len(linker_ads)
+        return linker_ads, diag
+
+
+    def smart_matchmaker_single_node(self, specs: dict) -> dict:
+        """
+        Main orchestration function.
+        Handles V3 JSON logic with Single-Component constraint.
+        
+        Architecture:
+            Phase A: Topology Discovery (Global, using full CN list)
+            Phase B: Node Search (Per-CN loop)
+            Phase C: Linker Search (Independent)
+            Phase D: Union Logic Assembly
+        """
+        candidates = {"topology": [], "node": [], "edge": [], "diagnostics": {}}
+        
+        # 1. PARSE CONNECTIVITY (Ensure List)
+        # Agent 2 might return int (8) or list ([8, 12]). We normalize to list.
+        raw_cn = specs['node_query'].get('connectivity')
+        if isinstance(raw_cn, list):
+            target_connectivities = [int(c) for c in raw_cn]
+        else:
+            target_connectivities = [int(raw_cn)]
+            
+        print(f"--- MATCHMAKER (V3=True) ---")
+        print(f"Target Connectivities: {target_connectivities}")
+        
+        # ---------------------------------------------------------
+        # PHASE A: TOPOLOGY DISCOVERY (Global Check)
+        # Pass the FULL list (e.g., [12, 6]) to find matching single-node topologies.
+        # This returns topos like ['fcu'] (for 12) and ['pcu'] (for 6) if valid.
+        # ---------------------------------------------------------
+        
+        # Helper: Extract Linker Connectivity (Default 2)
+        l_spec_cn = specs['linker_query'].get('connectivity', 2)
+        try:
+            target_edge_cn = int(l_spec_cn)
+        except (ValueError, TypeError):
+            target_edge_cn = 2
+            
+        candidates['topology'], candidates['topology_by_cn'] = self.get_valid_topologies(
+            target_connectivities, target_edge_cn=target_edge_cn
+        )
+        print(f"Topologies Found: {len(candidates['topology'])}")
+        
+        if not candidates['topology']:
+            print(f"Warning: No Single-Node topologies found for connectivities {target_connectivities} (Edge CN={target_edge_cn}).")
+        
+        # ---------------------------------------------------------
+        # PHASE B: NODE SEARCH (Loop through each CN)
+        # ---------------------------------------------------------
+        all_nodes = []
+        target_metals = None  # Track for error reporting
+        
+        for req_cn in target_connectivities:
+            node_ids, target_metals = self._search_nodes(specs, req_cn)
+            all_nodes.extend(node_ids)
+
+        candidates['node'] = list(set(all_nodes))
+        
+        if not candidates['node']:
+            # SP-3.08: Return structured error dict (not string) for consistent return type
+            print(f"Warning: No nodes found for metals '{target_metals}' in {target_connectivities}.")
+            return {
+                'status': 'error',
+                'reason': 'no_matching_nodes',
+                'message': f"No nodes found for metals '{target_metals}' with connectivities {target_connectivities}.",
+                'topology': candidates['topology'],
+                'node': [],
+                'edge': [],
+                'diagnostics': candidates.get('diagnostics', {})
+            }
+
+        print(f"Nodes Found: {len(candidates['node'])}")
+
+        # ---------------------------------------------------------
+        # PHASE C: LINKER SEARCH (Independent of Node CN)
+        # ---------------------------------------------------------
+        linker_ids, diag = self._search_linkers(specs)
+        candidates['diagnostics'] = diag
+
+        # ---------------------------------------------------------
+        # PHASE D: VIRTUAL ASSEMBLY & UNION LOGIC CHECK
+        # ---------------------------------------------------------
+        # We now have 'all_nodes' (Physics + Metals + Non-Banned)
+        # And 'linker_ids' (Physics + Non-Banned)
+        # We must filter them to ensure they form at least ONE valid pair
+        # that satisfies the "Union Logic" (Global Requirements).
+        
+        vocab_set = getattr(self, 'approved_vocab', None)
+        global_and_tags, linker_or_tags, _ = parse_functional_groups(specs, vocab_set)
+        print(f"Applying Union Logic - AND tags: {global_and_tags}, OR tags: {linker_or_tags}")
+
+        if not global_and_tags and not linker_or_tags:
+            # Shortcut: if no global requirements, all matches are valid
+            candidates['edge'] = linker_ids
+        else:
+            valid_nodes = set()
+            valid_edges = set()
+
+            # Virtual Assembly Loop (N * M)
+            # This validates that a component is 'useful' in at least one valid MOF.
+            for n_id in all_nodes:
+                for l_id in linker_ids:
+                    if check_global_requirements(n_id, l_id, global_and_tags, self.bb_lookup,
+                                                 linker_or_tags=linker_or_tags):
+                        valid_nodes.add(n_id)
+                        valid_edges.add(l_id)
+
+            # Update lists with only VALID components
+            # Note: We filter the originally found nodes to remove those that fail Union Logic
+            candidates['node'] = list(valid_nodes)
+            candidates['edge'] = list(valid_edges)
+
+            print(f"Union Logic Pruning: Nodes {len(all_nodes)}->{len(candidates['node'])}, Linkers {len(linker_ids)}->{len(candidates['edge'])}")
+
+        print(f"Linkers Found: {len(linker_ids)}")
+        print(f"   Diagnostics: {candidates['diagnostics']}")
+        
+        return candidates
+
+
+# =============================================================================
+# TEST FUNCTION
+# =============================================================================
+def test_matchmaker():
+    """Test the matchmaker with V3 prompt structure."""
+    
+    print("\n" + "="*60)
+    print("MATCHMAKER MODULE TEST (V3)")
+    print("="*60 + "\n")
+    
+    # Sample Agent 2 output (V3 Structure)
+    test_specs = {
+        "node_query": {
+            "metals_include": ["Zr"],
+            "connectivity": [12],
+            "nuclearity": 6,
+
+        },
+        "linker_query": {
+            "connectivity": 2,
+            "length_min": 6.0,
+            "length_max": 12.0,
+            "is_rigid": True,
+            "functional_groups": ["Oxygen"]
+        },
+        "geometry_filter": {
+            "target_Di_min": 12.0, "target_Di_max": 20.0,
+            "target_Df_min": 7.0, "target_Df_max": 10.0
+        }
+    }
+    
+    matcher = Matchmaker()
+    results = matcher.smart_matchmaker_single_node(test_specs)
+    
+    if results.get('status') == 'error':
+        print(results['message'])
+    else:
+        print("\n--- RESULTS ---")
+        print(f"Topologies: {len(results['topology'])}")
+        print(f"Nodes: {len(results['node'])}")
+        print(f"Linkers: {len(results['edge'])}")
+        print(f"Diagnostics: {results.get('diagnostics')}")
+        
+        if len(results['node']) > 0 and len(results['edge']) > 0:
+            print("✓ VALIDATION PASSED")
+        else:
+            print("✗ VALIDATION FAILED - No candidates found")
+
+if __name__ == "__main__":
+    test_matchmaker()

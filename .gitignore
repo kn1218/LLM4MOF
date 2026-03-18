@@ -1,0 +1,69 @@
+# ============================================================
+# LLM2POR .gitignore
+# ============================================================
+
+# --- Secrets (NEVER commit) ---
+.env
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+NUL
+
+# --- Office temp/lock files ---
+~$*.pptx
+~$*.docx
+~$*.xlsx
+
+# --- Claude Code dev tooling ---
+.claude/
+
+# --- Generated output (recreated every run) ---
+experiments/
+
+# --- Source data (compiled into runtime index files) ---
+# These directories contain thousands of individual JSONs used only
+# by one-time migration scripts (scripts/migration/).
+# The runtime uses the compiled index files instead:
+#   qmof_enriched_v2/  -->  data/qmof_index_v2.json
+#   hmof_enriched_v2/  -->  data/hMOF/hmof_index.json
+#   pormake_buildingblock_jsons/  -->  data/pormake_bb_dictionary_v5.json
+data/qmof/qmof_enriched_v2/
+data/qmof/qmof.csv
+data/hMOF/hmof_enriched_v2/
+data/hMOF/hmof_index_pretty_sample.json
+data/pormake/pormake_buildingblock_jsons/
+data/pormake/pormake_based_h2_uptake/
+data/Coremof/
+
+# --- Archive (old data versions, superseded) ---
+data/_archive/
+
+# --- Data documentation (not needed for runtime) ---
+data/LLM2POR_DATA_STATISTICS.txt
+data/README_STATISTICS.txt
+data/SYSTEM_REPORT_SUMMARY.txt
+data/hMOF/README.md
+data/qmof/README.md
+data/pormake/README.md
+
+# --- One-time scripts (built the data files, not runtime) ---
+scripts/
+scriptsmigration/
+
+# --- Reports & documentation (not runtime) ---
+reports/
+implementation_plan/
+logs/
