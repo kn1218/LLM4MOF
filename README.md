@@ -60,8 +60,8 @@ Create a `.env` file in the project root (this file is git-ignored and never com
 ```bash
 # .env
 LLM_PROVIDER=openai          # "openai" or "gemini"
-OPENAI_API_KEY=sk-proj-...   # Your OpenAI API key
-GEMINI_API_KEY=AIza...        # Your Gemini API key (if using Gemini)
+OPENAI_API_KEY=...           # Your OpenAI API key
+GEMINI_API_KEY=...           # Your Gemini API key (if using Gemini)
 ```
 
 - **OpenAI**: Get your key at https://platform.openai.com/api-keys
@@ -97,9 +97,9 @@ python run_experiment.py
 
 You will be prompted to choose:
 
-**[1] With Agent 0** (recommended) - An AI consultant interviews you to clarify your design requirements before passing them to the hypothesis generator.
+**[1] With Agent 0** - An AI consultant interviews you to clarify your design requirements before passing them to the hypothesis generator.
 
-**[2] Direct Inquiry** - Skip the interview and go straight to hypothesis generation with a preset or custom inquiry.
+**[2] Direct Inquiry** (recommended) - Skip the interview and go straight to hypothesis generation with a preset or custom inquiry.
 
 ### Available Inquiry Types
 
