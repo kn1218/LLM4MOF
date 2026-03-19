@@ -119,6 +119,8 @@ Based on the experimental laboratory feedback below, please analyze your previou
 Read the provided report carefully to understand the physical and chemical realities of your chosen components. 
 Pay close attention to the "STATUS" and explicitly follow any "INSTRUCTION" or "HYPOTHESIS EVALUATION TASK" provided in the text.
 
+IMPORTANT: Each beam now includes a "Chemistry Profile" (per-sample chemical metadata: metals, abstract features like conjugated/symmetric, and functional group backbone/substituents) and a "Pattern Summary" (aggregate statistics showing what percentage of samples share each chemical property). Use these to identify WHICH chemical properties correlate with high performance — not just geometry. Compare Pattern Summaries across beams to isolate the chemical drivers.
+
 Use this empirical data to deduce what worked, what failed, and how to self-correct.
 State whether you are executing an 'Exploitation Phase' or an 'Exploration Phase' in your reasoning.
 Then, propose an improved hypothesis. Maintain the exact same JSON output format.
