@@ -63,6 +63,62 @@ class QMOFMatchmaker:
         item_tags = [canon(t) for t in item.get("functional_groups", [])]
         return any(tag in item_tags for tag in or_tags)
 
+    # ── Electronic metadata filters (Phase 3) ────────────────────────
+
+    def _check_oxidation_state(self, item: dict, node_query: dict) -> bool:
+        """Check oxidation state for a single metal. null/empty = passthrough."""
+        ox_query = node_query.get("oxidation_state")
+        if not ox_query or not isinstance(ox_query, dict):
+            return True
+        item_ox = item.get("oxidation_states", {})
+        if not isinstance(item_ox, dict) or not item_ox:
+            return True  # No data = benefit of doubt
+        for metal, state in ox_query.items():
+            if state is None:
+                continue
+            # Check if this metal at this oxidation state exists in the item
+            matched = False
+            for item_metal, item_state in item_ox.items():
+                if canon(item_metal) == canon(metal) and item_state == state:
+                    matched = True
+                    break
+            if not matched:
+                return False
+        return True
+
+    def _check_geometry(self, item: dict, node_query: dict) -> bool:
+        """Check coordination geometry via canon() match. null/empty = passthrough."""
+        geom_pref = node_query.get("geometry_preference")
+        if not geom_pref:
+            return True
+        item_geom = item.get("geometry", "")
+        if not item_geom or str(item_geom) in ("", "nan", "null", "Unknown"):
+            return True  # No data = benefit of doubt
+        return canon(str(item_geom)) == canon(str(geom_pref))
+
+    def _check_open_metal_sites(self, item: dict, node_query: dict) -> bool:
+        """Check open metal sites via abstract_features. null/omitted = passthrough."""
+        af = node_query.get("abstract_features", {})
+        req = af.get("has_open_metal_site")
+        if req is None:
+            return True
+        item_val = item.get("has_open_metal_sites")
+        if item_val is None:
+            return True  # No data = benefit of doubt
+        return item_val == req
+
+    def _check_topology(self, item: dict, node_query: dict) -> bool:
+        """Check topology. Mirrors hMOF pattern. null/empty = passthrough."""
+        req_topologies = node_query.get("topology", [])
+        if isinstance(req_topologies, str):
+            req_topologies = [req_topologies] if req_topologies else []
+        if not req_topologies:
+            return True
+        topo = item.get("topology")
+        if topo is None:
+            return False
+        return canon(topo) in [canon(t) for t in req_topologies]
+
     def match(self, specs: dict, tracker: Any = None, search_mode: str = "full") -> List[str]:
         """
         Takes Agent 2 specs and returns a list of matching qmof_ids.
@@ -92,6 +148,16 @@ class QMOFMatchmaker:
                     
                 # 3. Metals check
                 if not self._check_metals(qmof, req_metals):
+                    continue
+
+                # 3b. Electronic metadata checks (Phase 3)
+                if not self._check_oxidation_state(qmof, node_query):
+                    continue
+                if not self._check_geometry(qmof, node_query):
+                    continue
+                if not self._check_open_metal_sites(qmof, node_query):
+                    continue
+                if not self._check_topology(qmof, node_query):
                     continue
                 
             if search_mode in ["full", "linker_only"]:

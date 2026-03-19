@@ -112,6 +112,14 @@ class Agent2Handler:
         if mgc is not None and not isinstance(mgc, dict):
             print("   [Validation] WARNING: linker_query.min_group_counts should be a dict, got:", type(mgc))
         
+        # Check Phase 3 electronic metadata fields (soft validation — optional)
+        ox = node_q.get('oxidation_state')
+        if ox is not None and not isinstance(ox, dict):
+            print("   [Validation] WARNING: node_query.oxidation_state should be a dict, got:", type(ox))
+        geom = node_q.get('geometry_preference')
+        if geom is not None and not isinstance(geom, str):
+            print("   [Validation] WARNING: node_query.geometry_preference should be a string, got:", type(geom))
+        
         # Check geometry_filter
         geo = constraints.get('geometry_filter', {})
         # Note: Check primarily for presence of the dict itself.
@@ -172,6 +180,13 @@ class Agent2Handler:
             active = {k: v for k, v in linker_af.items() if v is not None}
             if active:
                 print(f"Linker Abstract Features: {active}")
+        # Phase 3 electronic metadata (QMOF-only)
+        ox_state = node_q.get('oxidation_state')
+        if ox_state:
+            print(f"Oxidation State: {ox_state}")
+        geom_pref = node_q.get('geometry_preference')
+        if geom_pref:
+            print(f"Geometry Preference: {geom_pref}")
         print(f"Di Range: {geo.get('target_Di_min', '?')} - {geo.get('target_Di_max', '?')} Å")
         print(f"Df Range: {geo.get('target_Df_min', '?')} - {geo.get('target_Df_max', '?')} Å")
         print(f"SA Range: {geo.get('target_sa_min', '?')} - {geo.get('target_sa_max', '?')} m²/g")

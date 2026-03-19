@@ -139,6 +139,17 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
 > **IMPORTANT WARNING for Band Gap / Electronic Mode:** 
 > When Agent 1's goal is **Electronic Band Gap** tuning rather than H2 Uptake, geometric descriptors (Di, Df, SA, etc) are often irrelevant unless explicitly called out. 
 > **CRITICAL:** If Agent 1 does not specify geometric limits in the hypothesis, **leave all geometry\_filter fields as `null`**. DO NOT INVENT DEFAULTS.
+>
+> **QMOF Electronic Metadata (Band Gap / Electronic Mode Only):**
+> When Agent 1 specifies electronic properties for band gap tuning, extract these into `node_query` top-level fields:
+>
+> | Field | Type | Extract when Agent 1 says... | Approved Values |
+> |---|---|---|---|
+> | `oxidation_state` | `{"Metal": Int}` or `null` | "Cu(II)", "Zn²⁺", "Fe³⁺", "oxidation state" | Any `{"Symbol": integer}` dict, e.g., `{"Fe": 2}` |
+> | `geometry_preference` | `String` or `null` | "octahedral coordination", "tetrahedral Zn", "square planar" | `"Octahedral"`, `"Tetrahedral"`, `"Square Planar"`, `"Linear"` |
+>
+> **Rules:** Default ALL to `null` when Agent 1 does not mention them. Do NOT infer electronic properties from metal identity alone.
+> For open metal sites, use `has_open_metal_site` in `abstract_features` (same field as PORMAKE mode).
 
 > Extract the target geometry ranges from the `ideal_pore_geometry` text ONLY IF EXPLICITLY MENTIONED:
 > 
@@ -160,7 +171,9 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
       "connectivity": [Integer_List_or_Null],
       "nuclearity": Integer_or_Null,
       "ligand_chemistry": ["List", "Element name of the Ligand atom"],
-      "abstract_features": {}
+      "abstract_features": {},
+      "oxidation_state": {"Metal": Int_or_Null},
+      "geometry_preference": "String_or_Null"
   },
   "linker_query": {
       "reasoning": "Explain derivation of length/rigidity here...",
@@ -201,3 +214,5 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
 > **`abstract_features` format**: Dict of boolean properties. Include ONLY features Agent 1 explicitly mentions. Omit all others.
 > Example: `"abstract_features": {"is_conjugated": true, "has_open_metal_site": true}`
 > Empty dict `{}` if Agent 1 mentions no building block properties.
+>
+> **Electronic fields default**: `oxidation_state` and `geometry_preference` default to `null`. Only populate when Agent 1 explicitly specifies. For open metal sites, use `has_open_metal_site` in `abstract_features` (same as PORMAKE mode).
