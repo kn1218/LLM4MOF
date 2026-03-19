@@ -31,6 +31,11 @@ When formulating your hypothesis, you may reason about any of the following desc
     * `node_connectivity` (integer values)
     * `linker_length` (Å; provide min/max bounds)
     * `functional_groups` (names of functional groups)
+    * `building_block_properties` (optional boolean filters for PORMAKE building blocks):
+        * **Node-relevant**: `has_open_metal_site` (coordinatively unsaturated metal; critical for strong gas binding and catalysis), `is_metalated` (contains metal center), `is_conjugated` (extended pi-system), `has_hydrogen_bond_donor` (N-H/O-H groups), `has_hydrogen_bond_acceptor` (lone-pair N/O atoms), `is_symmetric`, `is_electron_rich`, `is_electron_deficient`
+        * **Linker-relevant**: `is_conjugated` (for electronic delocalization and bandgap tuning), `has_hydrogen_bond_donor`/`has_hydrogen_bond_acceptor` (for selective guest binding, CO2 capture), `is_symmetric` (for regular pore geometry), `is_electron_rich`/`is_electron_deficient` (for electronic modulation), `is_fluorinated` (for hydrophobicity and stability)
+        * **SCARCE FEATURES WARNING**: `is_fluorinated` (<3%), `is_electron_deficient` (<3%), `is_charged` (0%), `is_photoswitchable` (<2%) have very low availability in the database. Requiring them as `true` may yield zero candidates. Prefer using them as `false` (avoidance) filters.
+        * Specify ONLY properties critical to your mechanism in the `node_composition` or `linker_composition` text. Unmentioned properties will not be filtered.
 
 ### **CRITICAL RULE:** Do **NOT** select a specific Topology Code (e.g., `fcu`, `rht`). Topology will be handled downstream using connectivity and geometric feasibility.
 

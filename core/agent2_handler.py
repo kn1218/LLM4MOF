@@ -93,6 +93,25 @@ class Agent2Handler:
         if 'functional_groups' not in l_q:
              print("   [Validation] WARNING: linker_query missing 'functional_groups' (V3.3 Schema)")
         
+        # Check abstract_features (soft validation — optional field)
+        node_af = node_q.get('abstract_features', {})
+        if node_af and not isinstance(node_af, dict):
+            print("   [Validation] WARNING: node_query.abstract_features should be a dict, got:", type(node_af))
+        linker_af = l_q.get('abstract_features', {})
+        if linker_af and not isinstance(linker_af, dict):
+            print("   [Validation] WARNING: linker_query.abstract_features should be a dict, got:", type(linker_af))
+        
+        # Check categorized functional group fields (soft validation — optional)
+        bb_reqs = l_q.get('backbone_requirements')
+        if bb_reqs is not None and not isinstance(bb_reqs, list):
+            print("   [Validation] WARNING: linker_query.backbone_requirements should be a list, got:", type(bb_reqs))
+        sub_reqs = l_q.get('substituent_requirements')
+        if sub_reqs is not None and not isinstance(sub_reqs, list):
+            print("   [Validation] WARNING: linker_query.substituent_requirements should be a list, got:", type(sub_reqs))
+        mgc = l_q.get('min_group_counts')
+        if mgc is not None and not isinstance(mgc, dict):
+            print("   [Validation] WARNING: linker_query.min_group_counts should be a dict, got:", type(mgc))
+        
         # Check geometry_filter
         geo = constraints.get('geometry_filter', {})
         # Note: Check primarily for presence of the dict itself.
@@ -132,6 +151,27 @@ class Agent2Handler:
         print(f"Linker Length: {len_min} - {len_max} Å")
         print(f"Linker Rigid: {rigid}")
         print(f"Linker Func Groups: {linker_funcs}")
+        # Categorized functional group requirements (if present)
+        bb_reqs = linker_q.get('backbone_requirements', [])
+        if bb_reqs:
+            print(f"Backbone Requirements: {bb_reqs}")
+        sub_reqs = linker_q.get('substituent_requirements', [])
+        if sub_reqs:
+            print(f"Substituent Requirements: {sub_reqs}")
+        min_gc = linker_q.get('min_group_counts', {})
+        if min_gc:
+            print(f"Min Group Counts: {min_gc}")
+        # Abstract Features (if present)
+        node_af = node_q.get('abstract_features', {})
+        if node_af:
+            active = {k: v for k, v in node_af.items() if v is not None}
+            if active:
+                print(f"Node Abstract Features: {active}")
+        linker_af = linker_q.get('abstract_features', {})
+        if linker_af:
+            active = {k: v for k, v in linker_af.items() if v is not None}
+            if active:
+                print(f"Linker Abstract Features: {active}")
         print(f"Di Range: {geo.get('target_Di_min', '?')} - {geo.get('target_Di_max', '?')} Å")
         print(f"Df Range: {geo.get('target_Df_min', '?')} - {geo.get('target_Df_max', '?')} Å")
         print(f"SA Range: {geo.get('target_sa_min', '?')} - {geo.get('target_sa_max', '?')} m²/g")

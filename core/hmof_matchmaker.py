@@ -15,7 +15,8 @@ from typing import List, Dict, Any, Optional
 
 import config
 from core.constraint_utils import (
-    parse_functional_groups, check_negative_tags, canon, get_approved_vocab
+    parse_functional_groups, check_negative_tags, canon, get_approved_vocab,
+    check_categorized_groups
 )
 
 
@@ -176,6 +177,16 @@ class HMOFMatchmaker:
                         )
                         tracker.record_first_fail(first_tag)
                     continue
+
+            # 4c. Categorized functional group check (OPTIONAL)
+            if search_mode in ["full", "linker_only"]:
+                linker_q = specs.get('linker_query', {})
+                backbone_reqs = linker_q.get('backbone_requirements') or []
+                substituent_reqs = linker_q.get('substituent_requirements') or []
+                min_counts = linker_q.get('min_group_counts') or {}
+                if backbone_reqs or substituent_reqs or min_counts:
+                    if not check_categorized_groups(hmof, backbone_reqs, substituent_reqs, min_counts):
+                        continue
 
             # 5. Structural property filters
             if structural_filters and search_mode == "full":

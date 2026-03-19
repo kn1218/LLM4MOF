@@ -4,7 +4,7 @@ import pandas as pd
 from typing import List, Dict, Tuple, Any
 
 import config
-from core.constraint_utils import parse_functional_groups, check_negative_tags, canon, get_approved_vocab
+from core.constraint_utils import parse_functional_groups, check_negative_tags, canon, get_approved_vocab, check_categorized_groups
 
 class QMOFMatchmaker:
     """
@@ -108,7 +108,16 @@ class QMOFMatchmaker:
                         first_tag = linker_or_tags[0] if linker_or_tags else "Unknown"
                         tracker.record_first_fail(first_tag)
                     continue
-                
+
+                # 5. Categorized functional group check (OPTIONAL)
+                linker_q = specs.get('linker_query', {})
+                backbone_reqs = linker_q.get('backbone_requirements') or []
+                substituent_reqs = linker_q.get('substituent_requirements') or []
+                min_counts = linker_q.get('min_group_counts') or {}
+                if backbone_reqs or substituent_reqs or min_counts:
+                    if not check_categorized_groups(qmof, backbone_reqs, substituent_reqs, min_counts):
+                        continue
+
             # Record success if tracker exists
             if tracker and search_mode == "full":
                 for t in all_pos_tags:

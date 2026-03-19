@@ -448,5 +448,68 @@ def _test_constraint_utils():
     print("=" * 60 + "\n")
 
 
+# =============================================================================
+# CATEGORIZED FUNCTIONAL GROUP CHECK
+# =============================================================================
+
+def check_categorized_groups(
+    item: dict,
+    backbone_reqs: Optional[List[str]] = None,
+    substituent_reqs: Optional[List[str]] = None,
+    min_counts: Optional[Dict[str, int]] = None
+) -> bool:
+    """
+    Check if item satisfies categorized functional group requirements.
+
+    Uses item['functional_groups_categorized'] which has:
+      backbone:           list of backbone scaffold tags
+      substituents:       list of substituent tags
+      rule_based_counts:  dict of {tag: count}
+
+    All comparisons are canonicalized via canon().
+
+    Args:
+        item: BB dict or MOF index dict with optional
+              'functional_groups_categorized' key.
+        backbone_reqs: Tags that MUST appear in item's backbone (AND logic).
+        substituent_reqs: Tags that MUST appear in item's substituents (AND logic).
+        min_counts: Dict of {tag: minimum_count} checked against
+                    rule_based_counts.
+
+    Returns:
+        True  if ALL specified requirements are met.
+        True  if item has no categorized data (benefit of doubt).
+        False if any requirement is violated.
+    """
+    cat = item.get('functional_groups_categorized')
+    if not cat:
+        return True  # No categorized data → don't filter out
+
+    # 1. Backbone requirements (AND logic — ALL must be present)
+    if backbone_reqs:
+        item_backbone = {canon(t) for t in cat.get('backbone', [])}
+        for req in backbone_reqs:
+            if canon(req) not in item_backbone:
+                return False
+
+    # 2. Substituent requirements (AND logic — ALL must be present)
+    if substituent_reqs:
+        item_subs = {canon(t) for t in cat.get('substituents', [])}
+        for req in substituent_reqs:
+            if canon(req) not in item_subs:
+                return False
+
+    # 3. Minimum group counts
+    if min_counts:
+        item_counts = cat.get('rule_based_counts', {})
+        # Canonicalize keys for comparison
+        canon_counts = {canon(k): v for k, v in item_counts.items()}
+        for tag, min_val in min_counts.items():
+            if canon_counts.get(canon(tag), 0) < min_val:
+                return False
+
+    return True
+
+
 if __name__ == "__main__":
     _test_constraint_utils()

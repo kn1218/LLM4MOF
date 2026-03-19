@@ -15,7 +15,7 @@ import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import TOPO_DICTIONARY_V3_PATH
 from core.name_resolver import get_name_resolver
-from core.constraint_utils import canon, get_item_features, parse_functional_groups, check_global_requirements, check_negative_tags, get_approved_vocab
+from core.constraint_utils import canon, get_item_features, parse_functional_groups, check_global_requirements, check_negative_tags, get_approved_vocab, check_categorized_groups
 
 
 class Matchmaker:
@@ -125,6 +125,41 @@ class Matchmaker:
         
         return valid_codes, topology_by_cn
     
+    @staticmethod
+    def _check_abstract_features(item: dict, required_features: dict) -> bool:
+        """
+        Check if a building block's abstract_features match the required filter.
+        
+        Rules:
+        - Only non-null required features are checked.
+        - If the item's feature is None (unknown), it is NOT excluded (benefit of doubt).
+        - If the item's feature is explicitly False and required is True (or vice versa), exclude.
+        
+        Args:
+            item: BB dictionary item (Node or Edge)
+            required_features: Dict of {feature_name: True/False/None}
+            
+        Returns:
+            True if item passes all checks, False if any required feature mismatches.
+        """
+        if not required_features:
+            return True
+        
+        item_af = item.get('abstract_features', {})
+        if not item_af:
+            return True  # No abstract_features data on item = don't exclude
+        
+        for feat_key, feat_val in required_features.items():
+            if feat_val is None:
+                continue  # null requirement = don't filter
+            item_val = item_af.get(feat_key)
+            if item_val is None:
+                continue  # unknown in data = benefit of doubt, don't exclude
+            if item_val != feat_val:
+                return False  # explicit mismatch
+        
+        return True
+
     def _search_nodes(self, specs: dict, req_cn: int) -> tuple:
         """Search nodes using V3 JSON logic."""
         node_candidates = []
@@ -152,6 +187,10 @@ class Matchmaker:
         # --- Ligand Chemistry Prep (OR Logic) ---
         req_ligand_chem = specs['node_query'].get('ligand_chemistry', [])
         target_ligand_chem = set(l.lower() for l in req_ligand_chem)
+
+        # Abstract Features Prep
+        node_af = specs.get('node_query', {}).get('abstract_features', {})
+        if not isinstance(node_af, dict): node_af = {}
 
         for item in self.bb_data:
             if item.get('Type', 'Node') != 'Node': continue
@@ -193,6 +232,9 @@ class Matchmaker:
 
             # Note: Positive checks are deferred to Assembly Stage (Union Logic).
 
+            # --- ABSTRACT FEATURES FILTER ---
+            if not self._check_abstract_features(item, node_af):
+                continue
 
             node_candidates.append(item['ID'])
             
@@ -207,7 +249,7 @@ class Matchmaker:
         lspecs = specs['linker_query']
         
         # filters
-        req_cn = int(lspecs.get('connectivity', 2))
+        req_cn = int(lspecs.get('connectivity') or 2)
         
         # --- ROBUST LENGTH PARSING (Fix for NoneType Error) ---
         req_len_min = float(lspecs.get('length_min') or 0.0)
@@ -219,10 +261,14 @@ class Matchmaker:
         vocab_set = getattr(self, 'approved_vocab', None)
         _, _, negative_tags = parse_functional_groups(specs, vocab_set)
 
+        # Abstract Features Prep
+        linker_af = specs.get('linker_query', {}).get('abstract_features', {})
+        if not isinstance(linker_af, dict): linker_af = {}
+
         # Diagnostics counters
         diag = {
             "total_linkers": 0, "cn_match": 0, "len_match": 0,
-            "rigid_match": 0, "chem_match": 0, "final_match": 0
+            "rigid_match": 0, "chem_match": 0, "af_match": 0, "final_match": 0
         }
         
         for item in self.bb_data:
@@ -250,6 +296,12 @@ class Matchmaker:
                 
 
             diag["chem_match"] += 1
+
+            # --- ABSTRACT FEATURES FILTER ---
+            if not self._check_abstract_features(item, linker_af):
+                continue
+            diag["af_match"] += 1
+
             linker_ads.append(item['ID'])
         
         diag["final_match"] = len(linker_ads)
@@ -369,7 +421,29 @@ class Matchmaker:
 
             print(f"Union Logic Pruning: Nodes {len(all_nodes)}->{len(candidates['node'])}, Linkers {len(linker_ids)}->{len(candidates['edge'])}")
 
-        print(f"Linkers Found: {len(linker_ids)}")
+        # ---------------------------------------------------------
+        # PHASE E: OPTIONAL CATEGORIZED FUNCTIONAL GROUP FILTER
+        # ---------------------------------------------------------
+        # Only activates if Agent 2 specs contain backbone_requirements,
+        # substituent_requirements, or min_group_counts in linker_query.
+        # These refine linker selection by distinguishing backbone from
+        # substituent chemistry and enforcing minimum group counts.
+        linker_q = specs.get('linker_query', {})
+        backbone_reqs = linker_q.get('backbone_requirements') or []
+        substituent_reqs = linker_q.get('substituent_requirements') or []
+        min_counts = linker_q.get('min_group_counts') or {}
+
+        if backbone_reqs or substituent_reqs or min_counts:
+            pre_count = len(candidates['edge'])
+            filtered_edges = []
+            for l_id in candidates['edge']:
+                item = self.bb_lookup.get(l_id, {})
+                if check_categorized_groups(item, backbone_reqs, substituent_reqs, min_counts):
+                    filtered_edges.append(l_id)
+            candidates['edge'] = filtered_edges
+            print(f"Categorized Filter: Linkers {pre_count}->{len(candidates['edge'])}")
+
+        print(f"Linkers Found: {len(candidates['edge'])}")
         print(f"   Diagnostics: {candidates['diagnostics']}")
         
         return candidates
@@ -391,14 +465,15 @@ def test_matchmaker():
             "metals_include": ["Zr"],
             "connectivity": [12],
             "nuclearity": 6,
-
+            "abstract_features": {}
         },
         "linker_query": {
             "connectivity": 2,
             "length_min": 6.0,
             "length_max": 12.0,
             "is_rigid": True,
-            "functional_groups": ["Oxygen"]
+            "functional_groups": ["Oxygen"],
+            "abstract_features": {}
         },
         "geometry_filter": {
             "target_Di_min": 12.0, "target_Di_max": 20.0,
@@ -419,9 +494,45 @@ def test_matchmaker():
         print(f"Diagnostics: {results.get('diagnostics')}")
         
         if len(results['node']) > 0 and len(results['edge']) > 0:
-            print("✓ VALIDATION PASSED")
+            print("[PASS] VALIDATION PASSED")
         else:
-            print("✗ VALIDATION FAILED - No candidates found")
+            print("[FAIL] VALIDATION FAILED - No candidates found")
+
+    # --- TEST 2: With Abstract Features ---
+    print("\n--- TEST 2: Abstract Features Filter ---")
+    test_specs_af = {
+        "node_query": {
+            "metals_include": ["Zr"],
+            "connectivity": [12],
+            "nuclearity": 6,
+            "abstract_features": {"has_open_metal_site": True}
+        },
+        "linker_query": {
+            "connectivity": 2,
+            "length_min": 6.0,
+            "length_max": 12.0,
+            "is_rigid": True,
+            "functional_groups": ["Oxygen"],
+            "abstract_features": {"is_conjugated": True}
+        },
+        "geometry_filter": {
+            "target_Di_min": 12.0, "target_Di_max": 20.0,
+            "target_Df_min": 7.0, "target_Df_max": 10.0
+        }
+    }
+    results_af = matcher.smart_matchmaker_single_node(test_specs_af)
+    
+    if results_af.get('status') == 'error':
+        print(results_af['message'])
+    else:
+        print(f"Nodes (with abstract_features): {len(results_af['node'])}")
+        print(f"Linkers (with abstract_features): {len(results_af['edge'])}")
+        
+        # Verify: abstract_features should REDUCE candidates vs Test 1
+        if len(results_af['node']) <= len(results['node']) and len(results_af['edge']) <= len(results['edge']):
+            print("[PASS] Abstract features reduced candidate set (as expected)")
+        else:
+            print("[WARN] Abstract features did NOT reduce candidates (unexpected)")
 
 if __name__ == "__main__":
     test_matchmaker()

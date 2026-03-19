@@ -84,6 +84,56 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
 
 ---
 
+### Step 2.5: Extract Building Block Properties (Optional)
+
+> If Agent 1 describes **chemical properties** of the nodes or linkers using terms like "conjugated", "electron-rich", "open metal sites", "hydrogen bond donor/acceptor", "fluorinated", etc., extract them as boolean filters into `abstract_features`.
+>
+> **Rules:**
+> - Only extract features **explicitly stated** by Agent 1. Do NOT infer or assume.
+> - Set to `true` if Agent 1 **requires** the property (e.g., "must have open metal sites").
+> - Set to `false` if Agent 1 explicitly **rejects** the property (e.g., "avoid metalated linkers").
+> - **Omit** the feature entirely if Agent 1 does not mention it. Do NOT fill with `null`.
+> - Place **node-relevant** features in `node_query.abstract_features`.
+> - Place **linker-relevant** features in `linker_query.abstract_features`.
+> - If Agent 1 does not mention ANY building block properties, set `abstract_features` to `{}` (empty dict).
+>
+> **Available Features:**
+>
+> | Feature | Node? | Linker? | Extract when Agent 1 says... |
+> |---|---|---|---|
+> | `has_open_metal_site` | Yes | No | "open metal site", "unsaturated metal", "exposed metal", "OMS" |
+> | `is_conjugated` | Yes | Yes | "conjugated", "pi-conjugation", "extended aromatic system", "delocalized" |
+> | `has_hydrogen_bond_donor` | Yes | Yes | "H-bond donor", "hydrogen bond donor", "NH groups", "OH groups" |
+> | `has_hydrogen_bond_acceptor` | Yes | Yes | "H-bond acceptor", "hydrogen bond acceptor", "lone pairs", "Lewis base" |
+> | `is_electron_rich` | Yes | Yes | "electron-rich", "electron-donating", "EDG", "donor groups" |
+> | `is_electron_deficient` | Yes | Yes | "electron-deficient", "electron-withdrawing", "EWG", "acceptor groups" |
+> | `is_metalated` | Yes | Yes | "metalated", "metal-containing", "metallolinker" |
+> | `is_symmetric` | Yes | Yes | "symmetric", "high-symmetry", "symmetrical" |
+> | `is_fluorinated` | Yes | Yes | "fluorinated", "perfluoro", "-CF3", "fluoro" |
+> | `is_charged` | Yes | Yes | "charged", "ionic", "cationic", "anionic" |
+> | `is_photoswitchable` | Yes | Yes | "photoswitchable", "azobenzene", "diarylethene", "light-responsive" |
+
+---
+
+### Step 2.6: Extract Categorized Functional Group Requirements (OPTIONAL)
+
+> These three fields add **precision filtering** by distinguishing backbone chemistry from substituent chemistry and enforcing minimum group counts. **Only populate them when Agent 1 is explicitly specific** about these distinctions. If Agent 1 says vague things like "aromatic linker" or "nitrogen-containing", use `functional_groups` only and leave these fields as empty lists / empty dict.
+>
+> **Rules:**
+> - **`backbone_requirements`**: Tags that MUST appear in the linker's **core scaffold**. Populate when Agent 1 explicitly names backbone structures.
+>     - Example: "aromatic backbone" → `["Benzene"]`, "pyrene-based core" → `["Pyrene"]`, "biphenyl linker" → `["Biphenyl"]`
+>     - Leave as `[]` if Agent 1 does not distinguish backbone from substituent.
+> - **`substituent_requirements`**: Tags that MUST appear as **attached functional groups** (not the backbone). Populate when Agent 1 explicitly requires substituent decoration.
+>     - Example: "amine-functionalized" → `["Amine"]`, "with methyl groups" → `["Methyl"]`, "fluoro-substituted" → `["Fluoro"]`
+>     - Leave as `[]` if Agent 1 does not specifically request substituent decoration.
+> - **`min_group_counts`**: Minimum count of specific functional groups. Populate when Agent 1 specifies a quantity.
+>     - Example: "at least 2 carboxylate groups" → `{"Carboxyl": 2}`, "multiple nitrogen heterocycles (≥3)" → `{"Heterocycle": 3}`
+>     - Leave as `{}` if Agent 1 does not specify quantities.
+>
+> **CRITICAL:** All tags MUST use the same Approved Canonical Vocabulary as `functional_groups` (see table in Step 2). Free-text alternatives will cause search failures.
+
+---
+
 **Step 3: Extract Pore Geometry Constraints**
 
 > **IMPORTANT WARNING for Band Gap / Electronic Mode:** 
@@ -109,7 +159,8 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
       "metals_include": ["List", "Symbols"],
       "connectivity": [Integer_List_or_Null],
       "nuclearity": Integer_or_Null,
-      "ligand_chemistry": ["List", "Element name of the Ligand atom"]
+      "ligand_chemistry": ["List", "Element name of the Ligand atom"],
+      "abstract_features": {}
   },
   "linker_query": {
       "reasoning": "Explain derivation of length/rigidity here...",
@@ -117,7 +168,11 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
       "length_min": Float_or_Null,
       "length_max": Float_or_Null,
       "is_rigid": Boolean_or_Null,
-      "functional_groups": ["List", "Specific", "Tags"]
+      "functional_groups": ["List", "Specific", "Tags"],
+      "abstract_features": {},
+      "backbone_requirements": ["Tag1_or_Null"],
+      "substituent_requirements": ["Tag1_or_Null"],
+      "min_group_counts": {"tag": Integer_or_Null}
   },
   "global_requirements": {
       "include_tags": ["Aromatic", "Nitrogen"],
@@ -142,3 +197,7 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
   }
 }
 ```
+
+> **`abstract_features` format**: Dict of boolean properties. Include ONLY features Agent 1 explicitly mentions. Omit all others.
+> Example: `"abstract_features": {"is_conjugated": true, "has_open_metal_site": true}`
+> Empty dict `{}` if Agent 1 mentions no building block properties.
