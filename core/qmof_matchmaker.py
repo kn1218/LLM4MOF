@@ -4,7 +4,7 @@ import pandas as pd
 from typing import List, Dict, Tuple, Any
 
 import config
-from core.constraint_utils import parse_functional_groups, check_negative_tags, canon, get_approved_vocab, check_categorized_groups
+from core.constraint_utils import parse_functional_groups, check_negative_tags, canon, get_approved_vocab, check_categorized_groups, check_linker_branches
 
 class QMOFMatchmaker:
     """
@@ -129,6 +129,7 @@ class QMOFMatchmaker:
         global_and_tags, linker_or_tags, neg_tags = parse_functional_groups(specs, approved_vocab=get_approved_vocab(), tracker=tracker)
         # DO NOT merge: global_and_tags require ALL present, linker_or_tags require ANY present
         all_pos_tags = global_and_tags + linker_or_tags  # Only for tracker recording
+        linker_branches = specs.get('linker_query', {}).get('linker_branches', [])
         
         node_query = specs.get("node_query", {})
         req_metals = node_query.get("metals_include", [])
@@ -174,6 +175,11 @@ class QMOFMatchmaker:
                         first_tag = linker_or_tags[0] if linker_or_tags else "Unknown"
                         tracker.record_first_fail(first_tag)
                     continue
+
+                # 4c. Branch matching (OR-of-ANDs)
+                if linker_branches:
+                    if not check_linker_branches(qmof, linker_branches):
+                        continue
 
                 # 5. Categorized functional group check (OPTIONAL)
                 linker_q = specs.get('linker_query', {})

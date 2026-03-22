@@ -71,7 +71,11 @@ HMOF_INDEX_PATH = os.path.join(DATA_DIR, "hMOF", "hmof_index.json")
 # Prompt files
 PROMPTS_DIR = os.path.join(BASE_DIR, "prompts")
 AGENT0_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent0_v3.md")  # Problem Consultant
-AGENT1_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent1_v2.2.9.md")
+# Agent 1 prompt: database-type variants (auto-selected via get_agent1_prompt_path())
+_AGENT1_PROMPT_PORMAKE = os.path.join(PROMPTS_DIR, "agent1_v2.3.0.md")
+_AGENT1_PROMPT_QMOF = os.path.join(PROMPTS_DIR, "agent1_v2.3.0_qmof.md")
+_AGENT1_PROMPT_HMOF = os.path.join(PROMPTS_DIR, "agent1_v2.3.0_hmof.md")
+AGENT1_PROMPT_PATH = _AGENT1_PROMPT_PORMAKE  # Default (overridden by get_agent1_prompt_path)
 AGENT2_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent2_v4.0.md")
 
 # Output directory
@@ -147,6 +151,16 @@ def is_qmof_mode() -> bool:
 def is_hmof_mode() -> bool:
     """Check if the system is running in hMOF (gas adsorption) mode."""
     return ACTIVE_METRIC_COLUMN in _HMOF_METRICS
+
+
+def get_agent1_prompt_path() -> str:
+    """Return the Agent 1 prompt path for the current database mode."""
+    if is_hmof_mode():
+        return _AGENT1_PROMPT_HMOF
+    elif is_qmof_mode():
+        return _AGENT1_PROMPT_QMOF
+    else:
+        return _AGENT1_PROMPT_PORMAKE
 
 
 # hMOF column mapping: hmof_index property names → sensitivity analyzer column names

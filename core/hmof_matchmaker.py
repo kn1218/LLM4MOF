@@ -16,7 +16,7 @@ from typing import List, Dict, Any, Optional
 import config
 from core.constraint_utils import (
     parse_functional_groups, check_negative_tags, canon, get_approved_vocab,
-    check_categorized_groups
+    check_categorized_groups, check_linker_branches
 )
 
 
@@ -135,6 +135,7 @@ class HMOFMatchmaker:
         global_and_tags, linker_or_tags, neg_tags = parse_functional_groups(
             specs, approved_vocab=get_approved_vocab(), tracker=tracker
         )
+        linker_branches = specs.get('linker_query', {}).get('linker_branches', [])
 
         node_query = specs.get("node_query", {})
         req_metals = node_query.get("metals_include", [])
@@ -177,6 +178,12 @@ class HMOFMatchmaker:
                         )
                         tracker.record_first_fail(first_tag)
                     continue
+
+            # 4b.5: Branch matching (OR-of-ANDs)
+            if search_mode in ["full", "linker_only"]:
+                if linker_branches:
+                    if not check_linker_branches(hmof, linker_branches):
+                        continue
 
             # 4c. Categorized functional group check (OPTIONAL)
             if search_mode in ["full", "linker_only"]:

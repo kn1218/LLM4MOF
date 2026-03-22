@@ -34,6 +34,7 @@ When formulating your hypothesis, you may reason about any of the following desc
     * `node_connectivity` (integer values)
     * `linker_length` (Å; provide min/max bounds)
     * `functional_groups` (names of functional groups)
+    * **Alternative Strategies:** You may propose multiple linker strategies (e.g., "Use pyridine dicarboxylate OR ether-containing aromatics"). Each alternative will be searched independently -- be specific with functional group names rather than generic categories like "aromatic". Using "benzene dicarboxylate OR naphthalene dicarboxylate" is far more effective than "aromatic linker".
     * `building_block_properties` (optional boolean filters for PORMAKE building blocks):
         * **Node-relevant**: `has_open_metal_site` (coordinatively unsaturated metal; critical for strong gas binding and catalysis), `is_metalated` (contains metal center), `is_conjugated` (extended pi-system), `has_hydrogen_bond_donor` (N-H/O-H groups), `has_hydrogen_bond_acceptor` (lone-pair N/O atoms), `is_symmetric`, `is_electron_rich`, `is_electron_deficient`
         * **Linker-relevant**: `is_conjugated` (for electronic delocalization and bandgap tuning), `has_hydrogen_bond_donor`/`has_hydrogen_bond_acceptor` (for selective guest binding, CO2 capture), `is_symmetric` (for regular pore geometry), `is_electron_rich`/`is_electron_deficient` (for electronic modulation), `is_fluorinated` (for hydrophobicity and stability)

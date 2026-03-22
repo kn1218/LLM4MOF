@@ -11,7 +11,7 @@ from typing import Optional, Dict, Any
 
 # Add parent directory to path for config import
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import AGENT1_PROMPT_PATH
+from config import get_agent1_prompt_path
 from core.llm_client import LLMClient, load_prompt
 
 
@@ -29,7 +29,7 @@ class Agent1Handler:
     def __init__(self):
         """Initialize Agent 1 with its system prompt."""
         # Load system prompt from file
-        self.system_prompt = load_prompt(AGENT1_PROMPT_PATH)
+        self.system_prompt = load_prompt(get_agent1_prompt_path())
         
         # Initialize LLM client with multi-turn enabled
         self.client = LLMClient(self.system_prompt, multi_turn=True)
