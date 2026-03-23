@@ -75,7 +75,8 @@ AGENT0_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent0_v3.md")  # Problem Consul
 _AGENT1_PROMPT_PORMAKE = os.path.join(PROMPTS_DIR, "agent1_v2.3.0.md")
 _AGENT1_PROMPT_QMOF = os.path.join(PROMPTS_DIR, "agent1_v2.3.0_qmof.md")
 _AGENT1_PROMPT_HMOF = os.path.join(PROMPTS_DIR, "agent1_v2.3.0_hmof.md")
-AGENT1_PROMPT_PATH = _AGENT1_PROMPT_PORMAKE  # Default (overridden by get_agent1_prompt_path)
+_AGENT1_PROMPT_REFLEXION = os.path.join(PROMPTS_DIR, "agent1_v2.3.1_reflexion_only.md")
+AGENT1_PROMPT_PATH = _AGENT1_PROMPT_REFLEXION  # Ablation test: structured reflection only, no rules
 AGENT2_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent2_v4.0.md")
 
 # Output directory
@@ -154,13 +155,20 @@ def is_hmof_mode() -> bool:
 
 
 def get_agent1_prompt_path() -> str:
-    """Return the Agent 1 prompt path for the current database mode."""
-    if is_hmof_mode():
-        return _AGENT1_PROMPT_HMOF
-    elif is_qmof_mode():
-        return _AGENT1_PROMPT_QMOF
-    else:
-        return _AGENT1_PROMPT_PORMAKE
+    """Return the Agent 1 prompt path for the current database mode.
+
+    Currently set to universal reflexion-only prompt for ablation test.
+    To restore per-database routing, uncomment the if/elif/else block.
+    """
+    # Ablation test: universal prompt (no per-database rules)
+    return _AGENT1_PROMPT_REFLEXION
+    # --- Per-database routing (v2.3.0) ---
+    # if is_hmof_mode():
+    #     return _AGENT1_PROMPT_HMOF
+    # elif is_qmof_mode():
+    #     return _AGENT1_PROMPT_QMOF
+    # else:
+    #     return _AGENT1_PROMPT_PORMAKE
 
 
 # hMOF column mapping: hmof_index property names → sensitivity analyzer column names
