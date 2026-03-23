@@ -10,6 +10,7 @@ import sys
 import datetime
 import json
 import traceback
+import argparse
 
 # Fix Unicode encoding on Windows
 if sys.platform == 'win32':
@@ -102,7 +103,7 @@ MAX_ITERATIONS = 10
 FEEDBACK_TYPE = 1  # 3-Beam Diagnostic
 
 
-def run_single_experiment(exp_def: dict, batch_dir: str) -> dict:
+def run_single_experiment(exp_def: dict, batch_dir: str, strategy: str = "v231") -> dict:
     """
     Run a single experiment non-interactively.
 
@@ -116,10 +117,13 @@ def run_single_experiment(exp_def: dict, batch_dir: str) -> dict:
     print(f"# EXPERIMENT {exp_def['id']}/10: {label}")
     print(f"# Inquiry: {inquiry}")
     print(f"# Metric: {metric}")
+    print(f"# Strategy: {strategy}")
     print(f"{'#'*70}\n")
 
     # Set the active metric for this experiment
     config.ACTIVE_METRIC_COLUMN = metric
+    # Set strategy AFTER metric is set (v230 routing depends on DB mode)
+    config.set_agent1_strategy(strategy)
     is_qmof = config.is_qmof_mode()
     is_hmof = config.is_hmof_mode()
     mode_name = "QMOF" if is_qmof else "hMOF" if is_hmof else "PorMake"
@@ -139,6 +143,7 @@ def run_single_experiment(exp_def: dict, batch_dir: str) -> dict:
             "model": ACTIVE_MODEL,
             "max_iterations": MAX_ITERATIONS,
             "feedback_type": FEEDBACK_TYPE,
+            "strategy": strategy,
             "started": datetime.datetime.now().isoformat(),
         }, f, indent=2, ensure_ascii=False)
 
@@ -366,29 +371,50 @@ def run_single_experiment(exp_def: dict, batch_dir: str) -> dict:
     return summary
 
 
-def main():
-    """Run all 10 experiments sequentially."""
+def parse_args():
+    parser = argparse.ArgumentParser(description="LLM2POR Batch Experiment Runner")
+    parser.add_argument("--strategy", type=str, default="v231",
+                       choices=["v229", "v230", "v231"],
+                       help="Agent 1 prompt strategy (default: v231)")
+    parser.add_argument("--experiments", type=str, default=None,
+                       help="Comma-separated experiment IDs to run (e.g., '1,2,3'). Default: all")
+    return parser.parse_args()
+
+
+def main(strategy: str = "v231", experiment_ids: str = None):
+    """Run experiments sequentially."""
+    # Filter experiments if IDs specified
+    if experiment_ids is not None:
+        requested_ids = {int(x.strip()) for x in experiment_ids.split(",")}
+        experiments_to_run = [e for e in EXPERIMENTS if e["id"] in requested_ids]
+        if not experiments_to_run:
+            print(f"[ERROR] No experiments matched IDs: {experiment_ids}")
+            sys.exit(1)
+    else:
+        experiments_to_run = EXPERIMENTS
+
     print("\n" + "=" * 70)
     print("   LLM2POR BATCH EXPERIMENT RUNNER")
     print(f"   Model: {ACTIVE_MODEL}")
-    print(f"   Experiments: {len(EXPERIMENTS)}")
+    print(f"   Strategy: {strategy}")
+    print(f"   Experiments: {len(experiments_to_run)}")
     print(f"   Iterations per experiment: {MAX_ITERATIONS}")
-    print(f"   Total LLM calls: ~{len(EXPERIMENTS) * MAX_ITERATIONS * 2}")
+    print(f"   Total LLM calls: ~{len(experiments_to_run) * MAX_ITERATIONS * 2}")
     print("=" * 70 + "\n")
 
     validate_api_keys()
 
     # Create batch directory
     batch_ts = datetime.datetime.now().strftime("%Y%m%d_%H%M")
-    batch_dir = os.path.join(EXPERIMENTS_DIR, f"batch_{batch_ts}")
+    batch_dir = os.path.join(EXPERIMENTS_DIR, f"batch_{batch_ts}_{strategy}")
     os.makedirs(batch_dir, exist_ok=True)
     print(f"[Batch] Output directory: {batch_dir}\n")
 
     all_summaries = []
 
-    for exp_def in EXPERIMENTS:
+    for exp_def in experiments_to_run:
         try:
-            summary = run_single_experiment(exp_def, batch_dir)
+            summary = run_single_experiment(exp_def, batch_dir, strategy=strategy)
             all_summaries.append(summary)
         except Exception as e:
             print(f"\n[FATAL] Experiment {exp_def['label']} crashed: {e}")
@@ -416,4 +442,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    args = parse_args()
+    main(strategy=args.strategy, experiment_ids=args.experiments)
