@@ -158,8 +158,10 @@ class SensitivityAnalyzer:
         
         # Connectivity Prep
         target_cns = set()
-        if isinstance(cn_input, list):
-            target_cns = set(int(c) for c in cn_input)
+        if cn_input is None:
+            target_cns = set()  # No connectivity filter
+        elif isinstance(cn_input, list):
+            target_cns = set(int(c) for c in cn_input if c is not None)
         else:
             target_cns = {int(cn_input)}
             
@@ -169,10 +171,11 @@ class SensitivityAnalyzer:
         for item in self.bb_data:
             if item['Type'] != 'Node': continue
             
-            # Connectivity Check (Any overlap)
-            item_cn = item.get('connectivity', 0)
-            item_cns_set = set(item_cn) if isinstance(item_cn, list) else {item_cn}
-            if not target_cns.intersection(item_cns_set): continue
+            # Connectivity Check (Any overlap; skip if no constraint)
+            if target_cns:
+                item_cn = item.get('connectivity', 0)
+                item_cns_set = set(item_cn) if isinstance(item_cn, list) else {item_cn}
+                if not target_cns.intersection(item_cns_set): continue
 
             # Metal Check
             if not is_any_metal:

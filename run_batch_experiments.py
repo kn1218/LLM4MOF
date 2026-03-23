@@ -98,7 +98,7 @@ EXPERIMENTS = [
     },
 ]
 
-MAX_ITERATIONS = 5
+MAX_ITERATIONS = 10
 FEEDBACK_TYPE = 1  # 3-Beam Diagnostic
 
 

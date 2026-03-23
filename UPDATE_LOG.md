@@ -1,17 +1,27 @@
-# Update Log: Phase X + Agent 1 v2.3.0
+# Update Log: Phase X + Agent 1 v2.3.0 + v2.3.1 Ablation
 
-**Date**: 2026-03-22
+**Date**: 2026-03-22 ~ 2026-03-23
 **Branch**: `feat/phase-x-branched-matching-and-v230-prompts`
 
 ---
 
 ## Overview
 
-Two major changes in this branch:
+Three major changes in this branch, each with a clear motif:
 
-1. **Phase X: Branched Hypothesis Matching** -- Adds OR-of-ANDs (`linker_branches`) to the Agent 2 output schema, enabling Agent 1's alternative linker strategies to be preserved through the pipeline instead of being collapsed into a lowest-common-denominator tag like "Aromatic".
+| # | Change | Motif | Commit |
+|---|--------|-------|--------|
+| 1 | **Phase X: Branched Hypothesis Matching** | Fix information loss in the pipeline | `2d37556` |
+| 2 | **Agent 1 Prompt v2.3.0** | Inject reasoning strategy (not knowledge) | `2d37556` |
+| 3 | **Agent 1 Prompt v2.3.1 Ablation** | Isolate which factor drove the v2.3.0 gains | `e8f61b5` |
 
-2. **Agent 1 Prompt v2.3.0** -- Redesigned reasoning strategy ("Beat Bayesian Optimization") with database-type-specific variants for PorMake, QMOF, and hMOF. Includes structured exploration budget, hypothesis falsification, pattern-based beam analysis, and over-constraint avoidance.
+### Reading Guide
+
+- **Part 1** (Phase X) solves a structural problem: Agent 1's alternative linker strategies were being collapsed into generic tags. Now they're preserved as OR-of-ANDs branches.
+- **Part 2** (v2.3.0) solves a reasoning problem: Agent 1 was chasing anecdotes and over-constraining. Now it has explicit rules for pattern extraction, exploration budgets, and hypothesis falsification.
+- **Part 3** collects bug fixes discovered along the way.
+- **Part 4** shows experimental results proving both changes work (gap to DB best: 7.3% -> 1.2%).
+- **Part 5** (v2.3.1) asks the critical question: was the improvement from the reasoning strategy (Part 2) or the per-database rules? Strips all database-specific rules, keeping only structured reflection.
 
 ---
 
@@ -191,3 +201,73 @@ Added to `meta_cognition`:
 | `run_batch_experiments.py` | Non-interactive batch runner for all 10 experiments |
 | `.sisyphus/plans/phase-X-branched-hypothesis-bridge.md` | Detailed implementation plan for Phase X |
 | `.sisyphus/plans/phase1-abstract-features.md` | Prior plan (reference) |
+
+---
+
+## Part 5: Agent 1 v2.3.1 -- Reflexion-Only Ablation
+
+### Motivation
+
+v2.3.0 changed two things simultaneously:
+
+1. **Reasoning strategy** (Rules A-F): pattern extraction, hypothesis falsification, exploration budget, beam comparison, over-constraint avoidance
+2. **Per-database rules** (Rule G/H in QMOF/hMOF variants): electronic property awareness, gas-agnostic geometry guidance
+
+The results improved dramatically (gap to DB best: 7.3% -> 1.2%). But which factor was responsible? Without an ablation test, we can't distinguish between two explanations:
+
+- **Hypothesis A**: The generic reasoning strategy (Rules A-F) was sufficient. Per-database rules were unnecessary.
+- **Hypothesis B**: Per-database rules were the key driver. The generic strategy alone wouldn't have worked.
+
+### Design: Single-Variable Ablation
+
+v2.3.1 strips all per-database rules, keeping only the structured reflection framework:
+
+| Component | v2.3.0 | v2.3.1 (ablation) |
+|-----------|--------|-------------------|
+| Causal hierarchy (inverse design) | YES | YES |
+| Stateless execution rule | YES | YES |
+| Stagnation detection + radical pivots | YES | YES |
+| Alternative linker strategies | YES | YES |
+| Scarce features warning | YES | YES |
+| Rule A: Extract Patterns | YES | NO |
+| Rule B: Hypothesis Falsification | YES | NO |
+| Rule C: Exploration Budget | YES | NO |
+| Rule D: Diversify per Iteration | YES | NO |
+| Rule E: Beam Comparisons | YES | NO |
+| Rule F: Avoid Over-Constraining | YES | NO |
+| Rule G/H: Database-specific | YES | NO |
+| Per-database prompt routing | YES | NO (universal) |
+
+### Key Property
+
+v2.3.1 is **universal** -- the same prompt is used for PorMake, QMOF, and hMOF. This tests whether the core design philosophy (mechanism-grounded reasoning + structured output) is sufficient on its own, without the "Beat Bayesian Optimization" rules.
+
+### Files Changed (v2.3.1)
+
+| File | Change |
+|------|--------|
+| `prompts/agent1_v2.3.1_reflexion_only.md` | New: universal prompt with only structured reflection, no reasoning rules |
+| `config.py` | Routes all database modes to `_AGENT1_PROMPT_REFLEXION`; per-database routing commented out for rollback |
+
+### Expected Outcomes
+
+| If v2.3.1 matches v2.3.0 performance... | If v2.3.1 underperforms v2.3.0... |
+|---|---|
+| Rules A-F were unnecessary overhead | Rules A-F are the key driver of improvement |
+| The structured output format was the real improvement | Per-database tuning matters |
+| Simplify: keep one universal prompt | Keep the v2.3.0 multi-variant approach |
+
+### How to Rollback
+
+In `config.py`, restore the per-database routing:
+
+```python
+# Uncomment the if/elif/else block in get_agent1_prompt_path()
+def get_agent1_prompt_path() -> str:
+    if is_hmof_mode():
+        return _AGENT1_PROMPT_HMOF
+    elif is_qmof_mode():
+        return _AGENT1_PROMPT_QMOF
+    else:
+        return _AGENT1_PROMPT_PORMAKE
+```
