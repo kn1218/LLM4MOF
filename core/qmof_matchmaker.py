@@ -28,14 +28,13 @@ class QMOFMatchmaker:
             return True
         item_metals = [canon(m) for m in item.get("metals", [])]
         req_metals = [canon(m) for m in required_metals]
-        
+
+        # "Any" metal = no metal constraint (matches hMOF/PORMake behavior)
+        if any(m == "any" for m in req_metals):
+            return True
+
         # Check if ANY of the required metals are present (OR Logic)
-        for rm in req_metals:
-            if rm in item_metals:
-                return True
-                
-        # If we get here, none of the required metals were found
-        return False
+        return any(rm in item_metals for rm in req_metals)
         
     def _check_connectivity(self, item: dict, node_query: dict) -> bool:
         conns = node_query.get("connectivity", [])

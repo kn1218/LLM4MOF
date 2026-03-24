@@ -86,9 +86,9 @@ When formulating your hypothesis, you may reason about any of the following desc
     * `dif` (Free-sphere-path diameter, A -- transport pathway proxy)
     * `cv` (Unit cell volume, A^3)
     * *Electronic Mechanisms:* If the target is `bandgap`, geometric descriptors (like `vf` or `sa`) are often secondary. Emphasize ligand choice (conjugation, electron-withdrawing/donating groups) and metal node identity instead. The following electronic descriptors are available for **QMOF database queries only**:
-        * `oxidation_states` *(QMOF-only)* -- Metal oxidation state (e.g., "Fe2+ vs Fe3+"). Determines d-electron count, redox activity, and electronic structure. Specify as a single metal-state pair (e.g., Cu(II)).
-        * `coordination_geometry` *(QMOF-only)* -- Metal coordination geometry: "Octahedral", "Tetrahedral", "Square Planar", or "Linear". Determines crystal field splitting and band structure.
-        * `has_open_metal_sites` *(QMOF-only)* -- Whether the metal node has coordinatively unsaturated sites (true/false). Use the existing `has_open_metal_site` property in your `building_block_properties`. Critical for catalysis and selective gas binding.
+        * `oxidation_states` -- Metal oxidation state (e.g., "Fe2+ vs Fe3+"). Determines d-electron count, redox activity, and electronic structure. Specify as a single metal-state pair (e.g., Cu(II)).
+        * `coordination_geometry` -- Metal coordination geometry: "Octahedral", "Tetrahedral", "Square Planar", or "Linear". Determines crystal field splitting and band structure.
+        * `has_open_metal_sites` -- Whether the metal node has coordinatively unsaturated sites (true/false). Use the existing `has_open_metal_site` property in your `building_block_properties`. Critical for catalysis and selective gas binding.
 
 * **Components (The Cause - Your Final Choice):**
     * `node_metal` (e.g., Symbol_A, Symbol_B)

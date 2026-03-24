@@ -362,9 +362,50 @@ Batch output directories now include the strategy name (e.g., `batch_20260323_18
 | cp949 encoding fix | `core/agent2_handler.py` | Handle Korean Windows encoding in file I/O |
 | Iterations bump | `run_batch_experiments.py` | Increased `MAX_ITERATIONS` from 5 to 10 for statistically meaningful runs |
 
+### 5. v2.4: Chemistry-First Feedback, 4-Beam Diagnostics, and Agent Blinding
+
+Major refactor of the feedback pipeline for publication readiness. Three categories of changes:
+
+**Bug Fixes:**
+
+| Fix | File | Detail |
+|-----|------|--------|
+| QMOF "Any" metal guard | `core/qmof_matchmaker.py` | Added missing `if any(m == "any" ...)` check — without this, exploratory QMOF queries with `metals: ["Any"]` silently returned zero results. PORMake and hMOF already had this guard. |
+| SA negative-tag substring matching | `core/sensitivity_analyzer.py` | Replaced hand-rolled substring check (`if neg in combined_text`) with shared `check_negative_tags()` from `constraint_utils.py`. The old code used substring matching (so `"amine"` banned `"primary_amine"`), diverging from the matchmakers' exact set-membership logic. |
+
+**4-Beam Database-Aware Feedback (feedback_generator.py):**
+
+The old 3-beam diagnostic (Z, A, E) is replaced with database-aware 4-beam designs:
+
+| Database | Beam 1 | Beam 2 | Beam 3 | Beam 4 | Diagnostic Question |
+|----------|--------|--------|--------|--------|---------------------|
+| PORMake/hMOF | Full hypothesis (Z) | Chemistry only (A) | Metal only (F) | Global baseline | Is geometry or chemistry the bottleneck? |
+| QMOF | Full hypothesis (Z) | Metal control (F) | Linker control (G) | Global baseline | Is it metal d-electrons or linker conjugation? |
+
+QMOF gets a different beam design because it has no geometry gate — Beams 1 and 2 would be identical under the PORMake/hMOF design, wasting a diagnostic slot. The QMOF-specific design isolates metal vs. linker electronic contributions instead.
+
+**Agent 1 Blinding (prevent database identity inference):**
+
+| Measure | Detail |
+|---------|--------|
+| Anonymous MOF labels | Chemistry profiles now show `MOF-1, MOF-2, ...` instead of `N419+E12`, `qmof-XXX`, `hmof-XXX` |
+| Generic beam headers | "4-BEAM DIAGNOSTIC" / "4-BEAM ELECTRONIC DIAGNOSTIC" — no database name |
+| Unified footer messages | "No entries match your Metal + Functional Group constraints" — no database name |
+| Generic prompt instructions | Agent 1 prompt says "analyze beams as labeled" without specifying which beam configuration to expect |
+
+**Prompt Changes:**
+
+| File | Change |
+|------|--------|
+| `agent1_handler.py` | Reflexion prompt now describes beams generically, not hard-coded to chemistry+geometry design |
+| `agent1_v2.3.1_reflexion_only.md` | `beam_analysis` and `beam_comparison` fields updated for generic 4-beam interpretation |
+| `agent1_v2.2.9.md`, `agent1_v2.3.0_qmof.md` | Removed `(QMOF-only)` labels from electronic descriptor descriptions (blinding) |
+| `agent2_v4.0.md` | Step 3 renamed "Geometry Predictions (Second-Stage Gate)" with note that geometry is not a primary filter |
+| `agent2_handler.py` | `geometry_filter` validation softened — empty is valid for chemistry-first mode |
+
 ---
 
-### 5. Pending Work: LLM vs. Numerical Baselines Comparison
+### 6. Pending Work: LLM vs. Numerical Baselines Comparison
 
 The 3 LLM prompt versions (v2.2.9, v2.3.0, v2.3.1) must still be compared against 4 numerical baseline strategies in a controlled head-to-head study:
 

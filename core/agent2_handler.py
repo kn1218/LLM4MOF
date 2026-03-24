@@ -201,12 +201,10 @@ class Agent2Handler:
                 if len(branches) > 5:
                     print(f"   [Validation] NOTE: {len(branches)} branches detected (>5 may indicate over-decomposition)")
 
-        # Check geometry_filter
+        # Check geometry_filter (soft validation — empty is valid for chemistry-first mode)
         geo = constraints.get('geometry_filter', {})
-        # Note: Check primarily for presence of the dict itself.
         if not geo:
-             print("   [Validation] geometry_filter is empty")
-             return False
+             print("   [Validation] geometry_filter is empty (OK - geometry is a second-stage prediction, not required)")
         
         return True
     

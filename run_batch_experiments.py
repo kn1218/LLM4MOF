@@ -2,7 +2,7 @@
 # LLM2POR Batch Experiment Runner
 # =============================================================================
 # Non-interactive runner for multiple experiments with fixed iteration count.
-# Uses feedback type 1 (3-Beam Diagnostic) for all iterations.
+# Uses feedback type 1 (4-Beam Diagnostic) for all iterations.
 # =============================================================================
 
 import os
@@ -100,7 +100,7 @@ EXPERIMENTS = [
 ]
 
 MAX_ITERATIONS = 10
-FEEDBACK_TYPE = 1  # 3-Beam Diagnostic
+FEEDBACK_TYPE = 1  # 4-Beam Diagnostic (Chemistry-First)
 
 
 def run_single_experiment(exp_def: dict, batch_dir: str, strategy: str = "v231") -> dict:
@@ -315,9 +315,9 @@ def run_single_experiment(exp_def: dict, batch_dir: str, strategy: str = "v231")
             break
 
         with open(os.path.join(iter_dir, "feedback_selected.txt"), 'w', encoding='utf-8') as f:
-            f.write(f"Feedback Type: 3-Beam Diagnostic\n{'='*50}\n\n{current_feedback}")
+            f.write(f"Feedback Type: 4-Beam Diagnostic\n{'='*50}\n\n{current_feedback}")
 
-        logger.log_feedback_selection("3-Beam Diagnostic", current_feedback)
+        logger.log_feedback_selection("4-Beam Diagnostic", current_feedback)
 
         # --- MEMORY ---
         sensitivity_summary = {}
@@ -344,7 +344,7 @@ def run_single_experiment(exp_def: dict, batch_dir: str, strategy: str = "v231")
         memory.add_iteration(
             iteration_num=iteration, hypothesis=current_hypothesis,
             constraints=constraints, matchmaker_result=matchmaker_results,
-            feedback_type="3-Beam Diagnostic", feedback_content=current_feedback,
+            feedback_type="4-Beam Diagnostic", feedback_content=current_feedback,
             sensitivity_summary=sensitivity_summary
         )
 

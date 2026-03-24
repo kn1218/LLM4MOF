@@ -207,7 +207,9 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
 
 ---
 
-**Step 3: Extract Pore Geometry Constraints**
+**Step 3: Extract Pore Geometry Predictions (Second-Stage Gate)**
+
+> **NOTE:** Geometry values extracted here are PREDICTIONS about what geometry the proposed chemistry should produce. They are used as a second-stage evaluation gate (applied after chemistry-based candidate selection), NOT as a primary search filter. The primary search is always chemistry-first.
 
 > **IMPORTANT WARNING for Band Gap / Electronic Mode:** 
 > When Agent 1's goal is **Electronic Band Gap** tuning rather than H2 Uptake, geometric descriptors (Di, Df, SA, etc) are often irrelevant unless explicitly called out. 

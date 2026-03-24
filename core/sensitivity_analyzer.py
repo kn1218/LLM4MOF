@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import MASTER_DB_PATH
 from core.name_resolver import get_name_resolver
 import config
-from core.constraint_utils import parse_functional_groups, check_global_requirements, get_approved_vocab, check_linker_branches
+from core.constraint_utils import parse_functional_groups, check_global_requirements, get_approved_vocab, check_linker_branches, check_negative_tags
 
 
 class SensitivityAnalyzer:
@@ -235,20 +235,10 @@ class SensitivityAnalyzer:
             length = item.get('length', 0.0)
             if not (min_len <= length <= max_len): continue
             
-            # --- V3.3: Functional Group Check (Aligned with Matchmaker) ---
-            item_groups = [g.lower() for g in item.get('functional_groups', [])]
-            item_groups_set = set(item_groups)
-            item_name = item.get('readable_name', "").lower()
-            combined_text = item_name + " " + " ".join(item_groups)
-            
-            # A. Check Negatives (The "Bouncer")
-            # If ANY negative tag is present, ban the linker
-            is_banned = False
-            for neg in negative_tags:
-                if neg in combined_text:
-                    is_banned = True
-                    break
-            if is_banned: continue
+            # --- V3.4: Functional Group Check (Uses shared constraint_utils) ---
+            # A. Check Negatives (The "Bouncer") — exact set matching, not substring
+            if not check_negative_tags(item, negative_tags):
+                continue
 
             # Branch matching (consistent with matchmaker)
             if linker_branches:

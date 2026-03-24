@@ -25,9 +25,9 @@ When formulating your hypothesis, you may reason about any of the following desc
     * `dif` (Free-sphere-path diameter, A -- transport pathway proxy)
     * `cv` (Unit cell volume, A3)
     * *Electronic Mechanisms:* If the target is `bandgap`, geometric descriptors (like `vf` or `sa`) are often secondary. Emphasize ligand choice (conjugation, electron-withdrawing/donating groups) and metal node identity instead. The following electronic descriptors are available for **QMOF database queries only**:
-        * `oxidation_states` *(QMOF-only)* -- Metal oxidation state (e.g., "Fe2+ vs Fe3+"). Determines d-electron count, redox activity, and electronic structure. Specify as a single metal-state pair (e.g., Cu(II)).
-        * `coordination_geometry` *(QMOF-only)* -- Metal coordination geometry: "Octahedral", "Tetrahedral", "Square Planar", or "Linear". Determines crystal field splitting and band structure.
-        * `has_open_metal_sites` *(QMOF-only)* -- Whether the metal node has coordinatively unsaturated sites (true/false). Use the existing `has_open_metal_site` property in your `building_block_properties`. Critical for catalysis and selective gas binding.
+        * `oxidation_states` -- Metal oxidation state (e.g., "Fe2+ vs Fe3+"). Determines d-electron count, redox activity, and electronic structure. Specify as a single metal-state pair (e.g., Cu(II)).
+        * `coordination_geometry` -- Metal coordination geometry: "Octahedral", "Tetrahedral", "Square Planar", or "Linear". Determines crystal field splitting and band structure.
+        * `has_open_metal_sites` -- Whether the metal node has coordinatively unsaturated sites (true/false). Use the existing `has_open_metal_site` property in your `building_block_properties`. Critical for catalysis and selective gas binding.
 
 * **Components (The Cause - Your Final Choice):**
     * `node_metal` (e.g., Symbol_A, Symbol_B)
@@ -95,7 +95,7 @@ The `database_constraints` block must include only the supported fields defined 
       "reasoning": "Rich text: Why did you choose this hypothesis structure? Describe your reasoning. State whether you are in an 'Exploitation Phase' (refining a rising peak) or an 'Exploration Phase'",
       "hypothesis_to_test": "State the specific mechanism you are testing in this iteration. What is the causal claim? (e.g., 'Micropore confinement at Df 7-10 A drives H2 uptake more than metal identity')",
       "prediction": "What performance range do you expect and why? What outcome would CONFIRM your hypothesis? What outcome would FALSIFY it?",
-      "beam_analysis": "If feedback is available: Compare Beam 1 vs Beam 2 vs Beam 3 performance. Which beam was best? What does that tell you about whether geometry or chemistry is your current bottleneck? What patterns (metal frequencies, backbone frequencies) appear in the top performers?"
+      "beam_analysis": "If feedback is available: Compare all 4 beams as labeled in the feedback. Each beam isolates a different variable (e.g., metals, linkers, geometry, or global baseline). Which beam performed best? What does that tell you about which component of your hypothesis is the main performance driver? What patterns (metal frequencies, backbone frequencies) appear in the top performers?"
   },
   "target_application": "[Restate User Goal]",
   "hypothesis_mechanism": "[Rich Text: Start with the PERFORMANCE goal. Explain how that dictates the target GEOMETRY and COMPONENTS.(how it does not dictate the geometry or components)]",
@@ -104,7 +104,7 @@ The `database_constraints` block must include only the supported fields defined 
   "linker_composition": "[Rich text: Organic Backbone + Functional Groups + Length + Ligand]",
   "novelty_justification": "[Rich text: Why this specific combination is a valid hypothesis for this application.]",
   "lesson_learnt": {
-      "beam_comparison": "Compare Beam 1 (your hypothesis) vs Beam 2 (your chemistry, random geometry) vs Beam 3 (any chemistry, your geometry). Which performed best? What does this tell you about whether to adjust geometry, chemistry, or both?",
+      "beam_comparison": "Compare all 4 beams as labeled. Each successive beam relaxes one constraint — identify which relaxation causes the biggest performance change. That is your current bottleneck. Which beam performed best? What should you adjust?",
       "constraint_diagnosis": "How many candidates matched your full hypothesis? If few or zero, which specific constraint was most restrictive? What would you relax first?",
       "pattern_extraction": "From the Pattern Summary in the feedback: which metals, backbones, and features appear most frequently among top performers? Are there chemistry families you have NOT tried that appear promising?",
       "strategy_change": "Based on the above analysis, what specific change will you make in the next iteration and why? State it as a testable prediction."
