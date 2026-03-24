@@ -1,6 +1,8 @@
-# LLM2POR: Autonomous MOF Designer v3
+# LLM2POR: Autonomous MOF Designer v3 (v2.4)
 
 An autonomous agent system that designs Metal-Organic Frameworks (MOFs) through iterative hypothesis generation, constraint extraction, and database-driven feedback. The system uses LLMs (GPT / Gemini) to propose MOF designs and evaluates them against real computational databases (QMOF, hMOF, PORMAKE).
+
+**v2.4 highlights:** Database-aware 4-beam feedback diagnostics, agent blinding (Agent 1 cannot infer which database is active), QMOF "Any" metal bug fix, SA negative-tag consistency fix. See [Section 5](#5-v24-chemistry-first-feedback-4-beam-diagnostics-and-agent-blinding) for details.
 
 ## How It Works
 
@@ -123,13 +125,15 @@ After each iteration, choose a feedback strategy:
 
 | # | Type | Description |
 |---|------|-------------|
-| 1 | 3-Beam Diagnostic | Tests complete hypothesis against controls (default) |
+| 1 | 4-Beam Diagnostic | Database-aware: chemistry+geometry gate (PORMake/hMOF) or metal-vs-linker electronic (QMOF). **Default.** |
 | 2 | Universe Baseline | Samples across all DB; useful when 0 candidates found |
 | 3 | Geometric Optimizer | Tests random vs constrained geometry |
 | 4 | Chemical Pivot | Tests random metals vs your geometry |
 | 5 | Best vs Worst | Stratified sampling to find patterns |
 | 6 | Hypothesis Validation | Tests only the complete hypothesis block |
 | 7 | Virtual Synthesis | Lab synthesis simulation |
+
+Agent 1 feedback is **blinded** — anonymous MOF labels, no database names, generic beam headers. Agent 1 cannot infer which database is active.
 
 Type `quit` at any feedback prompt to end the experiment.
 
