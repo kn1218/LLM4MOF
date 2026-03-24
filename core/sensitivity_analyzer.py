@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import MASTER_DB_PATH
 from core.name_resolver import get_name_resolver
 import config
-from core.constraint_utils import parse_functional_groups, check_global_requirements, get_approved_vocab
+from core.constraint_utils import parse_functional_groups, check_global_requirements, get_approved_vocab, check_linker_branches
 
 
 class SensitivityAnalyzer:
@@ -158,8 +158,10 @@ class SensitivityAnalyzer:
         
         # Connectivity Prep
         target_cns = set()
-        if isinstance(cn_input, list):
-            target_cns = set(int(c) for c in cn_input)
+        if cn_input is None:
+            target_cns = set()  # No connectivity filter
+        elif isinstance(cn_input, list):
+            target_cns = set(int(c) for c in cn_input if c is not None)
         else:
             target_cns = {int(cn_input)}
             
@@ -169,10 +171,11 @@ class SensitivityAnalyzer:
         for item in self.bb_data:
             if item['Type'] != 'Node': continue
             
-            # Connectivity Check (Any overlap)
-            item_cn = item.get('connectivity', 0)
-            item_cns_set = set(item_cn) if isinstance(item_cn, list) else {item_cn}
-            if not target_cns.intersection(item_cns_set): continue
+            # Connectivity Check (Any overlap; skip if no constraint)
+            if target_cns:
+                item_cn = item.get('connectivity', 0)
+                item_cns_set = set(item_cn) if isinstance(item_cn, list) else {item_cn}
+                if not target_cns.intersection(item_cns_set): continue
 
             # Metal Check
             if not is_any_metal:
@@ -196,9 +199,13 @@ class SensitivityAnalyzer:
         """Get valid linker IDs based on query (V3 Semantic)."""
         
         cn_raw = query.get('connectivity', 2)
+        if cn_raw is None:
+            cn_raw = 2  # Default to ditopic if not specified
         # Handle case where connectivity is a list (multi-CN query)
         if isinstance(cn_raw, list):
-            cn_values = [int(c) for c in cn_raw]
+            cn_values = [int(c) for c in cn_raw if c is not None]
+            if not cn_values:
+                cn_values = [2]
         else:
             cn_values = [int(cn_raw)]
         valid_ids = set()
@@ -219,6 +226,7 @@ class SensitivityAnalyzer:
             'global_requirements': {'exclude_tags': exclude_tags or []}
         }
         _, _, negative_tags = parse_functional_groups(temp_specs, self.approved_vocab)
+        linker_branches = query.get('linker_branches', [])
 
         for item in self.bb_data:
             if item['Type'] != 'Edge': continue
@@ -241,6 +249,11 @@ class SensitivityAnalyzer:
                     is_banned = True
                     break
             if is_banned: continue
+
+            # Branch matching (consistent with matchmaker)
+            if linker_branches:
+                if not check_linker_branches(item, linker_branches):
+                    continue
             
             # Note: Positive tag checks are deferred to Union Logic.
             

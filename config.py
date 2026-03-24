@@ -71,7 +71,12 @@ HMOF_INDEX_PATH = os.path.join(DATA_DIR, "hMOF", "hmof_index.json")
 # Prompt files
 PROMPTS_DIR = os.path.join(BASE_DIR, "prompts")
 AGENT0_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent0_v3.md")  # Problem Consultant
-AGENT1_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent1_v2.2.9.md")
+# Agent 1 prompt: database-type variants (auto-selected via get_agent1_prompt_path())
+_AGENT1_PROMPT_PORMAKE = os.path.join(PROMPTS_DIR, "agent1_v2.3.0.md")
+_AGENT1_PROMPT_QMOF = os.path.join(PROMPTS_DIR, "agent1_v2.3.0_qmof.md")
+_AGENT1_PROMPT_HMOF = os.path.join(PROMPTS_DIR, "agent1_v2.3.0_hmof.md")
+_AGENT1_PROMPT_REFLEXION = os.path.join(PROMPTS_DIR, "agent1_v2.3.1_reflexion_only.md")
+AGENT1_PROMPT_PATH = _AGENT1_PROMPT_REFLEXION  # Ablation test: structured reflection only, no rules
 AGENT2_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent2_v4.0.md")
 
 # Output directory
@@ -147,6 +152,38 @@ def is_qmof_mode() -> bool:
 def is_hmof_mode() -> bool:
     """Check if the system is running in hMOF (gas adsorption) mode."""
     return ACTIVE_METRIC_COLUMN in _HMOF_METRICS
+
+
+def get_agent1_prompt_path() -> str:
+    """Return the Agent 1 prompt path for the current database mode.
+
+    Returns AGENT1_PROMPT_PATH, which can be overridden at runtime by
+    set_agent1_strategy() for the comparison study batch runner.
+    Default is the reflexion-only prompt (ablation test baseline).
+    """
+    return AGENT1_PROMPT_PATH
+
+
+def set_agent1_strategy(strategy_name: str, db_mode: str = None):
+    """Set the Agent 1 prompt based on strategy name.
+
+    Used by the comparison study batch runner to switch between
+    prompt versions without editing config.py.
+    """
+    global AGENT1_PROMPT_PATH
+    from strategies import get_prompt_for_strategy
+
+    if db_mode is None:
+        if is_hmof_mode():
+            db_mode = "hmof"
+        elif is_qmof_mode():
+            db_mode = "qmof"
+        else:
+            db_mode = "pormake"
+
+    prompt_path = get_prompt_for_strategy(strategy_name, db_mode)
+    if prompt_path is not None:
+        AGENT1_PROMPT_PATH = prompt_path
 
 
 # hMOF column mapping: hmof_index property names → sensitivity analyzer column names
