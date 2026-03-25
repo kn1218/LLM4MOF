@@ -16,7 +16,10 @@ import os
 _DOTENV_LOADED = False
 try:
     from dotenv import load_dotenv
-    _DOTENV_LOADED = load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+
+    _DOTENV_LOADED = load_dotenv(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    )
 except ImportError:
     pass  # python-dotenv not installed; rely on system environment variables
 
@@ -45,7 +48,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Data files
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
-MASTER_DB_PATH = os.path.join(DATA_DIR, "total_characteristics&name_singleonly_20251203.csv")
+MASTER_DB_PATH = os.path.join(
+    DATA_DIR, "total_characteristics&name_singleonly_20251203.csv"
+)
 
 # Building Block and Topology Databases
 BB_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_bb_dictionary_v5.json")
@@ -63,7 +68,17 @@ QMOF_CSV_PATH = os.path.join(DATA_DIR, "qmof.csv")
 QMOF_TOPOLOGY_IDS_PATH = os.path.join(DATA_DIR, "qmof_ids_with_topology.txt")
 QMOF_INDEX_PATH = os.path.join(DATA_DIR, "qmof_index_v2.json")
 QMOF_JSONS_V3_DIR = os.path.join(DATA_DIR, "qmof_global_jsons_v3")
-QMOF_BB_FILTERED_PATH = os.path.join(BASE_DIR, "..", "..", "..", "pormake_src", "dictionary_expansion", "qmofbandgap", "Processed data", "qmof-bb-filtered.json")
+QMOF_BB_FILTERED_PATH = os.path.join(
+    BASE_DIR,
+    "..",
+    "..",
+    "..",
+    "pormake_src",
+    "dictionary_expansion",
+    "qmofbandgap",
+    "Processed data",
+    "qmof-bb-filtered.json",
+)
 
 # hMOF Database for Gas Adsorption (H2, CH4, CO2, Xe/Kr)
 HMOF_INDEX_PATH = os.path.join(DATA_DIR, "hMOF", "hmof_index.json")
@@ -79,29 +94,53 @@ EXPERIMENTS_DIR = os.path.join(BASE_DIR, "experiments")
 
 # =============================================================================
 # CAPABILITY MANIFEST (v3) - Describes what the system can evaluate
-# It is actively imported and utilized in 
+# It is actively imported and utilized in
 # core/agent0_handler.py
 # to inform Agent 0 (the Problem Consultant) about the system's current limitations and capabilities.
 # =============================================================================
 CAPABILITY_MANIFEST = {
     "available_datasets": ["pormake_h2", "qmof", "hmof"],
     "available_properties": [
-        "H2_uptake_77K_volumetric", "bandgap",
-        "h2_uptake_2bar_77K", "h2_uptake_100bar_77K",
-        "ch4_uptake_35bar_298K", "co2_uptake_2_5bar_298K",
-        "xe_loading_1bar_273K", "kr_loading_1bar_273K",
-        "xekr_selectivity_1bar"
+        "H2_uptake_77K_volumetric",
+        "bandgap",
+        "h2_uptake_2bar_77K",
+        "h2_uptake_100bar_77K",
+        "ch4_uptake_35bar_298K",
+        "co2_uptake_2_5bar_298K",
+        "xe_loading_1bar_273K",
+        "kr_loading_1bar_273K",
+        "xekr_selectivity_1bar",
     ],
-    "available_geometry_fields": ["di", "df", "sa", "cv", "density", "vf", "dif",
-                                   "surface_area_m2g", "void_fraction", "pld", "lcd"],
-    "supported_domains": ["storage", "separation", "dac", "catalysis", "sensing",
-                          "electronic", "bandgap", "gas_adsorption", "xe_kr_selectivity"],
+    "available_geometry_fields": [
+        "di",
+        "df",
+        "sa",
+        "cv",
+        "density",
+        "vf",
+        "dif",
+        "surface_area_m2g",
+        "void_fraction",
+        "pld",
+        "lcd",
+    ],
+    "supported_domains": [
+        "storage",
+        "separation",
+        "dac",
+        "catalysis",
+        "sensing",
+        "electronic",
+        "bandgap",
+        "gas_adsorption",
+        "xe_kr_selectivity",
+    ],
     "execution_mode": "markscheme-driven",
     "notes": (
         "Supports H2 storage at 77K using PORMAKE database, "
         "electronic band gap prediction using QMOF database, "
         "and multi-gas adsorption (H2, CH4, CO2, Xe/Kr) using hMOF database (51K hypothetical MOFs)."
-    )
+    ),
 }
 
 # =============================================================================
@@ -112,7 +151,7 @@ CAPABILITY_MANIFEST = {
 # Maps application-friendly names to database column names
 METRIC_REGISTRY = {
     # PORMAKE H2 mode (building-block assembly)
-    "h2_storage": "target",                         # Pre-mapped to 'target' in master CSV
+    "h2_storage": "target",  # Pre-mapped to 'target' in master CSV
     "surface_area": "Rubre_Surface_Area",
     "void_fraction": "Void_Fraction",
     # QMOF mode (direct MOF filtering for bandgap)
@@ -129,9 +168,13 @@ METRIC_REGISTRY = {
 
 # Metrics that belong to hMOF mode
 _HMOF_METRICS = {
-    "h2_uptake_100bar_77K", "h2_uptake_2bar_77K",
-    "ch4_uptake_35bar_298K", "co2_uptake_2_5bar_298K",
-    "xekr_selectivity_1bar", "xe_loading_1bar_273K", "kr_loading_1bar_273K",
+    "h2_uptake_100bar_77K",
+    "h2_uptake_2bar_77K",
+    "ch4_uptake_35bar_298K",
+    "co2_uptake_2_5bar_298K",
+    "xekr_selectivity_1bar",
+    "xe_loading_1bar_273K",
+    "kr_loading_1bar_273K",
 }
 
 # The currently active metric for optimization
@@ -151,11 +194,11 @@ def is_hmof_mode() -> bool:
 
 # hMOF column mapping: hmof_index property names → sensitivity analyzer column names
 HMOF_COLUMN_MAP = {
-    "lcd": "di",              # largest cavity diameter
-    "pld": "df",              # pore limiting diameter
-    "surface_area_m2g": "sa", # surface area (m2/g)
-    "void_fraction": "vf",    # void fraction
-    "density": "density",     # crystal density (g/cm3)
+    "lcd": "di",  # largest cavity diameter
+    "pld": "df",  # pore limiting diameter
+    "surface_area_m2g": "sa",  # surface area (m2/g)
+    "void_fraction": "vf",  # void fraction
+    "density": "density",  # crystal density (g/cm3)
 }
 
 
@@ -163,7 +206,9 @@ def validate_api_keys():
     """Validate that the required API key is present for the active provider."""
     dotenv_hint = ""
     if not _DOTENV_LOADED:
-        dotenv_hint = " (python-dotenv may not be installed — run: pip install python-dotenv)"
+        dotenv_hint = (
+            " (python-dotenv may not be installed — run: pip install python-dotenv)"
+        )
 
     if LLM_PROVIDER == "openai" and not OPENAI_API_KEY:
         raise ValueError(
@@ -193,7 +238,7 @@ STOCHASTIC_SAMPLING = True
 
 # Agent 0 interview settings
 AGENT0_MAX_TURNS = 10
-AGENT0_SKIP_COMMANDS = ['proceed', 'skip', 'done', 'go']
+AGENT0_SKIP_COMMANDS = ["proceed", "skip", "done", "go"]
 
 # =============================================================================
 # LLM CLIENT SETTINGS
@@ -206,6 +251,42 @@ LLM_MAX_OUTPUT_TOKENS = 32000
 # Retry and timeout settings for Gemini REST API
 LLM_MAX_RETRIES = 2
 LLM_REQUEST_TIMEOUT = 120  # seconds
+
+# =============================================================================
+# MOF2ZEO CONFIGURATION (Agent 3 - Geometry Prediction)
+# =============================================================================
+
+# mof2zeo model path: Predicts geometry from topology+node+edge combination
+# This model is used by Agent 3 when no database is available for matching
+# Model trained to predict: Di, Df, SA, VF, density, CV, Dif from MOF components
+MOF2ZEO_DIR = os.path.join(BASE_DIR, "core", "mof2zeo")
+
+# Checkpoint file for trained mof2zeo model
+MOF2ZEO_CKPT_PATH = os.path.join(MOF2ZEO_DIR, "ckpt", "epoch=478-step=213634.ckpt")
+
+# Scaler files for inverse transform (mean/std from training data)
+MOF2ZEO_SCALER_MEAN_PATH = os.path.join(MOF2ZEO_DIR, "scaler", "mean_all.csv")
+MOF2ZEO_SCALER_STD_PATH = os.path.join(MOF2ZEO_DIR, "scaler", "std_all.csv")
+
+# Dictionary files (topology, node, edge class mappings)
+MOF2ZEO_TOPOLOGY_FILE = os.path.join(MOF2ZEO_DIR, "data", "topology.txt")
+MOF2ZEO_NODE_FILE = os.path.join(MOF2ZEO_DIR, "data", "node.txt")
+MOF2ZEO_EDGE_FILE = os.path.join(MOF2ZEO_DIR, "data", "edge.txt")
+MOF2ZEO_FEATURE_FILE = os.path.join(MOF2ZEO_DIR, "data", "feature_name.txt")
+
+# Model hyperparameters (from config.yaml)
+MOF2ZEO_LATENT_DIM = 128
+MOF2ZEO_HID_DIM1 = 64
+MOF2ZEO_HID_DIM2 = 32
+MOF2ZEO_DESC_DIM = 7  # Number of output features: sa, cv, density, vf, di, df, dif
+
+
+def is_mof2zeo_available() -> bool:
+    """Check if mof2zeo model and required files are available."""
+    return os.path.exists(MOF2ZEO_CKPT_PATH) and os.path.exists(
+        MOF2ZEO_SCALER_MEAN_PATH
+    )
+
 
 # =============================================================================
 # DISPLAY SETTINGS
@@ -221,37 +302,51 @@ BANDGAP_CATEGORIES = {
     "Vis Red/Yel (1.6-2.2eV)": (1.6, 2.2),
     "Vis Blue/Vio (2.2-3.1eV)": (2.2, 3.1),
     "UV Active (3.1-4.0eV)": (3.1, 4.0),
-    "Insulator (>=4.0eV)": (4.0, float('inf'))
+    "Insulator (>=4.0eV)": (4.0, float("inf")),
 }
+
 
 # Dynamic Sensitivity Columns
 def get_sensitivity_columns() -> list:
     """Returns report columns based on the active metric."""
     m = ACTIVE_METRIC_COLUMN
-    
+
     # QMOF Contextual Override
     if m == METRIC_REGISTRY.get("bandgap", "outputs.pbe.bandgap"):
         return [
-            "Filter", "Count", "% Removed",
-            "Metallic (<0.1eV)", "Narrow/IR (0.1-1.6eV)", 
-            "Vis Red/Yel (1.6-2.2eV)", "Vis Blue/Vio (2.2-3.1eV)", 
-            "UV Active (3.1-4.0eV)", "Insulator (>=4.0eV)",
-            "Median Bandgap", "Q1 Bandgap", "Q3 Bandgap",
-            "Min Bandgap", "Max Bandgap",
-            "P-Value"
+            "Filter",
+            "Count",
+            "% Removed",
+            "Metallic (<0.1eV)",
+            "Narrow/IR (0.1-1.6eV)",
+            "Vis Red/Yel (1.6-2.2eV)",
+            "Vis Blue/Vio (2.2-3.1eV)",
+            "UV Active (3.1-4.0eV)",
+            "Insulator (>=4.0eV)",
+            "Median Bandgap",
+            "Q1 Bandgap",
+            "Q3 Bandgap",
+            "Min Bandgap",
+            "Max Bandgap",
+            "P-Value",
         ]
-        
+
     # Standard H2 Mode
-    label = "Performance" 
+    label = "Performance"
     for key, val in METRIC_REGISTRY.items():
         if val == m:
             label = key.replace("_", " ").title()
             break
-            
-    return [
-        "Filter", "Count", "% Removed", 
-        f"Avg Top 5 ({label})", f"Avg Worse 5 ({label})", 
-        f"Best {label}", f"Median {label}", 
-        "EF @ 1%", "EF @ 5%", "P-Value"
-    ]
 
+    return [
+        "Filter",
+        "Count",
+        "% Removed",
+        f"Avg Top 5 ({label})",
+        f"Avg Worse 5 ({label})",
+        f"Best {label}",
+        f"Median {label}",
+        "EF @ 1%",
+        "EF @ 5%",
+        "P-Value",
+    ]

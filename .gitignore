@@ -67,3 +67,6 @@ scriptsmigration/
 reports/
 implementation_plan/
 logs/
+
+# --- Test ---
+test*
