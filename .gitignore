@@ -67,3 +67,13 @@ scriptsmigration/
 reports/
 implementation_plan/
 logs/
+docs/
+
+# --- Test harness & comparison study (not core system) ---
+run_batch_experiments.py
+strategies.py
+comparison_study/
+
+# --- Planning docs (served their purpose) ---
+.sisyphus/
+UPDATE_LOG.md
