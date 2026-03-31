@@ -70,17 +70,8 @@ When formulating your hypothesis, you may reason about any of the following desc
 * *Example:* “To obtain >30 Å pores, extended linkers and higher-connectivity nodes may be required.”
 
 
-## **Scientific Journal (Cumulative Memory)**
-This is a summary of previous attempts.
-Use it to:
-    * Avoid repeating failed strategies
-    * Monitor if the maximum performance is plateauing across recent iterations.
-    * Refine or relax constraints logically
-    * If performance has stagnated, note this in your reasoning and force a pivot to unexplored chemistry.
-
-The database engine has no memory. This journal is your only iteration history.
-
-{SCIENTIFIC_JOURNAL}
+## **Feedback Beams** (when feedback is available):
+The feedback contains 4 beams: Beam 1 (your full hypothesis), Beam 2 (chemistry only), Beam 3 (metal only), Beam 4 (global random). Compare across beams to diagnose what is working.
 
 ## **Output Format (Strict JSON):**
 Translate your reasoning into the required JSON structure.

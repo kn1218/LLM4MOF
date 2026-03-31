@@ -49,12 +49,12 @@ Use `linker_branches` to test MULTIPLE chemistry families simultaneously within 
 - This gives you more data per iteration (like running parallel experiments)
 - Example: `[Thiophene, Pyridine, Naphthalene, Benzene]` as separate branches -- one iteration tests four backbone conjugation profiles simultaneously
 
-### Rule E: Read Beam Comparisons, Not Just Beam 1
-- **Beam 1 vs Beam 2:** If Beam 1 >> Beam 2, your geometry constraints are adding value. If Beam 1 ~ Beam 2, geometry is irrelevant -- loosen or remove geometric constraints entirely.
-- **Beam 1 vs Beam 3:** If Beam 3 >> Beam 1, your chemistry is the bottleneck. The search space contains better-performing MOFs that your chemistry selection misses. Study what Beam 3's chemistry has that yours doesn't.
-- **Beam 2 vs Beam 3:** If Beam 3 >> Beam 2, BOTH your chemistry and geometry need work.
+### Rule E: Read All 4 Beam Comparisons
+- **Beam 1 vs Beam 2:** If Beam 1 >> Beam 2, your geometry prediction is adding value. If Beam 1 ~ Beam 2, geometry gate is irrelevant -- loosen or remove it.
+- **Beam 2 vs Beam 3:** If Beam 2 >> Beam 3, your linker/functional group selection adds value beyond metal choice. If Beam 3 ~ Beam 2, the metal is doing the work -- focus on metal optimization.
+- **Beam 2 vs Beam 4:** If Beam 2 >> Beam 4, your chemistry is better than random. If Beam 2 ~ Beam 4, your chemistry hypothesis needs fundamental rethinking.
 
-**Electronic property note:** For electronic properties like bandgap, expect Beam 1 to be approximately equal to Beam 2 (geometry rarely affects electronic structure). This is normal and does not mean your search is failing. The primary diagnostic is **Beam 1 vs Beam 3**: if Beam 3 >> Beam 1, your chemistry selection is the bottleneck. Focus your adjustments on metal identity, oxidation states, linker conjugation, and functional groups -- not on pore geometry.
+**QMOF electronic note:** For bandgap targeting, Beam 1 ~ Beam 2 is expected (no geometry gate for QMOF). This is normal. Focus on Beam 2 vs 3 (does your linker/FG choice add electronic value beyond the metal?) and Beam 2 vs 4 (is your full chemistry better than random?). Adjust metal identity, oxidation states, linker conjugation, and functional groups -- not pore geometry.
 
 ### Rule F: Avoid Over-Constraining
 The database is finite. Every additional constraint removes candidates. Apply the minimum constraints necessary to test your hypothesis:
@@ -130,20 +130,6 @@ When formulating your hypothesis, you may reason about any of the following desc
 * Which **Components** can plausibly generate the required geometry?
 * *Example:* "To obtain >30 A pores, extended linkers and higher-connectivity nodes may be required."
 
-
-## **Scientific Journal (Cumulative Memory)**
-This is a summary of previous attempts.
-Use it to:
-    * Avoid repeating failed strategies
-    * Monitor if the maximum performance is plateauing across recent iterations.
-    * Refine or relax constraints logically
-    * If performance has stagnated, note this in your reasoning and force a pivot to unexplored chemistry.
-    * **Extract patterns from Beam 3 feedback** -- which metals, oxidation states, and backbones consistently appear among top performers? For electronic properties, chemistry distributions are the most informative signal.
-    * **Compare Beams** -- use Beam 1 vs 2 vs 3 comparisons to diagnose whether geometry or chemistry is the current bottleneck. For electronic properties, expect Beam 1 ~ Beam 2; focus on the Beam 1 vs Beam 3 gap.
-
-The database engine has no memory. This journal is your only iteration history.
-
-{SCIENTIFIC_JOURNAL}
 
 ## **Output Format (Strict JSON):**
 Translate your reasoning into the required JSON structure.

@@ -46,6 +46,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
 MASTER_DB_PATH = os.path.join(DATA_DIR, "total_characteristics&name_singleonly_20251203.csv")
+PORMAKE_5BAR_CSV_PATH = os.path.join(DATA_DIR, "total_characteristics_h2_5bar_77K.csv")
 
 # Building Block and Topology Databases
 BB_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_bb_dictionary_v5.json")
@@ -117,7 +118,8 @@ CAPABILITY_MANIFEST = {
 # Maps application-friendly names to database column names
 METRIC_REGISTRY = {
     # PORMAKE H2 mode (building-block assembly)
-    "h2_storage": "target",                         # Pre-mapped to 'target' in master CSV
+    "h2_storage": "target",                         # Pre-mapped to 'target' in master CSV (100bar 77K)
+    "h2_storage_5bar": "target",                    # 5bar 77K variant (uses PORMAKE_5BAR_CSV_PATH)
     "surface_area": "Rubre_Surface_Area",
     "void_fraction": "Void_Fraction",
     # QMOF mode (direct MOF filtering for bandgap)
@@ -152,6 +154,22 @@ def is_qmof_mode() -> bool:
 def is_hmof_mode() -> bool:
     """Check if the system is running in hMOF (gas adsorption) mode."""
     return ACTIVE_METRIC_COLUMN in _HMOF_METRICS
+
+
+# Track which PorMake markscheme variant is active (set by run_experiment.py)
+_PORMAKE_5BAR_ACTIVE = False
+
+
+def is_pormake_5bar_mode() -> bool:
+    """Check if the system is using the 5bar 77K H2 markscheme."""
+    return _PORMAKE_5BAR_ACTIVE
+
+
+def get_master_db_path() -> str:
+    """Return the active PorMake markscheme CSV path."""
+    if _PORMAKE_5BAR_ACTIVE:
+        return PORMAKE_5BAR_CSV_PATH
+    return MASTER_DB_PATH
 
 
 def get_agent1_prompt_path() -> str:
@@ -222,7 +240,7 @@ def validate_api_keys():
 DEFAULT_INQUIRY = "Design a MOF for high capacity Hydrogen storage at 77K"
 
 # Feedback sample sizes (as per pilot notebook)
-FEEDBACK_SAMPLE_SIZE = 10  # For 3-Beam Diagnostic
+FEEDBACK_SAMPLE_SIZE = 8  # Budget-matched: 8 samples x 4 beams x 10 iters = 320 ~ BO@300
 FEEDBACK_SAMPLE_SIZE_LARGE = 30  # For Blind Random, Best vs Worst
 
 # Sampling mode: stochastic (different samples each iteration)

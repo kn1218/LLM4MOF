@@ -606,12 +606,9 @@ class FeedbackGenerator:
         
         content = ""
         if feedback_type == 1:
-            if is_qmof:
-                # QMOF: Metal vs Linker electronic diagnostic (no geometry gate)
-                content = self._generate_qmof_four_beam(set_z, set_f, set_g, set_total, metric_name)
-            else:
-                # PORMake/hMOF: Chemistry-first with geometry gate
-                content = self._generate_four_beam(set_z, set_a, set_f, set_total, metric_name)
+            # Unified 4-beam diagnostic for ALL databases (chemistry-first)
+            # For QMOF: Beam 1 ~ Beam 2 (no geometry gate), which correctly signals "geometry irrelevant"
+            content = self._generate_four_beam(set_z, set_a, set_f, set_total, metric_name)
         elif feedback_type == 2:
             content = self._generate_universe_baseline(set_total, metric_name)
         elif feedback_type == 3:

@@ -111,7 +111,8 @@ class SensitivityAnalyzer:
                         ascending=False, method='min', na_option='bottom'
                     ).astype(int)
             else:
-                self.df_master = pd.read_csv(MASTER_DB_PATH, encoding='utf-8')
+                active_db_path = config.get_master_db_path()
+                self.df_master = pd.read_csv(active_db_path, encoding='utf-8')
                 # Clean Master DB: Ensure filenames are strings and valid
                 self.df_master = self.df_master[
                     self.df_master['filename'].apply(
@@ -385,12 +386,20 @@ class SensitivityAnalyzer:
             n_ids = len(matchmaker_results.get('qmof_ids', []))
             return {
                 'total_combinations': n_ids,
-                'n_nodes': n_ids, 'n_linkers': 0, 'n_topologies': 0, # just display n_ids for nodes placeholder
+                'n_nodes': n_ids, 'n_linkers': 0, 'n_topologies': 0,
                 'breakdown': [{'combinations': n_ids, 'connectivity': 'QMOF', 'nodes': n_ids, 'linkers': 0, 'topologies': 0}]
+            }
+
+        if getattr(self, 'is_hmof', False):
+            n_ids = len(matchmaker_results.get('hmof_ids', []))
+            return {
+                'total_combinations': n_ids,
+                'n_nodes': n_ids, 'n_linkers': 0, 'n_topologies': 0,
+                'breakdown': [{'combinations': n_ids, 'connectivity': 'hMOF', 'nodes': n_ids, 'linkers': 0, 'topologies': 0}]
             }
             
         # Get requested connectivities from Agent 2
-        raw_cn = agent2_output['node_query'].get('connectivity', [])
+        raw_cn = agent2_output['node_query'].get('connectivity') or []
         if isinstance(raw_cn, int):
             requested_cns = [raw_cn]
         else:
