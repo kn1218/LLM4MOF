@@ -2,7 +2,7 @@
 
 An autonomous agent system that designs Metal-Organic Frameworks (MOFs) through iterative hypothesis generation, constraint extraction, and database-driven feedback. The system uses LLMs (GPT / Gemini) to propose MOF designs and evaluates them against real computational databases (QMOF, hMOF, PORMAKE).
 
-**v2.4 highlights:** Database-aware 4-beam feedback diagnostics, agent blinding (Agent 1 cannot infer which database is active), QMOF "Any" metal bug fix, SA negative-tag consistency fix. See [Section 5](#5-v24-chemistry-first-feedback-4-beam-diagnostics-and-agent-blinding) for details.
+**v2.5 highlights:** hMOF metal constraint (Cu/V/Zn/Zr) in user queries, Scientific Journal removed (redundant with multi-turn context), unified 4-beam feedback for all databases, hMOF sensitivity crash fix. See [Branch Changes](#branch-changes) for details.
 
 ## How It Works
 
@@ -113,11 +113,14 @@ You will be prompted to choose:
 | 4 | Band Gap | Band gap for UV activity | QMOF |
 | 5 | Band Gap | Band gap below 0.1 eV | QMOF |
 | 6 | Band Gap | Band gap above 4 eV | QMOF |
-| 7 | CH4 Storage | High methane storage at 298K | hMOF |
-| 8 | CO2 Capture | CO2 capture at low pressure | hMOF |
-| 9 | Xe/Kr Selectivity | High Xe/Kr selectivity | hMOF |
-| 10 | H2 Storage | High H2 uptake at 100 bar 77K | hMOF |
-| 11 | Custom | Type your own design inquiry | Auto-detected |
+| 7 | CH4 Storage | High methane storage at 298K. **Metals: Cu/V/Zn/Zr only.** | hMOF |
+| 8 | CO2 Capture | CO2 capture at low pressure. **Metals: Cu/V/Zn/Zr only.** | hMOF |
+| 9 | Xe/Kr Selectivity | High Xe/Kr selectivity. **Metals: Cu/V/Zn/Zr only.** | hMOF |
+| 10 | H2 Storage | High H2 uptake at 100 bar 77K. **Metals: Cu/V/Zn/Zr only.** | hMOF |
+| 11 | H2 Storage | High H2 uptake at 5 bar 77K | PORMAKE (5bar) |
+| 12 | Custom | Type your own design inquiry | Auto-detected |
+
+**hMOF metal constraint:** The hMOF database (Snurr group, 51K hypothetical MOFs) contains only Cu (25.6%), V (7.2%), Zn (62.1%), and Zr (4.7%) metal nodes. All other metals have <0.4% representation. The metal constraint is included in the user query (not the system prompt) so the LLM knows what materials are available without revealing database identity. Experimental validation showed this eliminated zero-match failures (H2_Storage: 80% zero-match rate reduced to 0%) and improved Top-1 performance across all hMOF targets.
 
 ### Feedback Types
 
@@ -125,7 +128,7 @@ After each iteration, choose a feedback strategy:
 
 | # | Type | Description |
 |---|------|-------------|
-| 1 | 4-Beam Diagnostic | Database-aware: chemistry+geometry gate (PORMake/hMOF) or metal-vs-linker electronic (QMOF). **Default.** |
+| 1 | 4-Beam Diagnostic | Unified chemistry-first diagnostic for all databases. Beams: Full Hypothesis (Z), Chemistry Only (A), Metal Only (F), Global Baseline. **Default.** |
 | 2 | Universe Baseline | Samples across all DB; useful when 0 candidates found |
 | 3 | Geometric Optimizer | Tests random vs constrained geometry |
 | 4 | Chemical Pivot | Tests random metals vs your geometry |
@@ -143,25 +146,6 @@ Results are saved to `experiments/exp_YYYYMMDD_HHMM_{mode}/`:
 - `raw_user_input.txt` - Your original inquiry
 - `experiment_log.txt` - Full run log
 - `iteration_N/` - Per-iteration outputs (hypothesis, constraints, sensitivity reports)
-
-## Batch Experiment Runner
-
-Run all 10 experiments non-interactively with a specific prompt strategy:
-
-```bash
-# Run all 10 experiments with the default strategy (v2.3.1)
-python run_batch_experiments.py
-
-# Run with a specific prompt strategy
-python run_batch_experiments.py --strategy v229
-python run_batch_experiments.py --strategy v230
-python run_batch_experiments.py --strategy v231
-
-# Run specific experiments only
-python run_batch_experiments.py --strategy v231 --experiments 1,7,8
-```
-
-Results are saved to `experiments/batch_YYYYMMDD_HHMM_{strategy}/`.
 
 ---
 
@@ -244,11 +228,11 @@ The original prompt. Provides the LLM with:
 
 - **Chain of Thought (3 steps):** Step 1: Identify the mechanism. Step 2: Derive the geometry. Step 3: Select the components.
 
-- **Scientific Journal:** A cumulative summary of previous iterations injected as `{SCIENTIFIC_JOURNAL}`. Guidance is minimal: avoid repeating failures, monitor plateaus, refine constraints.
-
 - **Output Format:** Simple JSON with `meta_cognition.reasoning` (single text field) and `lesson_learnt` (single text field).
 
-**What it does NOT have:** No guidance on how to read the 3-beam feedback structure. No explicit rules for pattern extraction vs. anecdote-chasing. No exploration/exploitation budget management. The LLM relies entirely on its pretraining to decide how to interpret feedback and revise hypotheses.
+- **Memory:** Multi-turn conversation only. The LLM sees its full conversation history (all prior hypotheses and feedback) but receives no additional compressed summary.
+
+**What it does NOT have:** No guidance on how to read the 4-beam feedback structure. No explicit rules for pattern extraction vs. anecdote-chasing. No exploration/exploitation budget management. The LLM relies entirely on its pretraining to decide how to interpret feedback and revise hypotheses.
 
 #### v2.3.0 -- Reasoning Strategy (`prompts/agent1_v2.3.0*.md`)
 
@@ -328,45 +312,16 @@ v2.2.9 (Baseline)          v2.3.1 (Reflexion Only)        v2.3.0 (Full Strategy)
 
 ---
 
-### 3. Strategy Registry and CLI Switching
-
-#### `strategies.py` -- Central Strategy Registry
-
-A registry of all strategies with metadata (prompt path, mode, routing, label, description):
-
-| Strategy | Mode | Routing | Description |
-|----------|------|---------|-------------|
-| `v229` | LLM | Fixed (one prompt for all DBs) | Baseline LLM -- no reasoning rules, no structured reflection |
-| `v230` | LLM | Per-DB (pormake/qmof/hmof variants) | Reasoning Rules A-F + per-database rules G/H |
-| `v231` | LLM | Fixed (universal prompt) | Structured reflection format only, no rules |
-| `random` | Baseline | N/A | Random sampling (no LLM, pending comparison study) |
-| `lhs` | Baseline | N/A | Latin Hypercube Sampling (pending) |
-| `bo` | Baseline | N/A | Bayesian Optimization with GP/RF surrogate (pending) |
-| `ga` | Baseline | N/A | Genetic Algorithm (pending) |
-
-#### `config.py` -- Runtime Strategy Switching
-
-Added `set_agent1_strategy(strategy_name, db_mode)` which resolves the correct prompt file via the strategy registry. This allows the batch runner to switch between prompt versions at runtime without editing source code. The function auto-detects the current database mode (PorMake/QMOF/hMOF) if `db_mode` is not specified.
-
-#### `run_batch_experiments.py` -- CLI Flags
-
-Added `argparse` interface:
-- `--strategy` (v229 | v230 | v231): Select the Agent 1 prompt version
-- `--experiments` (e.g., "1,2,3"): Run specific experiments instead of all 10
-
-Batch output directories now include the strategy name (e.g., `batch_20260323_1812_v229`) and each experiment's `experiment_config.json` records which strategy was used, enabling reproducible head-to-head comparisons.
-
----
-
-### 4. Bug Fixes
+### 3. Bug Fixes
 
 | Fix | File | Detail |
 |-----|------|--------|
 | Null connectivity guard | `core/sensitivity_analyzer.py` | Prevent crash when connectivity data is missing from matched MOFs |
+| hMOF combinatorial space crash | `core/sensitivity_analyzer.py` | Added hMOF early return in `calculate_combinatorial_space()` — was falling through to PorMake's node/edge logic, crashing on `connectivity: None`. Killed CH4@iter6, CO2@iter8, XeKr@iter1 in batch runs. |
+| Null connectivity field | `core/sensitivity_analyzer.py` | `get('connectivity') or []` instead of `get('connectivity', [])` to catch explicit `None` values from Agent 2 |
 | cp949 encoding fix | `core/agent2_handler.py` | Handle Korean Windows encoding in file I/O |
-| Iterations bump | `run_batch_experiments.py` | Increased `MAX_ITERATIONS` from 5 to 10 for statistically meaningful runs |
 
-### 5. v2.4: Chemistry-First Feedback, 4-Beam Diagnostics, and Agent Blinding
+### 4. v2.4: Chemistry-First Feedback, 4-Beam Diagnostics, and Agent Blinding
 
 Major refactor of the feedback pipeline for publication readiness. Three categories of changes:
 
@@ -409,6 +364,26 @@ QMOF gets a different beam design because it has no geometry gate — Beams 1 an
 
 ---
 
+### 5. v2.5: hMOF Metal Constraint, Scientific Journal Removal
+
+**hMOF metal constraint in user queries:**
+The hMOF database only contains Cu/V/Zn/Zr metals (>99.6%). Without disclosing this, the LLM suggests valid but absent metals (Al, Fe, Cr, Ni) producing zero hits. Added "Limit metal nodes to Cu, V, Zn, and Zr only." to all 4 hMOF preset queries. This is constraint specification (what reagents are available), not bias (which to prefer).
+
+Experimental validation (v2.3.1, 10 iterations):
+
+| Experiment | Before: Zero-match rate | After: Zero-match rate | Before: Top-1 | After: Top-1 |
+|---|---|---|---|---|
+| H2_Storage | 80% (crashed iter 6) | **0%** (10/10 complete) | 53.7 | **58.58** |
+| CH4_Storage | 0% | 0% | 174.4 | **261.2** |
+| XeKr_Selectivity | 0% | 0% | 46.0 | **167.1** |
+| CO2_Capture | 0% | 0% | 15.1 | **16.1** |
+
+**Scientific Journal removed:**
+The Scientific Journal was a cumulative text summary injected into the system prompt via `{SCIENTIFIC_JOURNAL}` placeholder each iteration. By iteration 10 it added ~7K tokens of compressed duplicates — information the LLM already had in its multi-turn chat context. Removed from all prompt files and the injection pipeline. The `lesson_learnt` output field is preserved for LLM self-reflection and experiment log analysis.
+
+**Unified 4-beam feedback:**
+Merged the separate QMOF branch in `feedback_generator.py` into the unified chemistry-first 4-beam design. For QMOF, Beam 1 ~ Beam 2 naturally (no geometry gate), which correctly signals "geometry irrelevant" without needing a separate beam layout.
+
 ### 6. Pending Work: LLM vs. Numerical Baselines Comparison
 
 The 3 LLM prompt versions (v2.2.9, v2.3.0, v2.3.1) must still be compared against 4 numerical baseline strategies in a controlled head-to-head study:
@@ -438,9 +413,7 @@ Baseline infrastructure exists locally but is not yet committed pending completi
 ```
 .
 ├── run_experiment.py          # Interactive entry point (single experiment)
-├── run_batch_experiments.py   # Non-interactive batch runner (10 experiments, CLI strategy selection)
-├── strategies.py              # Strategy registry (3 LLM + 4 baseline definitions)
-├── config.py                  # All configuration, data paths, and runtime strategy switching
+├── config.py                  # All configuration, data paths, metric registry
 ├── requirements.txt           # Python dependencies
 ├── .env                       # API keys (not in git)
 ├── core/                      # Runtime modules
@@ -483,7 +456,7 @@ Key settings in `config.py`:
 |---------|---------|-------------|
 | `LLM_MAX_OUTPUT_TOKENS` | 32000 | Max tokens for LLM response |
 | `LLM_REQUEST_TIMEOUT` | 120 | API timeout in seconds |
-| `FEEDBACK_SAMPLE_SIZE` | 10 | Sample size for 3-Beam Diagnostic |
+| `FEEDBACK_SAMPLE_SIZE` | 8 | Sample size per beam (8 x 4 beams x 10 iters = 320 samples) |
 | `STOCHASTIC_SAMPLING` | True | Different samples each iteration |
 | `AGENT0_MAX_TURNS` | 10 | Max interview turns for Agent 0 |
-| `AGENT1_PROMPT_PATH` | `agent1_v2.3.1_reflexion_only.md` | Active Agent 1 prompt (overridable via `set_agent1_strategy()`) |
+| `AGENT1_PROMPT_PATH` | `agent1_v2.3.1_reflexion_only.md` | Active Agent 1 prompt |
