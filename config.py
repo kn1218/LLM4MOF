@@ -54,11 +54,11 @@ MASTER_DB_PATH = os.path.join(
 
 # Building Block and Topology Databases
 BB_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_bb_dictionary_v5.json")
-BB_DICTIONARY_V3_PATH = BB_DICTIONARY_PATH  # Alias for backward compatibility
-BB_DICTIONARY_V4_PATH = BB_DICTIONARY_PATH  # Alias for backward compatibility
-BB_DICTIONARY_V5_PATH = BB_DICTIONARY_PATH  # Current version
+BB_DICTIONARY_V3_PATH = BB_DICTIONARY_PATH
+BB_DICTIONARY_V4_PATH = BB_DICTIONARY_PATH
+BB_DICTIONARY_V5_PATH = BB_DICTIONARY_PATH
 TOPO_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_topo_dictionary_v3.json")
-TOPO_DICTIONARY_V3_PATH = TOPO_DICTIONARY_PATH  # Alias for backward compatibility
+TOPO_DICTIONARY_V3_PATH = TOPO_DICTIONARY_PATH
 
 # Canonical Vocabulary (source of truth for functional group synonyms)
 UNIFIED_ONTOLOGY_PATH = os.path.join(DATA_DIR, "unified_ontology.json")

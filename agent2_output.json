@@ -1,0 +1,85 @@
+{
+  "node_query": {
+    "reasoning": "The hypothesis explicitly targets “6-connected metal nodes” and lists the metal set “Cu, Ni, Co, Mg, Zn”, emphasizing these as OMS-capable after activation. The binding mode is stated as “carboxylate-based frameworks” / “dicarboxylate linkers”, which implies O-donor coordination to the node (PorMake: route donor atom to node.ligand_chemistry). Open metal sites are explicitly required via building_block_properties.has_open_metal_site=true.",
+    "metals_include": [
+      "Cu",
+      "Ni",
+      "Co",
+      "Mg",
+      "Zn"
+    ],
+    "connectivity": [
+      6
+    ],
+    "nuclearity": null,
+    "ligand_chemistry": [
+      "Oxygen"
+    ],
+    "abstract_features": {
+      "has_open_metal_site": true
+    },
+    "oxidation_state": {
+      "Cu": 2,
+      "Ni": 2,
+      "Co": 2,
+      "Mg": 2,
+      "Zn": 2
+    },
+    "geometry_preference": null
+  },
+  "linker_query": {
+    "reasoning": "The linker is specified as “Ditopic linkers only” with “light, rigid, aromatic dicarboxylates” and a “benzene dicarboxylate-like and naphthalene dicarboxylate-like” backbone preference. Rigid is supported by “rigid, aromatic”. Length is explicitly given as “approx. 5–12 Å”. Carboxylate is a coordination group and therefore is not placed in linker tags/functional_groups; instead it is captured as O-donor chemistry in node_query.ligand_chemistry.",
+    "connectivity": 2,
+    "length_min": 5.0,
+    "length_max": 12.0,
+    "is_rigid": true,
+    "functional_groups": [],
+    "abstract_features": {
+      "is_conjugated": true
+    },
+    "backbone_requirements": [],
+    "substituent_requirements": [],
+    "min_group_counts": {},
+    "linker_branches": [
+      {
+        "description": "benzene-based aromatic backbone (BDC-like)",
+        "required_tags": [
+          "Benzene"
+        ]
+      },
+      {
+        "description": "naphthalene-based aromatic backbone (NDC-like)",
+        "required_tags": [
+          "Naphthalene"
+        ]
+      }
+    ]
+  },
+  "global_requirements": {
+    "include_tags": [],
+    "exclude_tags": [
+      "tert-Butyl",
+      "Isopropyl",
+      "Ethyl"
+    ],
+    "optional_tags": [
+      "Fluoro"
+    ]
+  },
+  "geometry_filter": {
+    "target_Di_min": null,
+    "target_Di_max": null,
+    "target_Df_min": null,
+    "target_Df_max": null,
+    "target_sa_min": null,
+    "target_sa_max": null,
+    "target_vf_min": 0.45,
+    "target_vf_max": 0.95,
+    "target_density_min": null,
+    "target_density_max": null,
+    "target_dif_min": null,
+    "target_dif_max": null,
+    "target_cv_min": null,
+    "target_cv_max": null
+  }
+}

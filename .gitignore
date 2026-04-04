@@ -67,6 +67,13 @@ scriptsmigration/
 reports/
 implementation_plan/
 logs/
+runtime.log
 
 # --- Test ---
 test*
+
+# --- ckpt (mof2zeo) ---
+*.ckpt
+
+
+AGENTS.md

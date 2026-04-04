@@ -1,5 +1,5 @@
 # =============================================================================
-# LLM2POR Autonomous System - Agent 3 Handler
+# LLM2POR Autonomous System
 # =============================================================================
 # MOF Generator with Geometry Prediction (mof2zeo integration)
 # Used when no database is available for matching - predicts geometry from
@@ -19,9 +19,19 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_core_dir = os.path.dirname(os.path.abspath(__file__))
+_project_root = os.path.dirname(_core_dir)
+sys.path.insert(0, _project_root)
+sys.path.insert(0, _core_dir)
+sys.path.insert(0, os.path.join(_core_dir, "mof2zeo"))
+
+import mof2zeo
 import config
-from core.mof2zeo.model import MOFNET
+from mof2zeo.model import MOFNET
+from mof2zeo.dataset import Scaler
+import pandas as pd
+import numpy as np
+import yaml
 
 
 @dataclass
@@ -67,6 +77,7 @@ class RankedMOF:
     predicted_geometry: PredictedGeometry
     match_score: float
     geometry_match: Dict[str, str]
+    all_constraints_satisfied: bool = False
 
 
 def load_dictionaries() -> Tuple[
@@ -87,14 +98,7 @@ def load_dictionaries() -> Tuple[
     return topo_dict, node_dict, edge_dict, feature_names
 
 
-class Scaler:
-    def __init__(self, mean: np.ndarray, std: np.ndarray):
-        self.mean = torch.tensor(mean, dtype=torch.float32)
-        self.std = torch.tensor(std, dtype=torch.float32)
-        self.eps = 1e-6
-
-    def decode(self, batch: torch.Tensor) -> torch.Tensor:
-        return batch * self.std + self.mean
+# Use external Scaler from mof2zeo (already imported at top)
 
 
 def load_scaler() -> Scaler:
@@ -107,7 +111,8 @@ def load_scaler() -> Scaler:
     mean = mean_df[feature_names].values.squeeze()
     std = std_df[feature_names].values.squeeze()
 
-    return Scaler(mean, std)
+    # target_mean=0, target_std=1 (standard for this model)
+    return Scaler(mean, std, 0, 1)
 
 
 class GeometryPredictor:
@@ -134,28 +139,30 @@ class GeometryPredictor:
             self._model = None
             return
 
-        model_config = {
-            "latent_dim": config.MOF2ZEO_LATENT_DIM,
-            "hid_dim1": config.MOF2ZEO_HID_DIM1,
-            "hid_dim2": config.MOF2ZEO_HID_DIM2,
-            "desc_dim": config.MOF2ZEO_DESC_DIM,
-            "exp_name": "mof2zeo",
-        }
+        # Load original config from mof2zeo
+        with open(
+            "/home/users/seunghh/_hd1/autollm/mof2zeo/mof2zeo/config.yaml", "r"
+        ) as f:
+            model_config = yaml.safe_load(f)
 
         self._topo_dict, self._node_dict, self._edge_dict, _ = load_dictionaries()
         self._scaler = load_scaler()
         self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         try:
+            # Load checkpoint from original path
+            ckpt_path = "/home/users/seunghh/_hd1/autollm/260225_mof2zeo/ckpt/epoch=478-step=213634.ckpt"
+
             self._model = MOFNET.load_from_checkpoint(
-                config.MOF2ZEO_CKPT_PATH,
+                ckpt_path,
                 config=model_config,
                 scaler=self._scaler,
                 strict=False,
             )
+
             self._model.to(self._device)
             self._model.eval()
-            print(f"[Agent 3] mof2zeo model loaded on {self._device}")
+            print(f"[Agent 3] mof2zeo model loaded successfully on {self._device}")
         except Exception as e:
             print(f"[Agent 3] ERROR loading model: {e}")
             self._model = None
@@ -205,9 +212,32 @@ class ComponentGenerator:
         self._node_list = list(self._node_dict.keys())
         self._edge_list = list(self._edge_dict.keys())
 
+        self._load_cn_data()
+
+    def _load_cn_data(self):
+        with open(config.TOPO_DICTIONARY_PATH, "r") as f:
+            topo_data = json.load(f)
+        with open(config.BB_DICTIONARY_PATH, "r") as f:
+            bb_data = json.load(f)
+
+        self._topo_cn = {
+            t["ID"]: t.get("node_connectivities", [0])[0] for t in topo_data
+        }
+        self._node_cn = {
+            b["ID"]: b.get("connectivity", 0)
+            for b in bb_data
+            if b.get("ID", "").startswith("N")
+        }
+        self._edge_cn = {
+            b["ID"]: b.get("connectivity", 0)
+            for b in bb_data
+            if b.get("ID", "").startswith("E")
+        }
+
     def generate_from_matchmaker(
         self, matchmaker_result: Dict[str, Any]
     ) -> List[MOFComponent]:
+        """Generate diverse combinations using stratified random sampling."""
         topo_list = matchmaker_result.get("topology", [])
         node_list = matchmaker_result.get("node", [])
         edge_list = matchmaker_result.get("edge", [])
@@ -219,26 +249,135 @@ class ComponentGenerator:
         if not edge_list:
             edge_list = self._edge_list[:50]
 
-        combinations = []
-        max_combos = 1000
+        return self._generate_diverse_combinations(
+            topo_list, node_list, edge_list, max_combos=1000
+        )
 
-        for topo in topo_list:
-            for node in node_list:
-                for edge in edge_list:
-                    combinations.append(
-                        MOFComponent(topology=topo, node=node, edge=edge)
-                    )
+    def _generate_diverse_combinations(
+        self,
+        topo_list: List[str],
+        node_list: List[str],
+        edge_list: List[str],
+        max_combos: int = 1000,
+    ) -> List[MOFComponent]:
+        """
+        Generate combinations using stratified random sampling.
+
+        Instead of sequential generation (which causes same topology/node in top results),
+        we sample evenly across all 3 dimensions to ensure diversity.
+
+        Algorithm:
+        1. Calculate sample size per dimension: n^(1/3)
+        2. Randomly sample from each dimension
+        3. Generate all combinations from sampled subsets
+        4. Shuffle final combinations
+        """
+        n_topo = len(topo_list)
+        n_node = len(node_list)
+        n_edge = len(edge_list)
+
+        # Calculate samples per dimension (cube root for balanced coverage)
+        # This ensures ~equal representation from each dimension
+        samples_per_dim = max(1, int(round(max_combos ** (1 / 3))))
+
+        n_sample_topo = min(samples_per_dim, n_topo)
+        n_sample_node = min(samples_per_dim, n_node)
+        n_sample_edge = min(samples_per_dim * 2, n_edge)  # Give more weight to edges
+
+        # Stratified random sampling (without replacement)
+        n_topo = len(topo_list)
+        n_node = len(node_list)
+        n_edge = len(edge_list)
+
+        # Sample from each dimension
+        sample_topo = (
+            list(
+                np.random.choice(
+                    topo_list, size=min(n_sample_topo, n_topo), replace=False
+                )
+            )
+            if n_topo > 0
+            else []
+        )
+
+        sample_node = (
+            list(
+                np.random.choice(
+                    node_list, size=min(n_sample_node, n_node), replace=False
+                )
+            )
+            if n_node > 0
+            else []
+        )
+
+        sample_edge = (
+            list(
+                np.random.choice(
+                    edge_list, size=min(n_sample_edge, n_edge), replace=False
+                )
+            )
+            if n_edge > 0
+            else []
+        )
+
+        # Generate all combinations from sampled subsets WITH CN VALIDATION
+        combinations = []
+        for topo in sample_topo:
+            topo_cn = self._topo_cn.get(topo, 0)
+            for node in sample_node:
+                node_cn = self._node_cn.get(node, 0)
+                for edge in sample_edge:
+                    edge_cn = self._edge_cn.get(edge, 0)
+
+                    if topo_cn == node_cn and edge_cn == 2:
+                        combinations.append(
+                            MOFComponent(topology=topo, node=node, edge=edge)
+                        )
+
+        # If we need more combinations, add more random samples WITH CN VALIDATION
+        if len(combinations) < max_combos:
+            remaining = max_combos - len(combinations)
+            extra_topo = list(
+                np.random.choice(topo_list, size=min(remaining, n_topo), replace=False)
+            )
+            extra_node = list(
+                np.random.choice(node_list, size=min(remaining, n_node), replace=False)
+            )
+            extra_edge = list(
+                np.random.choice(edge_list, size=min(remaining, n_edge), replace=False)
+            )
+
+            for topo in extra_topo:
+                topo_cn = self._topo_cn.get(topo, 0)
+                for node in extra_node:
+                    node_cn = self._node_cn.get(node, 0)
+                    for edge in extra_edge:
+                        edge_cn = self._edge_cn.get(edge, 0)
+                        if len(combinations) >= max_combos:
+                            break
+                        if topo_cn == node_cn and edge_cn == 2:
+                            combinations.append(
+                                MOFComponent(topology=topo, node=node, edge=edge)
+                            )
                     if len(combinations) >= max_combos:
                         break
                 if len(combinations) >= max_combos:
                     break
-            if len(combinations) >= max_combos:
-                break
+
+        # Shuffle to ensure unbiased ranking
+        np.random.shuffle(combinations)
 
         print(
-            f"[Agent 3] Generated {len(combinations)} combinations from matchmaker result"
+            f"[Agent 3] Generated {len(combinations)} diverse combinations "
+            f"(sampled from {len(topo_list)}×{len(node_list)}×{len(edge_list)} = "
+            f"{len(topo_list) * len(node_list) * len(edge_list)} total)"
         )
-        return combinations
+        print(
+            f"[Agent 3]   Sample coverage: {len(sample_topo)} topologies, "
+            f"{len(sample_node)} nodes, {len(sample_edge)} edges"
+        )
+
+        return combinations[:max_combos]
 
 
 class MOFRanker:
@@ -292,8 +431,12 @@ class MOFRanker:
         pred_dict = pred.to_dict()
 
         for key, weight in self.weights.items():
-            target_min = target.get(f"target_{key}_min")
-            target_max = target.get(f"target_{key}_max")
+            target_min = target.get(f"target_{key}_min") or target.get(
+                f"target_{key.capitalize()}_min"
+            )
+            target_max = target.get(f"target_{key}_max") or target.get(
+                f"target_{key.capitalize()}_max"
+            )
 
             if target_min is None and target_max is None:
                 match_details[key] = "○ (no constraint)"
@@ -370,19 +513,74 @@ class Agent3Handler:
         )
         predicted_geometries = self.predictor.predict_batch(combinations)
 
-        print("[Agent 3] Step 3: Ranking by geometry match...")
+        print("[Agent 3] Step 3: Evaluating geometry match...")
         target_geometry = agent2_constraints.get("geometry_filter", {})
-        ranked_mofs = self.ranker.rank(
-            combinations, predicted_geometries, target_geometry
+
+        # Evaluate all combinations (no ranking, just scoring)
+        all_mofs = []
+        for comp, pred_geo in zip(combinations, predicted_geometries):
+            score, match_details = self.ranker._calculate_match_score(
+                pred_geo, target_geometry
+            )
+            # Check if ALL constraints are satisfied (score == 1.0)
+            all_satisfied = all(
+                v.startswith("✓")
+                for k, v in match_details.items()
+                if not v.startswith("○")  # Skip unconstrained
+            )
+            all_mofs.append(
+                RankedMOF(
+                    rank=0,
+                    component=comp,
+                    predicted_geometry=pred_geo,
+                    match_score=score,
+                    geometry_match=match_details,
+                    all_constraints_satisfied=all_satisfied,
+                )
+            )
+
+        # Filter to valid combinations (all geometry constraints satisfied)
+        valid_mofs = [m for m in all_mofs if m.all_constraints_satisfied]
+
+        print(
+            f"[Agent 3] Found {len(valid_mofs)} valid combinations "
+            f"(out of {len(all_mofs)} total)"
         )
 
-        top_mofs = ranked_mofs[:top_n]
+        # Random sampling instead of ranking
+        if len(valid_mofs) >= top_n:
+            # Randomly sample top_n from valid combinations
+            sample_indices = np.random.choice(
+                len(valid_mofs), size=top_n, replace=False
+            )
+            selected_mofs = [valid_mofs[i] for i in sample_indices]
+        else:
+            # Not enough valid combinations
+            print(
+                f"[Agent 3] WARNING: Only {len(valid_mofs)} valid combinations "
+                f"available (requested {top_n})"
+            )
+            if len(valid_mofs) > 0:
+                # Use all valid and fill with partial matches
+                selected_mofs = valid_mofs.copy()
+                remaining_needed = top_n - len(valid_mofs)
+                # Sort remaining by score and take best ones
+                partial_mofs = [m for m in all_mofs if not m.all_constraints_satisfied]
+                partial_mofs.sort(key=lambda x: x.match_score, reverse=True)
+                selected_mofs.extend(partial_mofs[:remaining_needed])
+            else:
+                # No valid combinations - return highest scoring ones
+                all_mofs.sort(key=lambda x: x.match_score, reverse=True)
+                selected_mofs = all_mofs[:top_n]
+
+        # Shuffle for random order
+        np.random.shuffle(selected_mofs)
 
         output_mofs = []
-        for mof in top_mofs:
+        for idx, mof in enumerate(selected_mofs):
             output_mofs.append(
                 {
-                    "rank": mof.rank,
+                    "rank": idx + 1,
                     "topology": mof.component.topology,
                     "node": mof.component.node,
                     "edge": mof.component.edge,
@@ -393,7 +591,7 @@ class Agent3Handler:
                 }
             )
 
-        valid_count = sum(1 for m in ranked_mofs if m.match_score > 0.5)
+        valid_count = len(valid_mofs)
 
         result = {
             "ranked_mofs": output_mofs,
@@ -463,5 +661,75 @@ def test_agent3():
     print("=" * 60)
 
 
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="MOF Candidate Filter using mof2zeo")
+    parser.add_argument(
+        "--output", type=str, default="test_result_agent3.json", help="Output JSON file"
+    )
+    parser.add_argument(
+        "--top_n", type=int, default=10, help="Number of candidates to generate"
+    )
+    parser.add_argument(
+        "--constraints",
+        type=str,
+        default=None,
+        help="Combined constraints JSON (agent2 output format)",
+    )
+    parser.add_argument(
+        "--matchmaker", type=str, default=None, help="Matchmaker JSON file (legacy)"
+    )
+    args = parser.parse_args()
+
+    if args.constraints:
+        with open(args.constraints, "r") as f:
+            data = json.load(f)
+
+        if "matchmaker_result" in data:
+            matchmaker_result = data.get("matchmaker_result", {})
+        else:
+            matchmaker_result = {
+                "topology": [],
+                "node": [],
+                "edge": [],
+            }
+
+        agent2_constraints = {"geometry_filter": data.get("geometry_filter", {})}
+        print("Loaded constraints from:", args.constraints)
+    elif args.matchmaker:
+        with open(args.matchmaker, "r") as f:
+            matchmaker_result = json.load(f)
+        agent2_constraints = {"geometry_filter": {}}
+    else:
+        sample_matchmaker_result = {
+            "topology": ["fcu", "pcu", "bcu"],
+            "node": ["N164", "N12", "N13"],
+            "edge": ["E70", "E10", "E11"],
+        }
+        sample_agent2_constraints = {
+            "geometry_filter": {
+                "target_Di_min": 12.0,
+                "target_Di_max": 20.0,
+                "target_Df_min": 7.0,
+                "target_Df_max": 10.0,
+                "target_sa_min": 1000.0,
+                "target_vf_min": 0.5,
+            }
+        }
+        matchmaker_result = sample_matchmaker_result
+        agent2_constraints = sample_agent2_constraints
+        print("Using sample data (no --matchmaker/--constraints provided)")
+
+    agent3 = Agent3Handler()
+    proposals = agent3.generate_mof_proposals(
+        matchmaker_result, agent2_constraints, top_n=args.top_n
+    )
+
+    with open(args.output, "w") as f:
+        json.dump({"proposals": proposals}, f, indent=2)
+    print(f"Results saved to: {args.output}")
+
+
 if __name__ == "__main__":
-    test_agent3()
+    main()
