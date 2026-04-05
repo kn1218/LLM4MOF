@@ -78,14 +78,19 @@ Switch providers by changing `LLM_PROVIDER` in your `.env` file.
 The repository includes all required data files via Git LFS. After cloning, run:
 
 ```bash
+# Install git-lfs if needed
+conda install -c conda-forge git-lfs
+
+# Download large files
 git lfs pull
 ```
 
-This downloads the large database files (~98 MB total):
+This downloads the large database files (~174 MB total):
 - `data/qmof_index_v2.json` (25 MB) - 20,373 QMOF MOFs for band gap mode
 - `data/hMOF/hmof_index.json` (50 MB) - 51,163 hypothetical MOFs for gas adsorption mode
 - `data/qmof.csv` (21 MB) - QMOF property database
 - `data/total_characteristics&name_singleonly_20251203.csv` (1 MB) - PORMAKE master database
+- `core/mof2zeo/ckpt/epoch=478-step=213634.ckpt` (76 MB) - mof2zeo geometry prediction model
 
 ## Usage
 
@@ -147,11 +152,13 @@ Results are saved to `experiments/exp_YYYYMMDD_HHMM_{mode}/`:
 ├── run_experiment.py          # Entry point
 ├── config.py                  # All configuration and data paths
 ├── requirements.txt           # Python dependencies
+├── setup.py                   # pip install -e .
 ├── .env                       # API keys (not in git)
 ├── core/                      # Runtime modules
 │   ├── agent0_handler.py      # Problem Consultant (interview)
 │   ├── agent1_handler.py      # Hypothesis Generator (multi-turn)
 │   ├── agent2_handler.py      # Constraint Extractor (stateless)
+│   ├── agent3_260324.py       # Geometry Predictor (mof2zeo)
 │   ├── constraint_utils.py    # Tag/ontology parsing utilities
 │   ├── feedback_generator.py  # Structured feedback for Agent 1
 │   ├── hmof_matchmaker.py     # hMOF direct MOF matching
@@ -160,7 +167,17 @@ Results are saved to `experiments/exp_YYYYMMDD_HHMM_{mode}/`:
 │   ├── memory_manager.py      # Experiment state persistence
 │   ├── name_resolver.py       # Building block ID-to-name resolver
 │   ├── qmof_matchmaker.py     # QMOF direct MOF matching
-│   └── sensitivity_analyzer.py # Performance evaluation engine
+│   ├── sensitivity_analyzer.py # Performance evaluation engine
+│   ├── run_simulation.py      # Full simulation pipeline
+│   ├── filter_candidate.py     # mof2zeo candidate filtering
+│   ├── mof2zeo/               # Geometry prediction model
+│   │   ├── ckpt/              # Model checkpoint (LFS)
+│   │   ├── data/               # Training data
+│   │   └── scaler/             # Feature scalers
+│   └── simulation/            # Simulation pipeline
+│       ├── generate_mofs.py   # CIF generation from PORMAKE
+│       ├── opt/                # LAMMPS optimization
+│       └── gcmc/              # RASPA3 GCMC simulations
 ├── prompts/                   # LLM system prompts
 │   ├── agent0_v3.md
 │   ├── agent1_v2.2.9.md

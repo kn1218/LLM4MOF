@@ -75,7 +75,7 @@ runtime.log
 test*
 
 # --- ckpt (mof2zeo) ---
-*.ckpt
+#*.ckpt
 
 
 AGENTS.md
