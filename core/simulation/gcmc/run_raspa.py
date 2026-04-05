@@ -1,4 +1,3 @@
-#!/home/users/seunghh/anaconda3/envs/llm2por/bin/python
 """
 Run RASPA3 GCMC simulations for top 20 MOFs from test_result_agent3.json
 Uses RASPA3 JSON format

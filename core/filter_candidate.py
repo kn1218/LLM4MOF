@@ -139,10 +139,8 @@ class GeometryPredictor:
             self._model = None
             return
 
-        # Load original config from mof2zeo
-        with open(
-            "/home/users/seunghh/_hd1/autollm/mof2zeo/mof2zeo/config.yaml", "r"
-        ) as f:
+        # Load model config
+        with open(config.MOF2ZEO_CONFIG_PATH, "r") as f:
             model_config = yaml.safe_load(f)
 
         self._topo_dict, self._node_dict, self._edge_dict, _ = load_dictionaries()
@@ -150,8 +148,8 @@ class GeometryPredictor:
         self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         try:
-            # Load checkpoint from original path
-            ckpt_path = "/home/users/seunghh/_hd1/autollm/260225_mof2zeo/ckpt/epoch=478-step=213634.ckpt"
+            # Load checkpoint from config
+            ckpt_path = config.MOF2ZEO_CKPT_PATH
 
             self._model = MOFNET.load_from_checkpoint(
                 ckpt_path,

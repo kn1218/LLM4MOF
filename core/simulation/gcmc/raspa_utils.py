@@ -1,4 +1,3 @@
-#!/home/users/seunghh/anaconda3/envs/llm2por/bin/python
 """RASPA3 utilities shared between run_raspa.py and test_analysis.py."""
 
 import os

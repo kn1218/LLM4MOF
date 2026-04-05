@@ -47,7 +47,9 @@ data/hMOF/hmof_index_pretty_sample.json
 data/pormake/pormake_buildingblock_jsons/
 data/pormake/pormake_based_h2_uptake/
 data/Coremof/
-
+core/mof2zeo/data/train.csv
+core/mof2zeo/data/valid.csv
+core/mof2zeo/data/Test.csv
 # --- Archive (old data versions, superseded) ---
 data/_archive/
 

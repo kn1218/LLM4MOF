@@ -1,4 +1,3 @@
-#!/home/users/seunghh/anaconda3/envs/llm2por/bin/python
 import os
 import sys
 import json

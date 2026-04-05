@@ -261,6 +261,9 @@ LLM_REQUEST_TIMEOUT = 120  # seconds
 # Model trained to predict: Di, Df, SA, VF, density, CV, Dif from MOF components
 MOF2ZEO_DIR = os.path.join(BASE_DIR, "core", "mof2zeo")
 
+# Config file for model hyperparameters
+MOF2ZEO_CONFIG_PATH = os.path.join(MOF2ZEO_DIR, "config.yaml")
+
 # Checkpoint file for trained mof2zeo model
 MOF2ZEO_CKPT_PATH = os.path.join(MOF2ZEO_DIR, "ckpt", "epoch=478-step=213634.ckpt")
 
