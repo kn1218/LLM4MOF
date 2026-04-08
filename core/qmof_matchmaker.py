@@ -65,23 +65,31 @@ class QMOFMatchmaker:
     # ── Electronic metadata filters (Phase 3) ────────────────────────
 
     def _check_oxidation_state(self, item: dict, node_query: dict) -> bool:
-        """Check oxidation state for a single metal. null/empty = passthrough."""
+        """For every entry metal covered by the query, require matching oxidation state.
+
+        The iteration direction matters: we walk the entry's metals, not the query's.
+        Metals in the query that are absent from the entry are a non-event — the entry
+        simply lacks that metal; other entries will cover it. The prior version
+        iterated the query side, requiring every queried metal to appear in every
+        entry, which turned a per-metal constraint into a vacuous AND and produced
+        zero matches whenever the hypothesis listed more metals than any single MOF.
+        null/empty on either side is passthrough.
+        """
         ox_query = node_query.get("oxidation_state")
         if not ox_query or not isinstance(ox_query, dict):
             return True
         item_ox = item.get("oxidation_states", {})
         if not isinstance(item_ox, dict) or not item_ox:
             return True  # No data = benefit of doubt
-        for metal, state in ox_query.items():
-            if state is None:
-                continue
-            # Check if this metal at this oxidation state exists in the item
-            matched = False
-            for item_metal, item_state in item_ox.items():
-                if canon(item_metal) == canon(metal) and item_state == state:
-                    matched = True
-                    break
-            if not matched:
+        # Canonicalize the query once for O(1) per-metal lookup
+        query_canon = {canon(m): s for m, s in ox_query.items() if s is not None}
+        if not query_canon:
+            return True
+        for item_metal, item_state in item_ox.items():
+            required_state = query_canon.get(canon(item_metal))
+            if required_state is None:
+                continue  # query doesn't constrain this metal
+            if item_state != required_state:
                 return False
         return True
 
