@@ -241,6 +241,45 @@ LLM_MAX_RETRIES = 2
 LLM_REQUEST_TIMEOUT = 120  # seconds
 
 # =============================================================================
+# MOF2ZEO CONFIGURATION (Agent 3 - Geometry Prediction)
+# =============================================================================
+# mof2zeo is a PyTorch Lightning model that predicts MOF geometric descriptors
+# (Di, Df, SA, VF, density, CV, Dif) from (topology, node, edge) triples.
+# Used by core/filter_candidate.py to rank matchmaker candidates before CIF
+# build + LAMMPS + RASPA3 simulation in core/run_simulation.py.
+# See REPORT 2 §20 for the migration rationale.
+
+MOF2ZEO_DIR = os.path.join(BASE_DIR, "core", "mof2zeo")
+
+# Config file for model hyperparameters
+MOF2ZEO_CONFIG_PATH = os.path.join(MOF2ZEO_DIR, "config.yaml")
+
+# Trained checkpoint (76 MB, Git LFS)
+MOF2ZEO_CKPT_PATH = os.path.join(MOF2ZEO_DIR, "ckpt", "epoch=478-step=213634.ckpt")
+
+# Scaler files for inverse transform (mean/std from training data)
+MOF2ZEO_SCALER_MEAN_PATH = os.path.join(MOF2ZEO_DIR, "scaler", "mean_all.csv")
+MOF2ZEO_SCALER_STD_PATH = os.path.join(MOF2ZEO_DIR, "scaler", "std_all.csv")
+
+# Vocabulary files (topology, node, edge class mappings)
+MOF2ZEO_TOPOLOGY_FILE = os.path.join(MOF2ZEO_DIR, "data", "topology.txt")
+MOF2ZEO_NODE_FILE = os.path.join(MOF2ZEO_DIR, "data", "node.txt")
+MOF2ZEO_EDGE_FILE = os.path.join(MOF2ZEO_DIR, "data", "edge.txt")
+MOF2ZEO_FEATURE_FILE = os.path.join(MOF2ZEO_DIR, "data", "feature_name.txt")
+
+# Model hyperparameters (mirror core/mof2zeo/config.yaml)
+MOF2ZEO_LATENT_DIM = 128
+MOF2ZEO_HID_DIM1 = 64
+MOF2ZEO_HID_DIM2 = 32
+MOF2ZEO_DESC_DIM = 7  # sa, cv, density, vf, di, df, dif
+
+
+def is_mof2zeo_available() -> bool:
+    """Check whether the mof2zeo checkpoint and scaler files exist on disk."""
+    return os.path.exists(MOF2ZEO_CKPT_PATH) and os.path.exists(MOF2ZEO_SCALER_MEAN_PATH)
+
+
+# =============================================================================
 # DISPLAY SETTINGS
 # =============================================================================
 

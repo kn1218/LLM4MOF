@@ -47,6 +47,19 @@ research/
 # accidental commits of run results.
 experiments/
 
+# --- Simulation pipeline output (Han's run_simulation.py) ---
+# core/run_simulation.py writes to test_run_simulation/ by default.
+test_run_simulation/
+
+# --- mof2zeo training data (only needed if retraining from scratch) ---
+# Large training CSVs that are not needed at runtime.
+# Master ships only the trained checkpoint (LFS), the vocabulary files,
+# and the scaler files — which are enough for filter_candidate.py.
+core/mof2zeo/data/train.csv
+core/mof2zeo/data/valid.csv
+core/mof2zeo/data/Test.csv
+core/mof2zeo/data/test.csv
+
 # --- Local-only docs (REPORT 1 + REPORT 2 stay private) ---
 docs/
 
