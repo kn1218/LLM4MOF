@@ -140,22 +140,25 @@ def make_lammps_interface_jobs(
 LAMMPS_MINIMIZE_EXE = """
 thermo 1000
 
-fix 1 all box/relax iso 0.0 vmax 0.001
+fix llm2por_relax all box/relax iso 0.0 vmax 0.001
 minimize 1.0e-4 1.0e-6 5000 50000
-unfix 1
+unfix llm2por_relax
 
 run 0
 
-compute 1 all pe
-variable A equal c_1
+compute llm2por_pe all pe
+variable llm2por_A equal c_llm2por_pe
 
-thermo_style custom temp c_1
+thermo_style custom temp c_llm2por_pe
 thermo 1
 run 0
 
-print "{{{{}}}}:$A" append {{0}}_energy.txt
+print "{{{{}}}}:${{llm2por_A}}" append {{0}}_energy.txt
 
 write_data           {1}
+
+uncompute llm2por_pe
+variable llm2por_A delete
 """
 
 

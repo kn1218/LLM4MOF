@@ -71,6 +71,16 @@ def generate_mof(mof_info, database, builder, output_dir):
 
         topology.describe()
 
+        # Safety check: multi-node-type topologies crash build_by_type
+        # because we only assign node_bbs = {0: node_bb}.
+        # HAN_SAFE_TOPOS should filter these out upstream, but guard here too.
+        # NOTE: topology.cn includes BOTH node and edge connectivities
+        # (edges always have cn=2), so we use topology.n_node_types instead.
+        if topology.n_node_types > 1:
+            print(f"   [SKIP] {filename}: multi-node-type topology "
+                  f"({topology.n_node_types} node types)")
+            return False
+
         node_bbs = {0: node_bb}
 
         cn = topology.cn[0]
@@ -85,6 +95,9 @@ def generate_mof(mof_info, database, builder, output_dir):
         print(f"   [OK] Saved: {filename}.cif")
         return True
 
+    except KeyError as e:
+        print(f"   [SKIP] {filename}: KeyError during build (likely multi-node-type): {e}")
+        return False
     except Exception as e:
         print(f"   [ERROR] {filename}: {e}")
         import traceback

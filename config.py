@@ -280,6 +280,33 @@ def is_mof2zeo_available() -> bool:
 
 
 # =============================================================================
+# LIVE SIMULATION CONFIGURATION (Han pipeline as feedback source)
+# =============================================================================
+# These settings control the live-simulation loop (run_live_experiment.py).
+# The markscheme path (run_experiment.py) is unaffected.
+
+LIVE_SIM_N_PER_BEAM = 8            # Target successful simulations per beam
+LIVE_SIM_N_BEAMS = 4               # Z (full), A (chem-only), F (metal-only), Total (random)
+LIVE_SIM_POOL_MULTIPLIER = 3       # Pool size = N_PER_BEAM * POOL_MULTIPLIER (refill budget)
+LIVE_SIM_POOL_MULTIPLIER_RANDOM = 4  # Larger pool for Beam 4 (random baseline, higher failure rate)
+LIVE_SIM_MIN_SUCCESSES = 4         # Accept partial beam if >= this many successes
+
+LIVE_SIM_RASPA_CYCLES = 10000      # Production: 10k cycles (Han's default)
+LIVE_SIM_RASPA_INIT_CYCLES = 5000  # Production: 5k init cycles (Han's default)
+LIVE_SIM_RASPA_TEMPERATURE = 77.0  # K (hydrogen storage standard)
+LIVE_SIM_RASPA_PRESSURE = 10000000.0  # Pa (~100 bar)
+
+LIVE_SIM_SKIP_LAMMPS = False       # LAMMPS enabled on HPC (dirac1); local smoke tests override
+LIVE_SIM_LAMMPS_TIMEOUT = 900      # 15 min cap per MOF
+LIVE_SIM_RASPA_TIMEOUT = 600       # 10 min cap per MOF for RASPA3 (10k cycles)
+
+LIVE_SIM_MOF2ZEO_TOPN = 50         # mof2zeo top-N candidates per beam before sampling
+LIVE_SIM_CACHE_DIR = os.path.join(BASE_DIR, "experiments")
+
+LIVE_SIM_MAX_ITERATIONS = 3        # 3 iterations for production run
+
+
+# =============================================================================
 # DISPLAY SETTINGS
 # =============================================================================
 

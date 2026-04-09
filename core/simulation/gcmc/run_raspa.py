@@ -39,10 +39,21 @@ def find_raspa3():
     if raspa_which:
         return raspa_which
 
-    # Fallback: try conda base env
-    conda_bin = os.path.join(os.path.dirname(sys.executable), "raspa3")
-    if os.path.exists(conda_bin):
-        return conda_bin
+    # Fallback: try conda env directories (Scripts/, bin/, Library/bin/)
+    env_root = os.path.dirname(sys.executable)
+    for subdir in ["", "bin", "Scripts", "Library/bin"]:
+        for ext in ["", ".exe"]:
+            candidate = os.path.join(env_root, subdir, f"raspa3{ext}")
+            if os.path.exists(candidate):
+                return candidate
+
+    # Also try one level up (sys.executable may be in Scripts/ or bin/)
+    env_root_parent = os.path.dirname(env_root)
+    for subdir in ["bin", "Scripts", "Library/bin"]:
+        for ext in ["", ".exe"]:
+            candidate = os.path.join(env_root_parent, subdir, f"raspa3{ext}")
+            if os.path.exists(candidate):
+                return candidate
 
     return None
 
@@ -156,7 +167,7 @@ def create_raspa_input(mof, mof_dir, output_dir, params):
                 "NumberOfUnitCells": [na, nb, nc],
                 "ExternalTemperature": params.get("temperature", 77.0),
                 "ExternalPressure": params.get("pressure", 10000000.0),
-                "HeliumVoidFraction": 0,
+                "HeliumVoidFraction": params.get("helium_void_fraction", 0.5),
                 "ChargeMethod": "None",
             }
         ],
@@ -183,7 +194,8 @@ def create_raspa_input(mof, mof_dir, output_dir, params):
 
 
 def run_simulation_background(
-    input_file, mof_dir, output_dir, forcefield_dir, filename, raspa3_bin
+    input_file, mof_dir, output_dir, forcefield_dir, filename, raspa3_bin,
+    timeout=600,
 ):
     """
     Run RASPA3 simulation in background using nohup.
@@ -229,7 +241,7 @@ def run_simulation_background(
                 stdout=lf,
                 stderr=subprocess.STDOUT,
                 shell=False,
-                timeout=600,  # 10-minute cap per MOF for the smoke test
+                timeout=timeout,
             )
         if result.returncode == 0:
             with open(done_file, "w") as df:
@@ -240,7 +252,7 @@ def run_simulation_background(
             print(f"   [ERROR] {filename} raspa3 exit {result.returncode} (see {log_file})")
             return False
     except subprocess.TimeoutExpired:
-        print(f"   [TIMEOUT] {filename} exceeded 10-minute cap")
+        print(f"   [TIMEOUT] {filename} exceeded {timeout}s cap")
         return False
     except Exception as e:
         print(f"   [ERROR] Failed to run {filename}: {e}")
@@ -340,7 +352,7 @@ def parse_output(output_dir):
     if not output_file or not os.path.exists(output_file):
         return None
 
-    with open(output_file, "r") as f:
+    with open(output_file, "r", encoding="utf-8", errors="replace") as f:
         lines = f.readlines()
 
     result = {}

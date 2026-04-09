@@ -83,16 +83,16 @@ class RankedMOF:
 def load_dictionaries() -> Tuple[
     Dict[str, int], Dict[str, int], Dict[str, int], List[str]
 ]:
-    with open(config.MOF2ZEO_TOPOLOGY_FILE, "r") as f:
+    with open(config.MOF2ZEO_TOPOLOGY_FILE, "r", encoding="utf-8") as f:
         topo_dict = {name.strip(): i for i, name in enumerate(f.readlines())}
 
-    with open(config.MOF2ZEO_NODE_FILE, "r") as f:
+    with open(config.MOF2ZEO_NODE_FILE, "r", encoding="utf-8") as f:
         node_dict = {name.strip(): i for i, name in enumerate(f.readlines())}
 
-    with open(config.MOF2ZEO_EDGE_FILE, "r") as f:
+    with open(config.MOF2ZEO_EDGE_FILE, "r", encoding="utf-8") as f:
         edge_dict = {name.strip(): i for i, name in enumerate(f.readlines())}
 
-    with open(config.MOF2ZEO_FEATURE_FILE, "r") as f:
+    with open(config.MOF2ZEO_FEATURE_FILE, "r", encoding="utf-8") as f:
         feature_names = [line.strip() for line in f.readlines()]
 
     return topo_dict, node_dict, edge_dict, feature_names
@@ -105,7 +105,7 @@ def load_scaler() -> Scaler:
     mean_df = pd.read_csv(config.MOF2ZEO_SCALER_MEAN_PATH)
     std_df = pd.read_csv(config.MOF2ZEO_SCALER_STD_PATH)
 
-    with open(config.MOF2ZEO_FEATURE_FILE, "r") as f:
+    with open(config.MOF2ZEO_FEATURE_FILE, "r", encoding="utf-8") as f:
         feature_names = [line.strip() for line in f.readlines()]
 
     mean = mean_df[feature_names].values.squeeze()
@@ -140,7 +140,7 @@ class GeometryPredictor:
             return
 
         # Load model config
-        with open(config.MOF2ZEO_CONFIG_PATH, "r") as f:
+        with open(config.MOF2ZEO_CONFIG_PATH, "r", encoding="utf-8") as f:
             model_config = yaml.safe_load(f)
 
         self._topo_dict, self._node_dict, self._edge_dict, _ = load_dictionaries()
@@ -274,9 +274,9 @@ class ComponentGenerator:
         self._load_cn_data()
 
     def _load_cn_data(self):
-        with open(config.TOPO_DICTIONARY_PATH, "r") as f:
+        with open(config.TOPO_DICTIONARY_PATH, "r", encoding="utf-8") as f:
             topo_data = json.load(f)
-        with open(config.BB_DICTIONARY_PATH, "r") as f:
+        with open(config.BB_DICTIONARY_PATH, "r", encoding="utf-8") as f:
             bb_data = json.load(f)
 
         self._topo_cn = {
@@ -768,7 +768,7 @@ def main():
     args = parser.parse_args()
 
     if args.constraints:
-        with open(args.constraints, "r") as f:
+        with open(args.constraints, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         if "matchmaker_result" in data:
@@ -783,7 +783,7 @@ def main():
         agent2_constraints = {"geometry_filter": data.get("geometry_filter", {})}
         print("Loaded constraints from:", args.constraints)
     elif args.matchmaker:
-        with open(args.matchmaker, "r") as f:
+        with open(args.matchmaker, "r", encoding="utf-8") as f:
             matchmaker_result = json.load(f)
         agent2_constraints = {"geometry_filter": {}}
     else:
