@@ -148,15 +148,59 @@ class GeometryPredictor:
         self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         try:
+            # PyTorch 2.6+ changed torch.load default to weights_only=True, which
+            # refuses to unpickle non-builtin classes for security. The mof2zeo
+            # checkpoint contains a mof2zeo.dataset.Scaler instance and a
+            # numpy.dtype reconstructor, so we whitelist them before the load.
+            # This is the PyTorch-recommended fix from the error message itself.
+            try:
+                import numpy
+                from numpy.core.multiarray import _reconstruct as _numpy_reconstruct
+                from numpy import ndarray, dtype
+                torch.serialization.add_safe_globals([
+                    Scaler,
+                    _numpy_reconstruct,
+                    ndarray,
+                    dtype,
+                    numpy.dtypes.Float64DType,
+                    numpy.dtypes.Float32DType,
+                    numpy.dtypes.Int64DType,
+                ])
+            except Exception as _safe_e:
+                print(f"[Agent 3] note: safe_globals partial setup ({_safe_e}); "
+                      f"falling back to weights_only=False on the load")
+
             # Load checkpoint from config
             ckpt_path = config.MOF2ZEO_CKPT_PATH
 
-            self._model = MOFNET.load_from_checkpoint(
-                ckpt_path,
-                config=model_config,
-                scaler=self._scaler,
-                strict=False,
-            )
+            try:
+                self._model = MOFNET.load_from_checkpoint(
+                    ckpt_path,
+                    config=model_config,
+                    scaler=self._scaler,
+                    strict=False,
+                )
+            except Exception as _wo_e:
+                # Belt-and-suspenders: if safe_globals didn't cover everything in the
+                # checkpoint, fall back to the explicit weights_only=False path.
+                # The checkpoint is shipped with the repo via Git LFS; we trust it.
+                print(f"[Agent 3] note: weights_only safe load failed ({type(_wo_e).__name__}); "
+                      f"retrying with weights_only=False (trusted local checkpoint)")
+                import torch as _torch
+                _orig_load = _torch.load
+                def _trusted_load(*args, **kwargs):
+                    kwargs["weights_only"] = False
+                    return _orig_load(*args, **kwargs)
+                _torch.load = _trusted_load
+                try:
+                    self._model = MOFNET.load_from_checkpoint(
+                        ckpt_path,
+                        config=model_config,
+                        scaler=self._scaler,
+                        strict=False,
+                    )
+                finally:
+                    _torch.load = _orig_load
 
             self._model.to(self._device)
             self._model.eval()
