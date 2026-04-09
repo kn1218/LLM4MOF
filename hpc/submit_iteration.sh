@@ -45,7 +45,8 @@ for i in $(seq 0 $((N_JOBS - 1))); do
 #!/bin/bash
 #PBS -N llm2por_${FILENAME}
 #PBS -l nodes=1:ppn=1:${NODE_PROP}
-#PBS -l walltime=02:00:00
+#PBS -l walltime=03:00:00
+#PBS -q long
 #PBS -o ${OUTPUT_ABS}/logs/${FILENAME}.out
 #PBS -e ${OUTPUT_ABS}/logs/${FILENAME}.err
 
