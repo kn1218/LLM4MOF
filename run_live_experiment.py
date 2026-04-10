@@ -292,7 +292,8 @@ def run_live_experiment() -> None:
         config.LIVE_SIM_MAX_ITERATIONS = 1
         config.LIVE_SIM_POOL_MULTIPLIER = 2
         config.LIVE_SIM_POOL_MULTIPLIER_RANDOM = 2
-        config.LIVE_SIM_SKIP_LAMMPS = True  # LAMMPS not on Windows
+        if not args.hpc:
+            config.LIVE_SIM_SKIP_LAMMPS = True  # LAMMPS not on Windows (HPC has it)
 
     if args.iterations:
         config.LIVE_SIM_MAX_ITERATIONS = args.iterations
