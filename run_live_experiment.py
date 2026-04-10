@@ -17,6 +17,8 @@ import sys
 import datetime
 import json
 import argparse
+import subprocess
+import time
 
 # Fix Unicode encoding on Windows (Korean locale cp949 can't handle Å, ², ³)
 if sys.platform == "win32":
@@ -81,14 +83,202 @@ def parse_args() -> argparse.Namespace:
         help="Override max iterations",
     )
     parser.add_argument(
+        "--hpc", action="store_true",
+        help="HPC mode: single-process loop with SSH polling (production)",
+    )
+    parser.add_argument(
         "--prepare", action="store_true",
-        help="HPC mode: run LLM agents + matchmaker, generate manifest, then exit",
+        help="HPC manual mode: run LLM agents + matchmaker, generate manifest, then exit",
     )
     parser.add_argument(
         "--collect", action="store_true",
-        help="HPC mode: parse downloaded HPC results, generate feedback, continue",
+        help="HPC manual mode: parse downloaded HPC results, generate feedback, continue",
     )
     return parser.parse_args()
+
+
+# ---------------------------------------------------------------------------
+# HPC SSH helpers
+# ---------------------------------------------------------------------------
+
+def _ssh_run(cmd: str, check: bool = True) -> subprocess.CompletedProcess:
+    """
+    Run a command on HPC via SSH with retry logic.
+
+    Uses config.HPC_HOST and retries on connection failure with
+    exponential backoff (config.HPC_SSH_RETRY_DELAYS).
+    """
+    ssh_cmd = ["ssh", config.HPC_HOST, cmd]
+    delays = config.HPC_SSH_RETRY_DELAYS
+
+    for attempt in range(config.HPC_SSH_RETRIES):
+        try:
+            result = subprocess.run(
+                ssh_cmd, capture_output=True, text=True, timeout=120,
+            )
+            if result.returncode == 0 or not check:
+                return result
+            # Non-zero exit but not a connection error — return as-is
+            if result.returncode != 255:
+                return result
+            # SSH error (rc=255) — retry
+            print(f"   [SSH] Connection error (attempt {attempt + 1}/"
+                  f"{config.HPC_SSH_RETRIES}): {result.stderr.strip()[:100]}")
+        except subprocess.TimeoutExpired:
+            print(f"   [SSH] Timeout (attempt {attempt + 1}/{config.HPC_SSH_RETRIES})")
+
+        if attempt < config.HPC_SSH_RETRIES - 1:
+            delay = delays[min(attempt, len(delays) - 1)]
+            print(f"   [SSH] Retrying in {delay}s...")
+            time.sleep(delay)
+
+    raise ConnectionError(
+        f"SSH to {config.HPC_HOST} failed after {config.HPC_SSH_RETRIES} attempts"
+    )
+
+
+def _scp_upload(local_path: str, remote_path: str) -> None:
+    """Upload a file to HPC via scp."""
+    subprocess.run(
+        ["scp", local_path, f"{config.HPC_HOST}:{remote_path}"],
+        check=True, capture_output=True, text=True, timeout=120,
+    )
+
+
+def _scp_download(remote_path: str, local_path: str) -> None:
+    """Download a file from HPC via scp."""
+    os.makedirs(os.path.dirname(local_path), exist_ok=True)
+    subprocess.run(
+        ["scp", f"{config.HPC_HOST}:{remote_path}", local_path],
+        check=True, capture_output=True, text=True, timeout=120,
+    )
+
+
+def _hpc_simulate(
+    beam_pools: dict,
+    iteration: int,
+    experiment_id: str,
+    experiment_dir: str,
+    sim_cache,
+) -> "LiveResults":
+    """
+    Run one iteration's simulations on HPC via SSH polling.
+
+    Single-process flow:
+      1. Generate manifest from beam_pools
+      2. scp upload manifest + HPC scripts to dirac1
+      3. ssh submit via submit_iteration.sh
+      4. Poll via SSH every HPC_POLL_INTERVAL until all .DONE files appear
+      5. ssh run aggregate_results.py on HPC
+      6. scp download batch_results.json
+      7. Parse into LiveResults via collect_results()
+    """
+    iter_dir = os.path.join(experiment_dir, f"iter_{iteration}")
+    os.makedirs(iter_dir, exist_ok=True)
+
+    # Step 1: Generate manifest
+    manifest_path = prepare_manifest(
+        beam_pools=beam_pools,
+        iteration=iteration,
+        experiment_id=experiment_id,
+        iter_dir=iter_dir,
+    )
+
+    # Count total jobs
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        manifest_data = json.load(f)
+    n_jobs = manifest_data["n_jobs"]
+
+    if n_jobs == 0:
+        print("[HPC] No jobs to simulate (all beams empty)")
+        from core.live_runner import LiveResults
+        return LiveResults()
+
+    # Step 2: Upload to HPC
+    hpc_base = config.HPC_BASE_DIR
+    hpc_exp_dir = f"{hpc_base}/{experiment_id}"
+    hpc_iter_dir = f"{hpc_exp_dir}/iter_{iteration}"
+
+    print(f"\n[HPC] Uploading manifest ({n_jobs} jobs) to {config.HPC_HOST}...")
+    _ssh_run(f"mkdir -p {hpc_iter_dir}/results")
+    _scp_upload(manifest_path, f"{hpc_iter_dir}/batch_manifest.json")
+
+    # Upload HPC scripts (ensure they're current)
+    hpc_scripts_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hpc")
+    hpc_remote_scripts = f"{hpc_base}/hpc"
+    _ssh_run(f"mkdir -p {hpc_remote_scripts}")
+    for script in ["run_mof_sim.py", "submit_iteration.sh", "aggregate_results.py"]:
+        script_path = os.path.join(hpc_scripts_dir, script)
+        if os.path.exists(script_path):
+            _scp_upload(script_path, f"{hpc_remote_scripts}/{script}")
+
+    # Step 3: Submit jobs
+    print(f"[HPC] Submitting {n_jobs} jobs via qas...")
+    submit_result = _ssh_run(
+        f"cd {hpc_iter_dir} && bash {hpc_remote_scripts}/submit_iteration.sh "
+        f"batch_manifest.json results {config.HPC_NODE_PROPERTY}"
+    )
+    print(f"[HPC] Submit output: {submit_result.stdout.strip()[-200:]}")
+    if submit_result.returncode != 0:
+        print(f"[HPC] Submit stderr: {submit_result.stderr.strip()[-200:]}")
+        raise RuntimeError(f"Job submission failed (rc={submit_result.returncode})")
+
+    # Step 4: Poll for completion
+    print(f"[HPC] Polling every {config.HPC_POLL_INTERVAL}s for {n_jobs} .DONE files...")
+    max_polls = int(config.HPC_POLL_MAX_HOURS * 3600 / config.HPC_POLL_INTERVAL)
+    results_dir = f"{hpc_iter_dir}/results"
+
+    for poll in range(1, max_polls + 1):
+        time.sleep(config.HPC_POLL_INTERVAL)
+
+        count_result = _ssh_run(
+            f"ls {results_dir}/*.DONE 2>/dev/null | wc -l",
+            check=False,
+        )
+        try:
+            n_done = int(count_result.stdout.strip())
+        except ValueError:
+            n_done = 0
+
+        elapsed_min = poll * config.HPC_POLL_INTERVAL / 60
+        print(f"   [HPC Poll #{poll}] {n_done}/{n_jobs} complete "
+              f"({elapsed_min:.0f} min elapsed)")
+
+        if n_done >= n_jobs:
+            print(f"[HPC] All {n_jobs} jobs complete!")
+            break
+    else:
+        print(f"[HPC WARNING] Timeout after {config.HPC_POLL_MAX_HOURS}h "
+              f"({n_done}/{n_jobs} complete). Proceeding with partial results.")
+
+    # Step 5: Aggregate results on HPC
+    print("[HPC] Aggregating results on remote...")
+    agg_result = _ssh_run(
+        f"cd {hpc_iter_dir} && python {hpc_remote_scripts}/aggregate_results.py "
+        f"--manifest batch_manifest.json --results-dir results"
+    )
+    print(f"[HPC] Aggregate: {agg_result.stdout.strip()[-200:]}")
+
+    # Step 6: Download batch_results.json
+    local_results_dir = os.path.join(iter_dir, "hpc_results")
+    os.makedirs(local_results_dir, exist_ok=True)
+    local_results_path = os.path.join(local_results_dir, "batch_results.json")
+
+    print("[HPC] Downloading results...")
+    _scp_download(
+        f"{results_dir}/batch_results.json",
+        local_results_path,
+    )
+
+    # Step 7: Parse into LiveResults
+    print("[HPC] Parsing results...")
+    live_results = collect_results(
+        results_path=local_results_path,
+        sim_cache=sim_cache,
+        n_per_beam=config.LIVE_SIM_N_PER_BEAM,
+    )
+
+    return live_results
 
 
 def run_live_experiment() -> None:
@@ -268,16 +458,57 @@ def run_live_experiment() -> None:
         for tag in linker_fgs & exclude_tags:
             constraints["global_requirements"]["exclude_tags"].remove(tag)
 
-        # ----- STEP C: SIMULATION (local or HPC) -----
-        if args.prepare:
-            # HPC MODE: prepare manifest and exit
-            print("\n[HPC Prepare] Building candidate pools...")
+        # ----- STEP C: SIMULATION (local, HPC auto, or HPC manual) -----
+
+        # Build beam pools (needed for --hpc and --prepare)
+        if args.hpc or args.prepare:
+            print("\n[HPC] Building candidate pools...")
             beam_pools = prepare_beam_pools(
                 specs=constraints,
                 matchmaker=matchmaker,
                 n_per_beam=config.LIVE_SIM_N_PER_BEAM,
             )
 
+            # Collect matchmaker stats for logging (Fix 1.2 + 1.3)
+            matchmaker_summary = {}
+            for bid, pool in beam_pools.items():
+                topos = set()
+                nodes = set()
+                edges = set()
+                for rm in pool:
+                    topos.add(rm.component.topology)
+                    nodes.add(rm.component.node)
+                    edges.add(rm.component.edge)
+                matchmaker_summary[bid] = {
+                    "n_candidates": len(pool),
+                    "n_topologies": len(topos),
+                    "n_nodes": len(nodes),
+                    "n_edges": len(edges),
+                }
+            total_candidates = sum(v["n_candidates"] for v in matchmaker_summary.values())
+            print(f"[HPC] Total candidates across beams: {total_candidates}")
+
+            # Log matchmaker results (Fix 1.3)
+            mm_log = {
+                "topology": list({rm.component.topology for p in beam_pools.values() for rm in p}),
+                "node": list({rm.component.node for p in beam_pools.values() for rm in p}),
+                "edge": list({rm.component.edge for p in beam_pools.values() for rm in p}),
+            }
+            logger.log_matchmaker_results(mm_log)
+
+        if args.hpc:
+            # HPC AUTO MODE: single-process SSH polling
+            experiment_id = os.path.basename(experiment_dir)
+            live_results = _hpc_simulate(
+                beam_pools=beam_pools,
+                iteration=iteration,
+                experiment_id=experiment_id,
+                experiment_dir=experiment_dir,
+                sim_cache=sim_cache,
+            )
+
+        elif args.prepare:
+            # HPC MANUAL MODE: prepare manifest and exit
             iter_dir = os.path.join(experiment_dir, f"iter_{iteration}")
             experiment_id = os.path.basename(experiment_dir)
             manifest_path = prepare_manifest(
@@ -396,11 +627,25 @@ def run_live_experiment() -> None:
             "cache_size": len(sim_cache),
         }
 
+        # Build matchmaker_result with real counts (Fix 1.2)
+        if args.hpc or args.prepare:
+            # matchmaker_summary was computed during beam pool construction
+            mm_result = {
+                "live_mode": True,
+                "topology": list({rm.component.topology for p in beam_pools.values() for rm in p}),
+                "node": list({rm.component.node for p in beam_pools.values() for rm in p}),
+                "edge": list({rm.component.edge for p in beam_pools.values() for rm in p}),
+                "per_beam": matchmaker_summary,
+                "summary": live_summary,
+            }
+        else:
+            mm_result = {"live_mode": True, "summary": live_summary}
+
         memory.add_iteration(
             iteration_num=iteration,
             hypothesis=current_hypothesis,
             constraints=constraints,
-            matchmaker_result={"live_mode": True, "summary": live_summary},
+            matchmaker_result=mm_result,
             feedback_type="4-Beam Diagnostic (Live)",
             feedback_content=current_feedback,
             sensitivity_summary=live_summary,

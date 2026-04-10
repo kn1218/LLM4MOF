@@ -564,15 +564,20 @@ class FeedbackGenerator:
         else:
             footer += "[PASS] CHEMISTRY: Your chemical constraints match entries in the database.\n"
 
-        # 2. Check Geometry (Set E2) — only relevant for PORMAKE
-        if not is_qmof:
+        # 2. Check Geometry (Set E2) — only relevant for PORMAKE markscheme mode
+        # In live simulation mode, e2 is always empty (no geometry-only filter set)
+        # so skip the geometry diagnostic entirely to avoid misleading messages.
+        is_live_mode = (len(set_e2) == 0
+                        and len(filter_sets.get('d', pd.DataFrame())) == 0
+                        and len(filter_sets.get('g', pd.DataFrame())) == 0)
+        if not is_qmof and not is_live_mode:
             count_e2 = len(set_e2)
             if count_e2 == 0:
                 footer += "[CRITICAL FAILURE] GEOMETRY: No MOFs exist with your full set of physical property constraints.\n"
                 footer += "  SUGGESTION: Your physical property constraints (Di, Df, SA, VF, etc.) may be too narrow.\n"
             else:
                 footer += "[PASS] GEOMETRY: Your geometry constraints match entries in the database.\n"
-                
+
             # 3. Intersection Failure
             if count_a > 0 and count_e2 > 0 and len(set_z) == 0:
                 footer += "[INTERSECTION FAILURE] Chemistry and Geometry both pass individually but NEVER TOGETHER.\n"
