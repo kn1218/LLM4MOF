@@ -4,7 +4,7 @@ import pandas as pd
 from typing import List, Dict, Tuple, Any
 
 import config
-from core.constraint_utils import parse_functional_groups, check_negative_tags, canon, get_approved_vocab, check_categorized_groups
+from core.constraint_utils import parse_functional_groups, check_negative_tags, canon, get_approved_vocab, check_categorized_groups, check_linker_branches
 
 class QMOFMatchmaker:
     """
@@ -28,14 +28,13 @@ class QMOFMatchmaker:
             return True
         item_metals = [canon(m) for m in item.get("metals", [])]
         req_metals = [canon(m) for m in required_metals]
-        
+
+        # "Any" metal = no metal constraint (matches hMOF/PORMake behavior)
+        if any(m == "any" for m in req_metals):
+            return True
+
         # Check if ANY of the required metals are present (OR Logic)
-        for rm in req_metals:
-            if rm in item_metals:
-                return True
-                
-        # If we get here, none of the required metals were found
-        return False
+        return any(rm in item_metals for rm in req_metals)
         
     def _check_connectivity(self, item: dict, node_query: dict) -> bool:
         conns = node_query.get("connectivity", [])
@@ -66,23 +65,31 @@ class QMOFMatchmaker:
     # ── Electronic metadata filters (Phase 3) ────────────────────────
 
     def _check_oxidation_state(self, item: dict, node_query: dict) -> bool:
-        """Check oxidation state for a single metal. null/empty = passthrough."""
+        """For every entry metal covered by the query, require matching oxidation state.
+
+        The iteration direction matters: we walk the entry's metals, not the query's.
+        Metals in the query that are absent from the entry are a non-event — the entry
+        simply lacks that metal; other entries will cover it. The prior version
+        iterated the query side, requiring every queried metal to appear in every
+        entry, which turned a per-metal constraint into a vacuous AND and produced
+        zero matches whenever the hypothesis listed more metals than any single MOF.
+        null/empty on either side is passthrough.
+        """
         ox_query = node_query.get("oxidation_state")
         if not ox_query or not isinstance(ox_query, dict):
             return True
         item_ox = item.get("oxidation_states", {})
         if not isinstance(item_ox, dict) or not item_ox:
             return True  # No data = benefit of doubt
-        for metal, state in ox_query.items():
-            if state is None:
-                continue
-            # Check if this metal at this oxidation state exists in the item
-            matched = False
-            for item_metal, item_state in item_ox.items():
-                if canon(item_metal) == canon(metal) and item_state == state:
-                    matched = True
-                    break
-            if not matched:
+        # Canonicalize the query once for O(1) per-metal lookup
+        query_canon = {canon(m): s for m, s in ox_query.items() if s is not None}
+        if not query_canon:
+            return True
+        for item_metal, item_state in item_ox.items():
+            required_state = query_canon.get(canon(item_metal))
+            if required_state is None:
+                continue  # query doesn't constrain this metal
+            if item_state != required_state:
                 return False
         return True
 
@@ -129,6 +136,7 @@ class QMOFMatchmaker:
         global_and_tags, linker_or_tags, neg_tags = parse_functional_groups(specs, approved_vocab=get_approved_vocab(), tracker=tracker)
         # DO NOT merge: global_and_tags require ALL present, linker_or_tags require ANY present
         all_pos_tags = global_and_tags + linker_or_tags  # Only for tracker recording
+        linker_branches = specs.get('linker_query', {}).get('linker_branches', [])
         
         node_query = specs.get("node_query", {})
         req_metals = node_query.get("metals_include", [])
@@ -174,6 +182,11 @@ class QMOFMatchmaker:
                         first_tag = linker_or_tags[0] if linker_or_tags else "Unknown"
                         tracker.record_first_fail(first_tag)
                     continue
+
+                # 4c. Branch matching (OR-of-ANDs)
+                if linker_branches:
+                    if not check_linker_branches(qmof, linker_branches):
+                        continue
 
                 # 5. Categorized functional group check (OPTIONAL)
                 linker_q = specs.get('linker_query', {})

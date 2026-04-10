@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import MASTER_DB_PATH
 from core.name_resolver import get_name_resolver
 import config
-from core.constraint_utils import parse_functional_groups, check_global_requirements, get_approved_vocab
+from core.constraint_utils import parse_functional_groups, check_global_requirements, get_approved_vocab, check_linker_branches, check_negative_tags
 
 
 class SensitivityAnalyzer:
@@ -111,7 +111,8 @@ class SensitivityAnalyzer:
                         ascending=False, method='min', na_option='bottom'
                     ).astype(int)
             else:
-                self.df_master = pd.read_csv(MASTER_DB_PATH, encoding='utf-8')
+                active_db_path = config.get_master_db_path()
+                self.df_master = pd.read_csv(active_db_path, encoding='utf-8')
                 # Clean Master DB: Ensure filenames are strings and valid
                 self.df_master = self.df_master[
                     self.df_master['filename'].apply(
@@ -158,8 +159,10 @@ class SensitivityAnalyzer:
         
         # Connectivity Prep
         target_cns = set()
-        if isinstance(cn_input, list):
-            target_cns = set(int(c) for c in cn_input)
+        if cn_input is None:
+            target_cns = set()  # No connectivity filter
+        elif isinstance(cn_input, list):
+            target_cns = set(int(c) for c in cn_input if c is not None)
         else:
             target_cns = {int(cn_input)}
             
@@ -169,10 +172,11 @@ class SensitivityAnalyzer:
         for item in self.bb_data:
             if item['Type'] != 'Node': continue
             
-            # Connectivity Check (Any overlap)
-            item_cn = item.get('connectivity', 0)
-            item_cns_set = set(item_cn) if isinstance(item_cn, list) else {item_cn}
-            if not target_cns.intersection(item_cns_set): continue
+            # Connectivity Check (Any overlap; skip if no constraint)
+            if target_cns:
+                item_cn = item.get('connectivity', 0)
+                item_cns_set = set(item_cn) if isinstance(item_cn, list) else {item_cn}
+                if not target_cns.intersection(item_cns_set): continue
 
             # Metal Check
             if not is_any_metal:
@@ -196,9 +200,13 @@ class SensitivityAnalyzer:
         """Get valid linker IDs based on query (V3 Semantic)."""
         
         cn_raw = query.get('connectivity', 2)
+        if cn_raw is None:
+            cn_raw = 2  # Default to ditopic if not specified
         # Handle case where connectivity is a list (multi-CN query)
         if isinstance(cn_raw, list):
-            cn_values = [int(c) for c in cn_raw]
+            cn_values = [int(c) for c in cn_raw if c is not None]
+            if not cn_values:
+                cn_values = [2]
         else:
             cn_values = [int(cn_raw)]
         valid_ids = set()
@@ -219,6 +227,7 @@ class SensitivityAnalyzer:
             'global_requirements': {'exclude_tags': exclude_tags or []}
         }
         _, _, negative_tags = parse_functional_groups(temp_specs, self.approved_vocab)
+        linker_branches = query.get('linker_branches', [])
 
         for item in self.bb_data:
             if item['Type'] != 'Edge': continue
@@ -227,20 +236,15 @@ class SensitivityAnalyzer:
             length = item.get('length', 0.0)
             if not (min_len <= length <= max_len): continue
             
-            # --- V3.3: Functional Group Check (Aligned with Matchmaker) ---
-            item_groups = [g.lower() for g in item.get('functional_groups', [])]
-            item_groups_set = set(item_groups)
-            item_name = item.get('readable_name', "").lower()
-            combined_text = item_name + " " + " ".join(item_groups)
-            
-            # A. Check Negatives (The "Bouncer")
-            # If ANY negative tag is present, ban the linker
-            is_banned = False
-            for neg in negative_tags:
-                if neg in combined_text:
-                    is_banned = True
-                    break
-            if is_banned: continue
+            # --- V3.4: Functional Group Check (Uses shared constraint_utils) ---
+            # A. Check Negatives (The "Bouncer") — exact set matching, not substring
+            if not check_negative_tags(item, negative_tags):
+                continue
+
+            # Branch matching (consistent with matchmaker)
+            if linker_branches:
+                if not check_linker_branches(item, linker_branches):
+                    continue
             
             # Note: Positive tag checks are deferred to Union Logic.
             
@@ -382,12 +386,20 @@ class SensitivityAnalyzer:
             n_ids = len(matchmaker_results.get('qmof_ids', []))
             return {
                 'total_combinations': n_ids,
-                'n_nodes': n_ids, 'n_linkers': 0, 'n_topologies': 0, # just display n_ids for nodes placeholder
+                'n_nodes': n_ids, 'n_linkers': 0, 'n_topologies': 0,
                 'breakdown': [{'combinations': n_ids, 'connectivity': 'QMOF', 'nodes': n_ids, 'linkers': 0, 'topologies': 0}]
+            }
+
+        if getattr(self, 'is_hmof', False):
+            n_ids = len(matchmaker_results.get('hmof_ids', []))
+            return {
+                'total_combinations': n_ids,
+                'n_nodes': n_ids, 'n_linkers': 0, 'n_topologies': 0,
+                'breakdown': [{'combinations': n_ids, 'connectivity': 'hMOF', 'nodes': n_ids, 'linkers': 0, 'topologies': 0}]
             }
             
         # Get requested connectivities from Agent 2
-        raw_cn = agent2_output['node_query'].get('connectivity', [])
+        raw_cn = agent2_output['node_query'].get('connectivity') or []
         if isinstance(raw_cn, int):
             requested_cns = [raw_cn]
         else:

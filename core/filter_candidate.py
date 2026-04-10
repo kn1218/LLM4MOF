@@ -83,16 +83,16 @@ class RankedMOF:
 def load_dictionaries() -> Tuple[
     Dict[str, int], Dict[str, int], Dict[str, int], List[str]
 ]:
-    with open(config.MOF2ZEO_TOPOLOGY_FILE, "r") as f:
+    with open(config.MOF2ZEO_TOPOLOGY_FILE, "r", encoding="utf-8") as f:
         topo_dict = {name.strip(): i for i, name in enumerate(f.readlines())}
 
-    with open(config.MOF2ZEO_NODE_FILE, "r") as f:
+    with open(config.MOF2ZEO_NODE_FILE, "r", encoding="utf-8") as f:
         node_dict = {name.strip(): i for i, name in enumerate(f.readlines())}
 
-    with open(config.MOF2ZEO_EDGE_FILE, "r") as f:
+    with open(config.MOF2ZEO_EDGE_FILE, "r", encoding="utf-8") as f:
         edge_dict = {name.strip(): i for i, name in enumerate(f.readlines())}
 
-    with open(config.MOF2ZEO_FEATURE_FILE, "r") as f:
+    with open(config.MOF2ZEO_FEATURE_FILE, "r", encoding="utf-8") as f:
         feature_names = [line.strip() for line in f.readlines()]
 
     return topo_dict, node_dict, edge_dict, feature_names
@@ -105,7 +105,7 @@ def load_scaler() -> Scaler:
     mean_df = pd.read_csv(config.MOF2ZEO_SCALER_MEAN_PATH)
     std_df = pd.read_csv(config.MOF2ZEO_SCALER_STD_PATH)
 
-    with open(config.MOF2ZEO_FEATURE_FILE, "r") as f:
+    with open(config.MOF2ZEO_FEATURE_FILE, "r", encoding="utf-8") as f:
         feature_names = [line.strip() for line in f.readlines()]
 
     mean = mean_df[feature_names].values.squeeze()
@@ -140,7 +140,7 @@ class GeometryPredictor:
             return
 
         # Load model config
-        with open(config.MOF2ZEO_CONFIG_PATH, "r") as f:
+        with open(config.MOF2ZEO_CONFIG_PATH, "r", encoding="utf-8") as f:
             model_config = yaml.safe_load(f)
 
         self._topo_dict, self._node_dict, self._edge_dict, _ = load_dictionaries()
@@ -148,15 +148,59 @@ class GeometryPredictor:
         self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         try:
+            # PyTorch 2.6+ changed torch.load default to weights_only=True, which
+            # refuses to unpickle non-builtin classes for security. The mof2zeo
+            # checkpoint contains a mof2zeo.dataset.Scaler instance and a
+            # numpy.dtype reconstructor, so we whitelist them before the load.
+            # This is the PyTorch-recommended fix from the error message itself.
+            try:
+                import numpy
+                from numpy.core.multiarray import _reconstruct as _numpy_reconstruct
+                from numpy import ndarray, dtype
+                torch.serialization.add_safe_globals([
+                    Scaler,
+                    _numpy_reconstruct,
+                    ndarray,
+                    dtype,
+                    numpy.dtypes.Float64DType,
+                    numpy.dtypes.Float32DType,
+                    numpy.dtypes.Int64DType,
+                ])
+            except Exception as _safe_e:
+                print(f"[Agent 3] note: safe_globals partial setup ({_safe_e}); "
+                      f"falling back to weights_only=False on the load")
+
             # Load checkpoint from config
             ckpt_path = config.MOF2ZEO_CKPT_PATH
 
-            self._model = MOFNET.load_from_checkpoint(
-                ckpt_path,
-                config=model_config,
-                scaler=self._scaler,
-                strict=False,
-            )
+            try:
+                self._model = MOFNET.load_from_checkpoint(
+                    ckpt_path,
+                    config=model_config,
+                    scaler=self._scaler,
+                    strict=False,
+                )
+            except Exception as _wo_e:
+                # Belt-and-suspenders: if safe_globals didn't cover everything in the
+                # checkpoint, fall back to the explicit weights_only=False path.
+                # The checkpoint is shipped with the repo via Git LFS; we trust it.
+                print(f"[Agent 3] note: weights_only safe load failed ({type(_wo_e).__name__}); "
+                      f"retrying with weights_only=False (trusted local checkpoint)")
+                import torch as _torch
+                _orig_load = _torch.load
+                def _trusted_load(*args, **kwargs):
+                    kwargs["weights_only"] = False
+                    return _orig_load(*args, **kwargs)
+                _torch.load = _trusted_load
+                try:
+                    self._model = MOFNET.load_from_checkpoint(
+                        ckpt_path,
+                        config=model_config,
+                        scaler=self._scaler,
+                        strict=False,
+                    )
+                finally:
+                    _torch.load = _orig_load
 
             self._model.to(self._device)
             self._model.eval()
@@ -166,6 +210,23 @@ class GeometryPredictor:
             self._model = None
 
     def predict(self, topology: str, node: str, edge: str) -> PredictedGeometry:
+        # OOV check — warn when master's matchmaker hands us a topology/node/edge
+        # that was not in the mof2zeo training vocabulary. A silent fallback to
+        # index 0 (as the prior version did via dict.get(key, 0)) produces a
+        # prediction for the wrong MOF, which is a silent-wrong-answer bug.
+        # Current vocab coverage (verified 2026-04-08 against master v2.5):
+        #   nodes  100% (648/648)  — no OOV expected
+        #   edges  100% (219/219)  — no OOV expected
+        #   topos  ~41% (964/2364) — real OOV risk for exotic topologies
+        if topology not in self._topo_dict:
+            print(f"[Agent 3] WARNING: topology '{topology}' not in mof2zeo vocab; "
+                  f"using index 0 fallback (prediction unreliable for this candidate).")
+        if node not in self._node_dict:
+            print(f"[Agent 3] WARNING: node '{node}' not in mof2zeo vocab; "
+                  f"using index 0 fallback (prediction unreliable for this candidate).")
+        if edge not in self._edge_dict:
+            print(f"[Agent 3] WARNING: edge '{edge}' not in mof2zeo vocab; "
+                  f"using index 0 fallback (prediction unreliable for this candidate).")
         topo_idx = self._topo_dict.get(topology, 0)
         node_idx = self._node_dict.get(node, 0)
         edge_idx = self._edge_dict.get(edge, 0)
@@ -213,9 +274,9 @@ class ComponentGenerator:
         self._load_cn_data()
 
     def _load_cn_data(self):
-        with open(config.TOPO_DICTIONARY_PATH, "r") as f:
+        with open(config.TOPO_DICTIONARY_PATH, "r", encoding="utf-8") as f:
             topo_data = json.load(f)
-        with open(config.BB_DICTIONARY_PATH, "r") as f:
+        with open(config.BB_DICTIONARY_PATH, "r", encoding="utf-8") as f:
             bb_data = json.load(f)
 
         self._topo_cn = {
@@ -235,17 +296,44 @@ class ComponentGenerator:
     def generate_from_matchmaker(
         self, matchmaker_result: Dict[str, Any]
     ) -> List[MOFComponent]:
-        """Generate diverse combinations using stratified random sampling."""
+        """Generate diverse combinations using stratified random sampling.
+
+        Safety contract (added 2026-04-08 for master v2.5 compatibility):
+        If the matchmaker returns its structured error dict (status='error')
+        or empty topology/node/edge lists, we ABORT here with a clear error
+        instead of silently substituting random entries from the mof2zeo
+        training vocabulary. The earlier behavior produced plausible-looking
+        rankings for MOFs that had NO relationship to the user's constraints,
+        which is a silent-wrong-answer bug.
+        """
+        # Hard guard: master's matchmaker returns a structured error dict with
+        # status='error' when no nodes match the chemistry constraints (e.g.,
+        # when the LLM over-constrains in iteration 1). Refuse to proceed —
+        # the caller (run_simulation.py) should catch this and let the iterative
+        # loop broaden the hypothesis, not silently simulate random MOFs.
+        if matchmaker_result.get("status") == "error":
+            raise ValueError(
+                f"[Agent 3] Matchmaker returned error: "
+                f"{matchmaker_result.get('message', 'no matching candidates')}. "
+                f"Refusing to substitute random vocabulary. "
+                f"Broaden the Agent 1 hypothesis and retry."
+            )
+
+
         topo_list = matchmaker_result.get("topology", [])
         node_list = matchmaker_result.get("node", [])
         edge_list = matchmaker_result.get("edge", [])
 
-        if not topo_list:
-            topo_list = self._topo_list[:50]
-        if not node_list:
-            node_list = self._node_list[:100]
-        if not edge_list:
-            edge_list = self._edge_list[:50]
+        # Hard guard: any empty dimension means the matchmaker filtered to zero.
+        # Refuse to fall back to random vocabulary.
+        if not topo_list or not node_list or not edge_list:
+            raise ValueError(
+                f"[Agent 3] Matchmaker returned an empty candidate set "
+                f"(topologies={len(topo_list)}, nodes={len(node_list)}, "
+                f"edges={len(edge_list)}). Refusing to substitute random "
+                f"vocabulary — the ranking would be meaningless. "
+                f"Broaden the Agent 1 hypothesis and retry."
+            )
 
         return self._generate_diverse_combinations(
             topo_list, node_list, edge_list, max_combos=1000
@@ -681,7 +769,7 @@ def main():
     args = parser.parse_args()
 
     if args.constraints:
-        with open(args.constraints, "r") as f:
+        with open(args.constraints, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         if "matchmaker_result" in data:
@@ -696,7 +784,7 @@ def main():
         agent2_constraints = {"geometry_filter": data.get("geometry_filter", {})}
         print("Loaded constraints from:", args.constraints)
     elif args.matchmaker:
-        with open(args.matchmaker, "r") as f:
+        with open(args.matchmaker, "r", encoding="utf-8") as f:
             matchmaker_result = json.load(f)
         agent2_constraints = {"geometry_filter": {}}
     else:

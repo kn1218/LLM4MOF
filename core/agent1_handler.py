@@ -11,7 +11,7 @@ from typing import Optional, Dict, Any
 
 # Add parent directory to path for config import
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import AGENT1_PROMPT_PATH
+from config import get_agent1_prompt_path
 from core.llm_client import LLMClient, load_prompt
 
 
@@ -29,53 +29,37 @@ class Agent1Handler:
     def __init__(self):
         """Initialize Agent 1 with its system prompt."""
         # Load system prompt from file
-        self.system_prompt = load_prompt(AGENT1_PROMPT_PATH)
+        self.system_prompt = load_prompt(get_agent1_prompt_path())
         
         # Initialize LLM client with multi-turn enabled
         self.client = LLMClient(self.system_prompt, multi_turn=True)
         
         print("[Agent 1] Initialized - Hypothesis Generator (Multi-turn mode)")
-    
-    def _update_system_prompt_with_journal(self, journal_history: list = None):
-        """
-        Helper to inject the scientific journal into the system prompt
-        and update the LLM client for the current turn.
-        """
-        # Format journal
-        if journal_history and len(journal_history) > 0:
-            formatted_journal = "Prior Iterations:\n" + "\n".join(journal_history)
-        else:
-            formatted_journal = "No prior iterations recorded."
-            
-        # Inject into prompt
-        current_prompt = self.system_prompt.replace("{SCIENTIFIC_JOURNAL}", formatted_journal)
-        
-        # Update LLM Client
-        # 1. Update the attribute (for Gemini `systemInstruction`)
-        self.client.system_prompt = current_prompt
-        
-        # 2. Update conversation history (for OpenAI / chat context)
-        if self.client.conversation_history and len(self.client.conversation_history) > 0:
-            if self.client.conversation_history[0]['role'] == 'system':
-                self.client.conversation_history[0]['content'] = current_prompt
 
     def generate_initial_hypothesis(self, user_inquiry: str) -> Optional[Dict[str, Any]]:
         """
         Generate the first hypothesis based on user inquiry.
-        
+
         Args:
             user_inquiry: The user's research goal (e.g., "Design MOF for H2 storage")
-            
+
         Returns:
             Parsed JSON hypothesis or None if failed
         """
         print("\n[Agent 1] Generating initial hypothesis...")
         print(f"   User Inquiry: {user_inquiry}")
-        
-        # Initialize with empty journal
-        self._update_system_prompt_with_journal(journal_history=[])
-        
-        response = self.client.send_message(user_inquiry)
+
+        # Chemistry-first guidance: prevent over-constraining on iteration 1
+        first_iter_guidance = (
+            "\n\nFIRST-ITERATION STRATEGY: You have no feedback yet. "
+            "Focus on CHEMISTRY only - specify metals and linker functional groups "
+            "based on your domain knowledge. Leave geometry_filter EMPTY or specify "
+            "at most 1-2 key descriptors. Do NOT constrain all geometry parameters "
+            "simultaneously - the database is finite and each constraint removes ~50%% "
+            "of candidates. You will refine geometry in iteration 2+ based on the "
+            "4-beam diagnostic data."
+        )
+        response = self.client.send_message(user_inquiry + first_iter_guidance)
         
         if not response:
             print("[Agent 1] ERROR: No response received")
@@ -93,24 +77,20 @@ class Agent1Handler:
             self._dump_raw_response(response, "initial")
             return None
     
-    def refine_hypothesis(self, feedback: str, journal_history: list = None) -> Optional[Dict[str, Any]]:
+    def refine_hypothesis(self, feedback: str) -> Optional[Dict[str, Any]]:
         """
         Generate a refined hypothesis based on feedback.
-        
+
         The multi-turn conversation maintains context of previous
         hypotheses, so the agent can learn and improve.
-        
+
         Args:
             feedback: Feedback text from the simulation results
-            journal_history: List of past iteration summaries for the Scientific Journal
-            
+
         Returns:
             Parsed JSON hypothesis or None if failed
         """
         print("\n[Agent 1] Processing feedback and refining hypothesis...")
-        
-        # Inject current journal into system prompt
-        self._update_system_prompt_with_journal(journal_history)
         
         # Construct feedback message
         feedback_message = f"""
@@ -119,7 +99,10 @@ Based on the experimental laboratory feedback below, please analyze your previou
 Read the provided report carefully to understand the physical and chemical realities of your chosen components. 
 Pay close attention to the "STATUS" and explicitly follow any "INSTRUCTION" or "HYPOTHESIS EVALUATION TASK" provided in the text.
 
-IMPORTANT: Each beam now includes a "Chemistry Profile" (per-sample chemical metadata: metals, abstract features like conjugated/symmetric, and functional group backbone/substituents) and a "Pattern Summary" (aggregate statistics showing what percentage of samples share each chemical property). Use these to identify WHICH chemical properties correlate with high performance — not just geometry. Compare Pattern Summaries across beams to isolate the chemical drivers.
+IMPORTANT: The feedback contains 4 diagnostic beams. Each beam is clearly labeled with what it controls for.
+Read the beam descriptions carefully — they tell you exactly what variable each beam isolates.
+Compare adjacent beams to diagnose which part of your hypothesis (metals, linkers, geometry, or overall chemistry) is helping or hurting.
+Each beam includes a "Chemistry Profile" and "Pattern Summary". Use these to identify WHICH chemical properties correlate with high performance.
 
 Use this empirical data to deduce what worked, what failed, and how to self-correct.
 State whether you are executing an 'Exploitation Phase' or an 'Exploration Phase' in your reasoning.
@@ -202,6 +185,10 @@ Then, propose an improved hypothesis. Maintain the exact same JSON output format
     def get_conversation_history(self):
         """Return the full conversation history for logging."""
         return self.client.get_conversation_history()
+
+    def set_conversation_history(self, history):
+        """Restore conversation history from checkpoint."""
+        self.client.set_conversation_history(history)
 
 
 

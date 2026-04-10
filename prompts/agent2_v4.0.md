@@ -33,20 +33,22 @@
 *   **Length:** Extract ranges directly in Angstroms.
     *   **Critical:** If Agent 1 does NOT specify a length, return `null` (do not guess).
 *   **Rigidity:** Set `is_rigid: true` if the text mentions "rigid", "stiff", "alkyne", "aromatic backbone", or "non-collapsable".
-*   **Global Functional Groups (Union Logic):** Consolidate universally required functional groups.
-    *   **Mandatory Only:** Only list groups that MUST be present in ALL candidates.
-    *   **WARNING (Mutually Exclusive Options):** If Agent 1 lists alternatives (e.g., "Use Azole nodes OR Carboxylate nodes"), do NOT add both to this list.
-        *   Incorrect: `["Azole", "Carboxyl"]` (Result: 0 matches, as no node is both).
-        *   Correct: `[]` (Empty list implies either is acceptable if not strictly required globally) OR pick the one feature that is common to both (e.g., "Aromatic").
+*   **Global Functional Groups (Universal Minimum Floor):** This field is now the **universal minimum floor** applied before branch matching.
+    *   Only list groups that MUST be present in ALL candidates across ALL branches.
+    *   If `linker_branches` is populated (which it should always be), `functional_groups` should typically be `[]` or contain only truly universal tags like `["Carboxyl"]` (if ALL branches involve carboxylates).
+    *   **DO NOT** use `functional_groups` to express alternatives. Use `linker_branches` instead (see Step 2.7).
+    *   **DO NOT** compute the common denominator of alternatives and put it here (e.g., do NOT put `["Aromatic"]` when Agent 1 said "pyridine OR azolate").
 *   **Negative Constraints:** If Agent 1 says "avoid X", "no X", "exclude X" (in either component), add the tag to `exclude_tags`. The tag must be an APPROVED VOCABULARY entry.
     *   **⚠️ OPTIONAL ≠ EXCLUDE:** If Agent 1 describes a feature as "optional", "if available", "if present", or "secondary", do **NOT** put it in `exclude_tags`. Optional features should be omitted from BOTH `include_tags` AND `exclude_tags` (neutral). Only tags that Agent 1 **explicitly rejects** belong in `exclude_tags`.
     *   **Example:** "optional -F substituents, avoiding bulky groups" → `exclude_tags: ["tert-Butyl"]` (bulky group excluded). Fluoro is NOT excluded — it is optional/neutral.
 
-> **⚠️ BINDING TERM HANDOVER (CRITICAL):**  
+> **⚠️ BINDING TERM HANDOVER (CRITICAL):**
 > If Agent 1 mentions how the linker **binds** to the metal (e.g., "carboxylate", "pyridyl-coordinated", "azolate-bridged", "phosphonate"), you **MUST**:
 > 1. Extract the binding element (O for carboxylate, N for pyridyl/azolate, P for phosphonate)
 > 2. Add it to the **Node Query's `ligand_chemistry`** field, NOT the linker query
 > 3. This ensures the node-linker compatibility is validated via the node's donor atom preferences
+
+{DATABASE_MODE_RULES}
 
 ---
 
@@ -132,9 +134,82 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
 >
 > **CRITICAL:** All tags MUST use the same Approved Canonical Vocabulary as `functional_groups` (see table in Step 2). Free-text alternatives will cause search failures.
 
+### Step 2.7: Decompose Alternative Linker Strategies into Branches (CRITICAL)
+
+> When Agent 1 proposes **multiple alternative linker strategies** connected by "or", "alternatively", "as a second branch", numbered options, or comma-separated families, you MUST decompose them into `linker_branches`.
+>
+> **Rules:**
+> - Each branch represents ONE alternative linker strategy.
+> - `required_tags` within a branch use **AND logic**: ALL tags must be present for a candidate to match that branch.
+> - Branches use **OR logic**: a candidate passes if it matches ANY branch.
+> - **CRITICAL: Do NOT compute the common denominator.** If Agent 1 says "pyridine dicarboxylate OR azolate linkers", do NOT extract `["Aromatic"]`. Extract two branches: `[["Pyridine", "Carboxyl"], ["Azolate"]]`.
+> - `functional_groups` field should contain ONLY tags that are **universally required across ALL branches** (the common minimum). If branches share nothing, set `functional_groups: []`.
+> - If Agent 1 describes only ONE linker type (no alternatives), use a SINGLE branch. Still use `linker_branches`.
+> - **ALWAYS populate linker_branches** for every extraction. This is now the primary mechanism for linker chemistry matching.
+>
+> **Examples:**
+>
+> Agent 1: "Use pyridine dicarboxylate or ether-containing aromatics or azolate linkers"
+> ```json
+> "functional_groups": [],
+> "linker_branches": [
+>     {"description": "pyridine dicarboxylate", "required_tags": ["Pyridine"]},
+>     {"description": "ether aromatic", "required_tags": ["Ether", "Aromatic"]},
+>     {"description": "azolate", "required_tags": ["Azolate"]}
+> ]
+> ```
+> *(Note: "dicarboxylate" = coordination chemistry → route to `node_query.ligand_chemistry: ["Oxygen"]`, NOT into branch tags)*
+>
+> Agent 1: "Rigid aromatic dicarboxylate backbone (BDC or NDC type)"
+> ```json
+> "functional_groups": [],
+> "linker_branches": [
+>     {"description": "BDC-type benzene backbone", "required_tags": ["Benzene"]},
+>     {"description": "NDC-type naphthalene backbone", "required_tags": ["Naphthalene"]}
+> ]
+> ```
+> *(Note: "dicarboxylate" → `node_query.ligand_chemistry: ["Oxygen"]`)*
+>
+> Agent 1: "Terphenyl dicarboxylate linker" (single strategy, no alternatives)
+> ```json
+> "functional_groups": [],
+> "linker_branches": [
+>     {"description": "terphenyl backbone", "required_tags": ["Terphenyl"]}
+> ]
+> ```
+>
+> Agent 1: "naphthalene-based, pyrazine-based, thiophene-containing, and alkynyl spacers"
+> ```json
+> "functional_groups": [],
+> "linker_branches": [
+>     {"description": "naphthalene backbone", "required_tags": ["Naphthalene"]},
+>     {"description": "pyrazine-based", "required_tags": ["Pyrazine"]},
+>     {"description": "thiophene aromatic", "required_tags": ["Thiophene", "Aromatic"]},
+>     {"description": "alkynyl spacer", "required_tags": ["Alkyne"]}
+> ]
+> ```
+>
+> Agent 1: "amine-functionalized biphenyl dicarboxylate"
+> ```json
+> "functional_groups": [],
+> "linker_branches": [
+>     {"description": "amine-functionalized biphenyl", "required_tags": ["Biphenyl", "Amine"]}
+> ]
+> ```
+> *(Note: "dicarboxylate" → `node_query.ligand_chemistry: ["Oxygen"]`. "Biphenyl" and "Amine" describe the organic backbone and substituent.)*
+>
+> **ANTI-PATTERN (FORBIDDEN):**
+> Agent 1: "Use pyridine OR ether OR azolate"
+> WRONG: `"functional_groups": ["Aromatic", "Ring"]` -- This is the common denominator. NEVER DO THIS.
+> CORRECT: `"linker_branches": [{"required_tags": ["Pyridine"]}, {"required_tags": ["Ether"]}, {"required_tags": ["Azolate"]}]`
+>
+> **`functional_groups` semantics reminder:** When `linker_branches` is populated, `functional_groups` should typically be `[]`. Focus branch tags on backbone scaffolds and substituent decorations. Coordination chemistry (carboxylate, azolate binding, phosphonate) belongs in `node_query.ligand_chemistry`, not in branch tags.
+
 ---
 
-**Step 3: Extract Pore Geometry Constraints**
+**Step 3: Extract Pore Geometry Predictions (Second-Stage Gate)**
+
+> **NOTE:** Geometry values extracted here are PREDICTIONS about what geometry the proposed chemistry should produce. They are used as a second-stage evaluation gate (applied after chemistry-based candidate selection), NOT as a primary search filter. The primary search is always chemistry-first.
 
 > **IMPORTANT WARNING for Band Gap / Electronic Mode:** 
 > When Agent 1's goal is **Electronic Band Gap** tuning rather than H2 Uptake, geometric descriptors (Di, Df, SA, etc) are often irrelevant unless explicitly called out. 
@@ -181,11 +256,14 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
       "length_min": Float_or_Null,
       "length_max": Float_or_Null,
       "is_rigid": Boolean_or_Null,
-      "functional_groups": ["List", "Specific", "Tags"],
+      "functional_groups": ["Universal_Minimum_Tags_or_Empty"],
       "abstract_features": {},
       "backbone_requirements": ["Tag1_or_Null"],
       "substituent_requirements": ["Tag1_or_Null"],
-      "min_group_counts": {"tag": Integer_or_Null}
+      "min_group_counts": {"tag": Integer_or_Null},
+      "linker_branches": [
+          {"description": "Branch_Name", "required_tags": ["Tag1", "Tag2"]}
+      ]
   },
   "global_requirements": {
       "include_tags": ["Aromatic", "Nitrogen"],

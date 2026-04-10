@@ -20,6 +20,29 @@ from typing import Set, Dict, List, Tuple, Optional, Any
 
 
 # =============================================================================
+# PORMAKE COORDINATION TAGS
+# =============================================================================
+# In PorMake's building-block grammar, coordination groups (the atoms that bond
+# the organic linker to the metal node) live on the **Node SBU**, not on the
+# Edge (linker backbone). When Agent 2 describes a "biphenyl dicarboxylate"
+# linker, the "dicarboxylate" part is captured by the node; the edge only
+# carries the "biphenyl" backbone.
+#
+# These tags should be stripped from linker-branch matching in PorMake mode
+# because edges will almost never carry them (only 10/219 anomalous edges do).
+# For hMOF/QMOF (whole-MOF filtering), these tags ARE valid and must NOT be
+# stripped — whole MOFs legitimately carry carboxyl, azolate, etc.
+# =============================================================================
+
+PORMAKE_COORDINATION_TAGS: frozenset = frozenset({
+    "carboxyl",         # covers carboxyl_any, carboxylate, carboxylic_acid via canon()
+    "carbonyl",         # C=O often part of carboxylate coordination shell
+    "phosphonate",      # P-O donor coordination
+    "sulfonate",        # S-O donor coordination (rare but node-dominant)
+})
+
+
+# =============================================================================
 # ONTOLOGY LOADING (Singleton)
 # =============================================================================
 
@@ -511,5 +534,153 @@ def check_categorized_groups(
     return True
 
 
+def check_linker_branches(item: dict, branches: list) -> bool:
+    """
+    OR-of-ANDs branch matching for linker functional groups.
+    
+    Each branch has 'required_tags' (AND within branch).
+    Candidate passes if ANY branch is fully satisfied.
+    
+    Args:
+        item: BB or MOF dict with 'functional_groups' key
+        branches: List of dicts, each with 'required_tags' (list of strings)
+        
+    Returns:
+        True if no branches (passthrough), or if any branch matches.
+    """
+    if not branches:
+        return True  # No branches = no filter (backward compat)
+    
+    item_tags = {canon(t) for t in item.get('functional_groups', [])}
+    
+    for branch in branches:
+        required = branch.get('required_tags', [])
+        if not required:
+            continue  # Empty branch = skip
+        required_canon = {canon(t) for t in required}
+        if required_canon.issubset(item_tags):
+            return True  # ALL tags in this branch are present -> match
+    
+    return False  # No branch matched
+
+
+def strip_coordination_tags_from_branches(
+    branches: list,
+    coordination_tags: frozenset = PORMAKE_COORDINATION_TAGS
+) -> list:
+    """
+    Strip coordination-group tags from linker branch required_tags for PorMake mode.
+
+    In PorMake's BB grammar, coordination groups (carboxylate, phosphonate, etc.)
+    live on the Node SBU, not on the Edge. Agent 2 may include them in branch
+    required_tags (e.g., ["Biphenyl", "Carboxyl"]) because that's natural chemistry
+    language. This function removes them so branch matching works against edges.
+
+    Args:
+        branches: List of branch dicts with 'required_tags' and 'description'.
+        coordination_tags: Set of canonical coordination tags to strip.
+
+    Returns:
+        New list of branches with coordination tags removed.
+        Empty branches (all tags stripped) are preserved with a warning flag.
+    """
+    cleaned = []
+    for branch in branches:
+        required = branch.get('required_tags', [])
+        original_count = len(required)
+
+        kept = [t for t in required if canon(t) not in coordination_tags]
+        stripped = [t for t in required if canon(t) in coordination_tags]
+
+        if stripped:
+            print(f"   [PorMake] Branch '{branch.get('description', '?')}': "
+                  f"stripped coordination tags {stripped} (node-side in PorMake)")
+
+        if kept:
+            cleaned.append({
+                "description": branch.get("description", ""),
+                "required_tags": kept
+            })
+        else:
+            # All tags were coordination-only → branch becomes empty → skip it
+            print(f"   [PorMake] Branch '{branch.get('description', '?')}': "
+                  f"all tags were coordination-only, branch removed")
+
+    return cleaned
+
+
+def _test_strip_coordination_tags():
+    """Unit tests for strip_coordination_tags_from_branches."""
+    # Basic stripping
+    branches = [
+        {"description": "biphenyl dicarboxylate", "required_tags": ["Biphenyl", "Carboxyl"]},
+        {"description": "pyridine linker", "required_tags": ["Pyridine"]},
+    ]
+    result = strip_coordination_tags_from_branches(branches)
+    assert len(result) == 2
+    assert result[0]["required_tags"] == ["Biphenyl"]
+    assert result[1]["required_tags"] == ["Pyridine"]
+
+    # Branch with only coordination tags → removed
+    branches2 = [
+        {"description": "carboxylate only", "required_tags": ["Carboxyl", "Carbonyl"]},
+        {"description": "amine backbone", "required_tags": ["Amine"]},
+    ]
+    result2 = strip_coordination_tags_from_branches(branches2)
+    assert len(result2) == 1
+    assert result2[0]["required_tags"] == ["Amine"]
+
+    # Empty branches input
+    assert strip_coordination_tags_from_branches([]) == []
+
+    # No coordination tags → unchanged
+    branches3 = [{"description": "test", "required_tags": ["Benzene", "Amine"]}]
+    result3 = strip_coordination_tags_from_branches(branches3)
+    assert result3[0]["required_tags"] == ["Benzene", "Amine"]
+
+    print("[OK] strip_coordination_tags_from_branches all tests passed")
+
+
+def _test_linker_branches():
+    """Unit tests for check_linker_branches."""
+    # No branches = pass
+    assert check_linker_branches({}, []) == True
+    assert check_linker_branches({'functional_groups': []}, []) == True
+    
+    # Single branch matches
+    assert check_linker_branches(
+        {'functional_groups': ['pyridine', 'carboxyl', 'aromatic']},
+        [{'required_tags': ['Pyridine', 'Carboxyl']}]
+    ) == True
+    
+    # Second branch matches (first doesn't)
+    assert check_linker_branches(
+        {'functional_groups': ['ether', 'aromatic', 'benzene']},
+        [{'required_tags': ['Pyridine', 'Carboxyl']}, {'required_tags': ['Ether', 'Aromatic']}]
+    ) == True
+    
+    # Neither branch matches
+    assert check_linker_branches(
+        {'functional_groups': ['benzene', 'aromatic']},
+        [{'required_tags': ['Pyridine', 'Carboxyl']}, {'required_tags': ['Ether', 'Aromatic']}]
+    ) == False
+    
+    # Empty branch skipped, other branch matches
+    assert check_linker_branches(
+        {'functional_groups': ['azolate']},
+        [{'required_tags': []}, {'required_tags': ['Azolate']}]
+    ) == True
+    
+    # Item has no functional_groups
+    assert check_linker_branches(
+        {},
+        [{'required_tags': ['Benzene']}]
+    ) == False
+    
+    print("[OK] check_linker_branches all tests passed")
+
+
 if __name__ == "__main__":
     _test_constraint_utils()
+    _test_linker_branches()
+    _test_strip_coordination_tags()

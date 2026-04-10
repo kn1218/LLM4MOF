@@ -226,10 +226,6 @@ class ExperimentLogger:
         self._write_log(f"Type: {feedback_type}\n")
         self._write_log(f"Content:\n{feedback_content}\n\n")
     
-    def log_journal_update(self, journal_entry: str):
-        """Log the update to the Scientific Journal."""
-        self._write_log(f"\n[Scientific Journal] Updated:\n{journal_entry}\n")
-
     def log_experiment_end(self, total_iterations: int):
         """Log the end of the experiment."""
         self._write_log(f"\n{'='*60}\n")

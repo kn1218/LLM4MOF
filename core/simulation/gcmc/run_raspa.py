@@ -39,17 +39,40 @@ def find_raspa3():
     if raspa_which:
         return raspa_which
 
-    # Fallback: try conda base env
-    conda_bin = os.path.join(os.path.dirname(sys.executable), "raspa3")
-    if os.path.exists(conda_bin):
-        return conda_bin
+    # Fallback: try conda env directories (Scripts/, bin/, Library/bin/)
+    env_root = os.path.dirname(sys.executable)
+    for subdir in ["", "bin", "Scripts", "Library/bin"]:
+        for ext in ["", ".exe"]:
+            candidate = os.path.join(env_root, subdir, f"raspa3{ext}")
+            if os.path.exists(candidate):
+                return candidate
+
+    # Also try one level up (sys.executable may be in Scripts/ or bin/)
+    env_root_parent = os.path.dirname(env_root)
+    for subdir in ["bin", "Scripts", "Library/bin"]:
+        for ext in ["", ".exe"]:
+            candidate = os.path.join(env_root_parent, subdir, f"raspa3{ext}")
+            if os.path.exists(candidate):
+                return candidate
 
     return None
 
 
-sys.path.insert(
-    0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# FIX 2026-04-09: Han's original used 3x dirname which lands on .../core/, not
+# the project root, which causes `from core import __root_dir__` to either fail
+# or import a stale `core` package from a sibling LLM2AUTO project elsewhere on
+# disk (whichever Python finds first via sys.path). 4x dirname is correct:
+#   __file__              = .../core/simulation/gcmc/run_raspa.py
+#   dirname x1            = .../core/simulation/gcmc/
+#   dirname x2            = .../core/simulation/
+#   dirname x3            = .../core/             (Han's bug -- wrong)
+#   dirname x4            = .../                  (project root -- correct)
+_project_root = os.path.dirname(
+    os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    )
 )
+sys.path.insert(0, _project_root)
 from core import __root_dir__
 from core.simulation.gcmc.raspa_utils import get_density_from_cif
 
@@ -144,7 +167,7 @@ def create_raspa_input(mof, mof_dir, output_dir, params):
                 "NumberOfUnitCells": [na, nb, nc],
                 "ExternalTemperature": params.get("temperature", 77.0),
                 "ExternalPressure": params.get("pressure", 10000000.0),
-                "HeliumVoidFraction": 0,
+                "HeliumVoidFraction": params.get("helium_void_fraction", 0.5),
                 "ChargeMethod": "None",
             }
         ],
@@ -171,7 +194,8 @@ def create_raspa_input(mof, mof_dir, output_dir, params):
 
 
 def run_simulation_background(
-    input_file, mof_dir, output_dir, forcefield_dir, filename, raspa3_bin
+    input_file, mof_dir, output_dir, forcefield_dir, filename, raspa3_bin,
+    timeout=600,
 ):
     """
     Run RASPA3 simulation in background using nohup.
@@ -199,15 +223,39 @@ def run_simulation_background(
         print(f"   [SKIP] {filename} - already completed")
         return True
 
-    # Build command
-    cmd = f"cd {work_dir} && {raspa3_bin} simulation.json > {log_file} 2>&1 && echo 'DONE' > {done_file}"
-
+    # FIX 2026-04-09: Han's original used a bash-style "cd && raspa3 ..." shell
+    # string via subprocess.Popen(shell=True). On Windows that becomes
+    # `cmd.exe /c "cd <path> && raspa3 simulation.json > log 2>&1 && ..."`
+    # which fails with "The system cannot find the path specified" because of
+    # cmd.exe path-parsing quirks (especially with `+` chars in work_dir names).
+    # Replace with the portable subprocess.run + cwd= pattern. This is also
+    # SYNCHRONOUS, which is fine because the surrounding launcher already has
+    # a "wait for DONE files" loop after the launch phase.
+    print(f"   [LAUNCH] {filename} via subprocess.run cwd={work_dir}")
     try:
-        subprocess.Popen(cmd, shell=True, env=env)
-        print(f"   [STARTED] {filename} (background)")
-        return True
+        with open(log_file, "w") as lf:
+            result = subprocess.run(
+                [raspa3_bin, "simulation.json"],
+                cwd=work_dir,
+                env=env,
+                stdout=lf,
+                stderr=subprocess.STDOUT,
+                shell=False,
+                timeout=timeout,
+            )
+        if result.returncode == 0:
+            with open(done_file, "w") as df:
+                df.write("DONE\n")
+            print(f"   [DONE] {filename}")
+            return True
+        else:
+            print(f"   [ERROR] {filename} raspa3 exit {result.returncode} (see {log_file})")
+            return False
+    except subprocess.TimeoutExpired:
+        print(f"   [TIMEOUT] {filename} exceeded {timeout}s cap")
+        return False
     except Exception as e:
-        print(f"   [ERROR] Failed to start {filename}: {e}")
+        print(f"   [ERROR] Failed to run {filename}: {e}")
         return False
 
 
@@ -304,7 +352,7 @@ def parse_output(output_dir):
     if not output_file or not os.path.exists(output_file):
         return None
 
-    with open(output_file, "r") as f:
+    with open(output_file, "r", encoding="utf-8", errors="replace") as f:
         lines = f.readlines()
 
     result = {}

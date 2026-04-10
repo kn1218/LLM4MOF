@@ -162,7 +162,7 @@ class FeedbackGenerator:
         if name:
             return f"{prefix} | {name}" if prefix else name
         
-        return prefix if prefix else row.get('hmof_id', 'unknown')
+        return prefix if prefix else 'unknown'
 
     @staticmethod
     def _describe_qmof_row(row) -> str:
@@ -180,7 +180,7 @@ class FeedbackGenerator:
             nodes = row.get('info.mofid.smiles_nodes', '')
             if nodes and str(nodes) != 'nan':
                 parts.append(f'Node:{nodes}')
-            return ' '.join(parts) if parts else row.get('qmof_id', 'unknown')
+            return ' '.join(parts) if parts else 'unknown'
         # Append node geometry if not already in the name
         geom = row.get('geometry', '')
         if geom and str(geom) != 'nan' and str(geom) != 'Unknown':
@@ -215,8 +215,11 @@ class FeedbackGenerator:
         is_hmof = config.is_hmof_mode()
         
         lines = [f"--- {title} ---"]
-        
-        for _, row in df.iterrows():
+
+        # Anonymous labels to prevent Agent 1 from inferring database identity
+        for idx, (_, row) in enumerate(df.iterrows(), 1):
+            label = f"MOF-{idx}"
+
             if is_hmof:
                 # hMOF: use functional_groups_categorized directly
                 fg_cat = row.get('functional_groups_categorized', None)
@@ -238,9 +241,8 @@ class FeedbackGenerator:
                         parts.append(f"Metals:[{','.join(metals)}]")
                     if topo:
                         parts.append(f"Topo:{topo}")
-                name = row.get('hmof_id', '?')
-                lines.append(f"  {name}: {' '.join(parts)}" if parts else f"  {name}: (bare framework)")
-                    
+                lines.append(f"  {label}: {' '.join(parts)}" if parts else f"  {label}: (bare framework)")
+
             elif is_qmof:
                 # QMOF: use metals + functional_groups + oxidation_states
                 metals = row.get('metals', [])
@@ -257,16 +259,15 @@ class FeedbackGenerator:
                     parts.append(f"Geom:{geom}")
                 if fg and isinstance(fg, list):
                     parts.append(f"FG:[{','.join(fg[:4])}]")
-                name = row.get('qmof_id', '?')
-                lines.append(f"  {name}: {' '.join(parts)}" if parts else f"  {name}: (no chem data)")
-                
+                lines.append(f"  {label}: {' '.join(parts)}" if parts else f"  {label}: (no chem data)")
+
             else:
                 # PORMAKE: use enriched columns from _enrich_pormake_rows()
                 node_af = row.get('_node_af', {})
                 linker_af = row.get('_linker_af', {})
                 linker_fg = row.get('_linker_fg_cat', {})
                 node_metals = row.get('_node_metals', [])
-                
+
                 # Only show TRUE abstract features (compact format)
                 true_feats = set()
                 for af_dict in [node_af, linker_af]:
@@ -276,7 +277,7 @@ class FeedbackGenerator:
                                 # Clean up feature names for readability
                                 clean = k.replace('is_', '').replace('has_', '')
                                 true_feats.add(clean)
-                
+
                 parts = []
                 if node_metals and isinstance(node_metals, list):
                     parts.append(f"Metals:[{','.join(node_metals[:3])}]")
@@ -289,13 +290,8 @@ class FeedbackGenerator:
                         parts.append(f"Bkbn:[{','.join(bk[:3])}]")
                     if sb:
                         parts.append(f"Subs:[{','.join(sb[:3])}]")
-                
-                name = row.get('filename', '?')
-                # Use short name if available
-                if isinstance(name, str) and '+' in name:
-                    name_parts = name.split('+')
-                    name = f"{name_parts[1]}+{name_parts[2]}" if len(name_parts) >= 3 else name
-                lines.append(f"  {name}: {' '.join(parts)}" if parts else f"  {name}: (no chem data)")
+
+                lines.append(f"  {label}: {' '.join(parts)}" if parts else f"  {label}: (no chem data)")
         
         # Only return if we actually generated chemistry data
         if len(lines) <= 1:
@@ -506,7 +502,7 @@ class FeedbackGenerator:
             view = samp[cols].copy()
             view.columns = ['Structure', metric_name, 'Di (A)', 'Df (A)', 'SA (m2/g)', 'VF', 'Density (g/cm3)', 'Dif (A)', 'CV (A3)']
         
-        table_text = f"--- {title} (N={len(samp)}) ---\n" + view.to_string(index=False)
+        table_text = f"--- {title} ---\n" + view.to_string(index=False)
         return table_text, samp
     
     def _generate_enriched_beam(self, df: pd.DataFrame, n: int, title: str = "Samples",
@@ -560,27 +556,28 @@ class FeedbackGenerator:
         # 1. Check Chemistry (Set A)
         count_a = len(set_a)
         if count_a == 0:
-            if is_qmof:
-                footer += "[CRITICAL FAILURE] CHEMISTRY: No QMOFs match your Metal + Functional Group constraints.\n"
-                footer += "  SUGGESTION: Broaden metal list or relax functional group requirements.\n"
-            else:
-                footer += "[CRITICAL FAILURE] CHEMISTRY: No MOFs exist with your specific Metal + Linker combination.\n"
-                footer += "  Possible causes:\n"
-                footer += "  -> Ligand Chemistry mismatch: Your Node's binding elements may not match Linker's functional groups.\n"
-                footer += "  -> Functional Groups too strict: All specified tags must be present (AND logic).\n"
-                footer += "  SUGGESTION: Relax linker constraints or broaden metals list.\n"
+            footer += "[CRITICAL FAILURE] CHEMISTRY: No entries match your Metal + Functional Group constraints.\n"
+            footer += "  Possible causes:\n"
+            footer += "  -> Functional Groups too strict: All specified tags must be present (AND logic).\n"
+            footer += "  -> Metal + Linker combination may not exist in this search space.\n"
+            footer += "  SUGGESTION: Broaden metal list or relax functional group requirements.\n"
         else:
-            footer += f"[PASS] CHEMISTRY: Found {count_a} candidates matching your chemical constraints.\n"
-        
-        # 2. Check Geometry (Set E2) — only relevant for PORMAKE
-        if not is_qmof:
+            footer += "[PASS] CHEMISTRY: Your chemical constraints match entries in the database.\n"
+
+        # 2. Check Geometry (Set E2) — only relevant for PORMAKE markscheme mode
+        # In live simulation mode, e2 is always empty (no geometry-only filter set)
+        # so skip the geometry diagnostic entirely to avoid misleading messages.
+        is_live_mode = (len(set_e2) == 0
+                        and len(filter_sets.get('d', pd.DataFrame())) == 0
+                        and len(filter_sets.get('g', pd.DataFrame())) == 0)
+        if not is_qmof and not is_live_mode:
             count_e2 = len(set_e2)
             if count_e2 == 0:
                 footer += "[CRITICAL FAILURE] GEOMETRY: No MOFs exist with your full set of physical property constraints.\n"
                 footer += "  SUGGESTION: Your physical property constraints (Di, Df, SA, VF, etc.) may be too narrow.\n"
             else:
-                footer += f"[PASS] GEOMETRY: Found {count_e2} MOFs matching your geometry constraints.\n"
-                
+                footer += "[PASS] GEOMETRY: Your geometry constraints match entries in the database.\n"
+
             # 3. Intersection Failure
             if count_a > 0 and count_e2 > 0 and len(set_z) == 0:
                 footer += "[INTERSECTION FAILURE] Chemistry and Geometry both pass individually but NEVER TOGETHER.\n"
@@ -614,10 +611,9 @@ class FeedbackGenerator:
         
         content = ""
         if feedback_type == 1:
-            if is_qmof:
-                content = self._generate_qmof_four_beam(set_z, set_f, set_g, set_total, metric_name)
-            else:
-                content = self._generate_three_beam(set_z, set_a, set_e_pure, metric_name)
+            # Unified 4-beam diagnostic for ALL databases (chemistry-first)
+            # For QMOF: Beam 1 ~ Beam 2 (no geometry gate), which correctly signals "geometry irrelevant"
+            content = self._generate_four_beam(set_z, set_a, set_f, set_total, metric_name)
         elif feedback_type == 2:
             content = self._generate_universe_baseline(set_total, metric_name)
         elif feedback_type == 3:
@@ -640,28 +636,42 @@ class FeedbackGenerator:
         return content
     
     # =========================================================================
-    # FEEDBACK TYPE 1: 3-BEAM DIAGNOSTIC (Rank 1 - Most Informative)
+    # FEEDBACK TYPE 1: 4-BEAM DIAGNOSTIC (Chemistry-First with Geometry Gate)
     # =========================================================================
-    def _generate_three_beam(self, set_z: pd.DataFrame, set_a: pd.DataFrame, 
-                              set_e_pure: pd.DataFrame, metric_name: str) -> str:
+    def _generate_four_beam(self, set_z: pd.DataFrame, set_a: pd.DataFrame,
+                             set_f: pd.DataFrame, set_total: pd.DataFrame,
+                             metric_name: str) -> str:
         """
-        3-Beam Diagnostic: Orthogonal analysis to diagnose strategy.
-        BEAM 1: Full Hypothesis (Z) - Is the complete hypothesis valid?
-        BEAM 2: Chemical Control (A) - Does geometry add value?
-        BEAM 3: Geometric Control (E_pure) - Is chemistry helping or hurting?
+        4-Beam Diagnostic: Chemistry-first design with geometry as second-stage gate.
+        BEAM 1: Full Hypothesis (Z) - Chemistry + Geometry gate applied
+        BEAM 2: Chemistry Only (A) - Your chemistry, any geometry (what assembly produces)
+        BEAM 3: Metal Only (F) - Your metals, any linker (isolates metal contribution)
+        BEAM 4: Global Baseline (total) - Random sample from entire database
+
+        Diagnostic chain:
+          Beam 1 vs Beam 2 → Is your geometry prediction helping or hurting?
+          Beam 2 vs Beam 3 → Is your linker selection adding value beyond metal choice?
+          Beam 2 vs Beam 4 → Is your chemistry better than random?
         """
         return f"""
-*** EXPERIMENT: 3-BEAM DIAGNOSTIC ***
-We ran 3 parallel search beams to diagnose your strategy.
+*** EXPERIMENT: 4-BEAM DIAGNOSTIC ***
+We ran 4 parallel search beams to diagnose your strategy.
 
-BEAM 1: YOUR HYPOTHESIS (Your Metal + Your Linker + All Your Geometry Constraints)
+BEAM 1: FULL HYPOTHESIS (Your Chemistry + Your Geometry Prediction as Second-Stage Gate)
 {self._generate_enriched_beam(set_z, FEEDBACK_SAMPLE_SIZE, "Beam 1", metric_name)}
+-> Compare with Beam 2: does your geometry prediction improve or hurt performance?
 
-BEAM 2: CHEMICAL CONTROL (Your Metal + Your Linker, Random Geometry)
-{self._generate_enriched_beam(set_a, FEEDBACK_SAMPLE_SIZE, "Beam 2", metric_name)} -> (Tests if Geometry adds value)
+BEAM 2: CHEMISTRY ONLY (Your Metals + Your Linker Constraints, Any Geometry)
+{self._generate_enriched_beam(set_a, FEEDBACK_SAMPLE_SIZE, "Beam 2", metric_name)}
+-> This is what your chemistry produces before any geometry gate. Compare with Beam 3.
 
-BEAM 3: GEOMETRIC CONTROL (Any Metal, All Your Geometry Constraints)
-{self._generate_enriched_beam(set_e_pure, FEEDBACK_SAMPLE_SIZE, "Beam 3", metric_name)} -> (Tests if Chemistry is limiting)
+BEAM 3: METAL ONLY (Your Metals, Any Linker, Any Geometry)
+{self._generate_enriched_beam(set_f, FEEDBACK_SAMPLE_SIZE, "Beam 3", metric_name)}
+-> Isolates metal contribution. If Beam 2 >> Beam 3, your linker choice is adding value.
+
+BEAM 4: GLOBAL BASELINE (Random Sample from Entire Database)
+{self._generate_enriched_beam(set_total, FEEDBACK_SAMPLE_SIZE, "Beam 4", metric_name)}
+-> Calibration: if Beam 2 >> Beam 4, your chemistry is better than random selection.
 """
 
     def _generate_qmof_four_beam(self, set_z: pd.DataFrame, set_f: pd.DataFrame, 
@@ -674,7 +684,7 @@ BEAM 3: GEOMETRIC CONTROL (Any Metal, All Your Geometry Constraints)
         BEAM 4: Universe Baseline (total)
         """
         return f"""
-*** EXPERIMENT: QMOF 4-BEAM ELECTRONIC DIAGNOSTIC ***
+*** EXPERIMENT: 4-BEAM ELECTRONIC DIAGNOSTIC ***
 We ran 4 parallel search beams to isolate the electronic contributions of your components.
 
 BEAM 1: FULL HYPOTHESIS (Your Metal(s) + Your Linker Functional Groups)

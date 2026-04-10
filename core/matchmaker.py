@@ -15,7 +15,11 @@ import json
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import TOPO_DICTIONARY_V3_PATH
 from core.name_resolver import get_name_resolver
-from core.constraint_utils import canon, get_item_features, parse_functional_groups, check_global_requirements, check_negative_tags, get_approved_vocab, check_categorized_groups
+from core.constraint_utils import (
+    canon, get_item_features, parse_functional_groups, check_global_requirements,
+    check_negative_tags, get_approved_vocab, check_categorized_groups,
+    check_linker_branches, strip_coordination_tags_from_branches
+)
 
 
 class Matchmaker:
@@ -265,6 +269,10 @@ class Matchmaker:
         linker_af = specs.get('linker_query', {}).get('abstract_features', {})
         if not isinstance(linker_af, dict): linker_af = {}
 
+        # Branch matching prep — strip coordination tags for PorMake edges
+        raw_branches = specs.get('linker_query', {}).get('linker_branches', [])
+        linker_branches = strip_coordination_tags_from_branches(raw_branches) if raw_branches else []
+
         # Diagnostics counters
         diag = {
             "total_linkers": 0, "cn_match": 0, "len_match": 0,
@@ -301,6 +309,11 @@ class Matchmaker:
             if not self._check_abstract_features(item, linker_af):
                 continue
             diag["af_match"] += 1
+
+            # --- BRANCH MATCHING (OR-of-ANDs) ---
+            if linker_branches:
+                if not check_linker_branches(item, linker_branches):
+                    continue
 
             linker_ads.append(item['ID'])
         
@@ -398,6 +411,13 @@ class Matchmaker:
         global_and_tags, linker_or_tags, _ = parse_functional_groups(specs, vocab_set)
         print(f"Applying Union Logic - AND tags: {global_and_tags}, OR tags: {linker_or_tags}")
 
+        # When branches are present, skip OR-tag check in Union Logic
+        # (branches already filtered linkers in _search_linkers)
+        linker_branches_d = specs.get('linker_query', {}).get('linker_branches', [])
+        use_branch_mode = bool(linker_branches_d)
+        if use_branch_mode:
+            print(f"Branch mode active ({len(linker_branches_d)} branches) - skipping OR-tags in Union Logic")
+
         if not global_and_tags and not linker_or_tags:
             # Shortcut: if no global requirements, all matches are valid
             candidates['edge'] = linker_ids
@@ -407,10 +427,11 @@ class Matchmaker:
 
             # Virtual Assembly Loop (N * M)
             # This validates that a component is 'useful' in at least one valid MOF.
+            effective_or_tags = [] if use_branch_mode else linker_or_tags
             for n_id in all_nodes:
                 for l_id in linker_ids:
                     if check_global_requirements(n_id, l_id, global_and_tags, self.bb_lookup,
-                                                 linker_or_tags=linker_or_tags):
+                                                 linker_or_tags=effective_or_tags):
                         valid_nodes.add(n_id)
                         valid_edges.add(l_id)
 
@@ -533,6 +554,46 @@ def test_matchmaker():
             print("[PASS] Abstract features reduced candidate set (as expected)")
         else:
             print("[WARN] Abstract features did NOT reduce candidates (unexpected)")
+
+    # --- TEST 3: Linker Branches ---
+    print("\n--- TEST 3: Linker Branches (OR-of-ANDs) ---")
+    test_specs_branches = {
+        "node_query": {
+            "metals_include": ["Zr"],
+            "connectivity": [12],
+            "nuclearity": 6,
+            "abstract_features": {}
+        },
+        "linker_query": {
+            "connectivity": 2,
+            "length_min": 6.0,
+            "length_max": 12.0,
+            "is_rigid": True,
+            "functional_groups": [],
+            "abstract_features": {},
+            "linker_branches": [
+                {"description": "aromatic carboxylate", "required_tags": ["Benzene", "Carboxyl"]},
+                {"description": "pyridine-based", "required_tags": ["Pyridine"]}
+            ]
+        },
+        "geometry_filter": {
+            "target_Di_min": 12.0, "target_Di_max": 20.0,
+            "target_Df_min": 7.0, "target_Df_max": 10.0
+        }
+    }
+    results_br = matcher.smart_matchmaker_single_node(test_specs_branches)
+    
+    if results_br.get('status') == 'error':
+        print(results_br['message'])
+    else:
+        print(f"Nodes (with branches): {len(results_br['node'])}")
+        print(f"Linkers (with branches): {len(results_br['edge'])}")
+        
+        # Branches should filter linkers compared to no-filter baseline
+        if len(results_br['edge']) <= len(results['edge']):
+            print("[PASS] Branches reduced or maintained linker count (as expected)")
+        else:
+            print("[WARN] Branches did NOT reduce linkers (unexpected)")
 
 if __name__ == "__main__":
     test_matchmaker()

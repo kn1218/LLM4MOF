@@ -129,13 +129,15 @@ def get_direct_inquiry() -> str:
     print(f"  [4] Band Gap (UV Activity): 'Design a MOF with a band gap for UV Activity'")
     print(f"  [5] Band Gap (<0.1eV): 'Design a MOF with band gap below 0.1eV.'")
     print(f"  [6] Band Gap (>4eV): 'Design a MOF with a band gap above 4eV'")
-    print(f"  --- hMOF Gas Adsorption (51K hypothetical MOFs) ---")
-    print(f"  [7] CH4 Storage: 'Design a MOF for high methane storage at 298K'")
-    print(f"  [8] CO2 Capture: 'Design a MOF for CO2 capture at low pressure'")
-    print(f"  [9] Xe/Kr Selectivity: 'Design a MOF for high Xe/Kr selectivity'")
-    print(f"  [10] H2 Storage (hMOF): 'Design a MOF for high H2 uptake at 100 bar 77K'")
-    print(f"  [11] Custom (type your own)")
-    choice = input("Choice (1-11) > ").strip()
+    print(f"  --- hMOF Gas Adsorption (51K hypothetical MOFs, metals: Cu/V/Zn/Zr) ---")
+    print(f"  [7] CH4 Storage: 'Design a MOF for high methane storage at 298K. Metals: Cu/V/Zn/Zr only.'")
+    print(f"  [8] CO2 Capture: 'Design a MOF for CO2 capture at low pressure. Metals: Cu/V/Zn/Zr only.'")
+    print(f"  [9] Xe/Kr Selectivity: 'Design a MOF for high Xe/Kr selectivity. Metals: Cu/V/Zn/Zr only.'")
+    print(f"  [10] H2 Storage (hMOF): 'Design a MOF for high H2 uptake at 100 bar 77K. Metals: Cu/V/Zn/Zr only.'")
+    print(f"  --- PorMake Pressure Variants ---")
+    print(f"  [11] H2 Storage (5bar 77K): 'Design a MOF for high H2 uptake at 5 bar 77K'")
+    print(f"  [12] Custom (type your own)")
+    choice = input("Choice (1-12) > ").strip()
     
     if choice == '1' or not choice:
         return DEFAULT_INQUIRY
@@ -150,13 +152,15 @@ def get_direct_inquiry() -> str:
     elif choice == '6':
         return "Design a MOF with a band gap above 4eV"
     elif choice == '7':
-        return "Design a MOF for high methane CH4 storage capacity at 298K and 35 bar"
+        return "Design a MOF for high methane CH4 storage capacity at 298K and 35 bar. Limit metal nodes to Cu, V, Zn, and Zr only."
     elif choice == '8':
-        return "Design a MOF for high CO2 capture capacity at low pressure (2.5 bar, 298K)"
+        return "Design a MOF for high CO2 capture capacity at low pressure (2.5 bar, 298K). Limit metal nodes to Cu, V, Zn, and Zr only."
     elif choice == '9':
-        return "Design a MOF with high Xe/Kr selectivity for noble gas separation at 1 bar"
+        return "Design a MOF with high Xe/Kr selectivity for noble gas separation at 1 bar. Limit metal nodes to Cu, V, Zn, and Zr only."
     elif choice == '10':
-        return "Design a MOF for high H2 uptake at 100 bar and 77K using hMOF database"
+        return "Design a MOF for high H2 uptake at 100 bar and 77K. Limit metal nodes to Cu, V, Zn, and Zr only."
+    elif choice == '11':
+        return "Design a MOF for high capacity Hydrogen storage at 5 bar and 77K"
     else:
         custom = input("Enter your Design Inquiry > ").strip()
         return custom if custom else DEFAULT_INQUIRY
@@ -218,6 +222,8 @@ def run_experiment():
         (["xe/kr", "xe kr", "xenon", "krypton", "selectivity"],
                                                 "xekr_selectivity_1bar",   "Xe/Kr Selectivity (1bar)"),
         (["100 bar", "100bar", "hmof"],         "h2_uptake_100bar_77K",    "H2 Uptake (100bar 77K, hMOF)"),
+        # PorMake H2 at 5 bar (same building blocks, different markscheme)
+        (["5 bar", "5bar", "low pressure"],    "target",                  "H2 Uptake (5bar 77K, PorMake)"),
         # QMOF bandgap keywords
         (["band gap", "bandgap", "band_gap", "electronic"],
                                                 "outputs.pbe.bandgap",     "Band Gap"),
@@ -240,6 +246,11 @@ def run_experiment():
 
     # Set config once here (single controlled mutation at startup, not at runtime)
     config.ACTIVE_METRIC_COLUMN = active_metric_column
+
+    # Activate 5bar markscheme if detected
+    if active_metric_name == "H2 Uptake (5bar 77K, PorMake)":
+        config._PORMAKE_5BAR_ACTIVE = True
+        print(f"[System] PorMake 5bar markscheme active: {config.PORMAKE_5BAR_CSV_PATH}")
 
     if not found_metric:
          print(f"[System] No specific metric detected. Defaulting to H2 Storage.")
@@ -302,7 +313,6 @@ def run_experiment():
     iteration = 0
     current_hypothesis = None
     current_feedback = ""
-    scientific_journal = []
     
     while True:
         iteration += 1
@@ -317,8 +327,8 @@ def run_experiment():
             # First iteration: generate initial hypothesis
             current_hypothesis = agent1.generate_initial_hypothesis(user_inquiry)
         else:
-            # Subsequent iterations: refine based on feedback + Journal
-            current_hypothesis = agent1.refine_hypothesis(current_feedback, scientific_journal)
+            # Subsequent iterations: refine based on feedback (multi-turn context)
+            current_hypothesis = agent1.refine_hypothesis(current_feedback)
         
         if not current_hypothesis:
             msg = "Agent 1 failed to generate hypothesis. Exiting."
@@ -543,18 +553,6 @@ def run_experiment():
             feedback_content=current_feedback,
             sensitivity_summary=sensitivity_summary
         )
-        
-        # ----- SCIENTIFIC JOURNAL UPDATE -----
-        # Update Journal for NEXT iteration
-        lesson = current_hypothesis.get('lesson_learnt', 'No lesson recorded.')
-        nodes = current_hypothesis.get('node_composition', 'Unknown Nodes')
-        
-        journal_entry = f"Iteration {iteration}: [Nodes: {nodes}] | Lesson: {lesson}"
-        scientific_journal.append(journal_entry)
-        print(f"\n[Journal] Recorded: {journal_entry}")
-        
-        # Log to file
-        logger.log_journal_update(journal_entry)
         
         # Save conversation history
         memory.save_conversation_history(agent1.get_conversation_history())

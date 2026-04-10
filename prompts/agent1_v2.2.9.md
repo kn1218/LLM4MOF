@@ -25,15 +25,16 @@ When formulating your hypothesis, you may reason about any of the following desc
     * `dif` (Free-sphere-path diameter, Å — transport pathway proxy)
     * `cv` (Unit cell volume, Å³)
     * *Electronic Mechanisms:* If the target is `bandgap`, geometric descriptors (like `vf` or `sa`) are often secondary. Emphasize ligand choice (conjugation, electron-withdrawing/donating groups) and metal node identity instead. The following electronic descriptors are available for **QMOF database queries only**:
-        * `oxidation_states` *(QMOF-only)* — Metal oxidation state (e.g., "Fe²⁺ vs Fe³⁺"). Determines d-electron count, redox activity, and electronic structure. Specify as a single metal–state pair (e.g., Cu(II)).
-        * `coordination_geometry` *(QMOF-only)* — Metal coordination geometry: "Octahedral", "Tetrahedral", "Square Planar", or "Linear". Determines crystal field splitting and band structure.
-        * `has_open_metal_sites` *(QMOF-only)* — Whether the metal node has coordinatively unsaturated sites (true/false). Use the existing `has_open_metal_site` property in your `building_block_properties`. Critical for catalysis and selective gas binding.
+        * `oxidation_states` — Metal oxidation state (e.g., "Fe²⁺ vs Fe³⁺"). Determines d-electron count, redox activity, and electronic structure. Specify as a single metal–state pair (e.g., Cu(II)).
+        * `coordination_geometry` — Metal coordination geometry: "Octahedral", "Tetrahedral", "Square Planar", or "Linear". Determines crystal field splitting and band structure.
+        * `has_open_metal_sites` — Whether the metal node has coordinatively unsaturated sites (true/false). Use the existing `has_open_metal_site` property in your `building_block_properties`. Critical for catalysis and selective gas binding.
 
 * **Components (The Cause - Your Final Choice):**
     * `node_metal` (e.g., Symbol_A, Symbol_B)
     * `node_connectivity` (integer values)
     * `linker_length` (Å; provide min/max bounds)
     * `functional_groups` (names of functional groups)
+    * **Alternative Strategies:** You may propose multiple linker strategies (e.g., "Use pyridine dicarboxylate OR ether-containing aromatics"). Each alternative will be searched independently -- be specific with functional group names rather than generic categories like "aromatic". Using "benzene dicarboxylate OR naphthalene dicarboxylate" is far more effective than "aromatic linker".
     * `building_block_properties` (optional boolean filters for PORMAKE building blocks):
         * **Node-relevant**: `has_open_metal_site` (coordinatively unsaturated metal; critical for strong gas binding and catalysis), `is_metalated` (contains metal center), `is_conjugated` (extended pi-system), `has_hydrogen_bond_donor` (N-H/O-H groups), `has_hydrogen_bond_acceptor` (lone-pair N/O atoms), `is_symmetric`, `is_electron_rich`, `is_electron_deficient`
         * **Linker-relevant**: `is_conjugated` (for electronic delocalization and bandgap tuning), `has_hydrogen_bond_donor`/`has_hydrogen_bond_acceptor` (for selective guest binding, CO2 capture), `is_symmetric` (for regular pore geometry), `is_electron_rich`/`is_electron_deficient` (for electronic modulation), `is_fluorinated` (for hydrophobicity and stability)
@@ -69,17 +70,8 @@ When formulating your hypothesis, you may reason about any of the following desc
 * *Example:* “To obtain >30 Å pores, extended linkers and higher-connectivity nodes may be required.”
 
 
-## **Scientific Journal (Cumulative Memory)**
-This is a summary of previous attempts.
-Use it to:
-    * Avoid repeating failed strategies
-    * Monitor if the maximum performance is plateauing across recent iterations.
-    * Refine or relax constraints logically
-    * If performance has stagnated, note this in your reasoning and force a pivot to unexplored chemistry.
-
-The database engine has no memory. This journal is your only iteration history.
-
-{SCIENTIFIC_JOURNAL}
+## **Feedback Beams** (when feedback is available):
+The feedback contains 4 beams: Beam 1 (your full hypothesis), Beam 2 (chemistry only), Beam 3 (metal only), Beam 4 (global random). Compare across beams to diagnose what is working.
 
 ## **Output Format (Strict JSON):**
 Translate your reasoning into the required JSON structure.

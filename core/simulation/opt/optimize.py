@@ -140,22 +140,25 @@ def make_lammps_interface_jobs(
 LAMMPS_MINIMIZE_EXE = """
 thermo 1000
 
-fix 1 all box/relax iso 0.0 vmax 0.001
+fix llm2por_relax all box/relax iso 0.0 vmax 0.001
 minimize 1.0e-4 1.0e-6 5000 50000
-unfix 1
+unfix llm2por_relax
 
 run 0
 
-compute 1 all pe
-variable A equal c_1
+compute llm2por_pe all pe
+variable llm2por_A equal c_llm2por_pe
 
-thermo_style custom temp c_1
+thermo_style custom temp c_llm2por_pe
 thermo 1
 run 0
 
-print "{{{{}}}}:$A" append {{0}}_energy.txt
+print "{{{{}}}}:${{llm2por_A}}" append {{0}}_energy.txt
 
 write_data           {1}
+
+uncompute llm2por_pe
+variable llm2por_A delete
 """
 
 
@@ -239,15 +242,49 @@ def run_lammps_optimization(input_file: Path, output_dir: Path) -> bool:
         return True
 
     try:
-        cmd = f"nohup lmp_mpi -in {input_file.absolute()} > {log_file.absolute()} 2>&1 && echo 'DONE' > {done_file.absolute()} &"
+        # FIX 2026-04-09: Han's original code hardcoded "lmp_mpi" in the cmd string,
+        # ignoring the LAMMPS_EXECUTABLE env var defined at line 34. This patch
+        # uses the env var so a custom binary path (e.g. Windows lmp.exe) is honored.
+        # Also: nohup is unreliable on Windows Git Bash; use direct subprocess.run
+        # in foreground for portability. For Linux/macOS production runs the
+        # original nohup background pattern still works through the shell=True path.
+        import platform
+        if platform.system() == "Windows":
+            # Windows: run lmp.exe synchronously (no nohup)
+            cmd_list = [
+                LAMMPS_EXECUTABLE,
+                "-in", str(input_file.absolute()),
+                "-log", str(log_file.absolute()),
+            ]
+            log_info(f"Running LAMMPS (sync, Windows): {LAMMPS_EXECUTABLE}")
+            result = subprocess.run(
+                cmd_list,
+                cwd=str(output_dir),
+                capture_output=True,
+                text=True,
+                timeout=900,  # 15 min cap for the smoke test
+            )
+            if result.returncode == 0:
+                done_file.write_text("DONE\n")
+                log_info(f"LAMMPS optimization done for {input_file.name}")
+            else:
+                log_error(
+                    f"LAMMPS exited with {result.returncode} for {input_file.name}: "
+                    f"{result.stderr[:500] if result.stderr else result.stdout[-500:]}"
+                )
+                with open(error_file, "w") as f:
+                    f.write(result.stderr or result.stdout or "(no output)")
+                return False
+        else:
+            # Linux/macOS: original nohup background pattern, with env var fix
+            cmd = (
+                f"nohup {LAMMPS_EXECUTABLE} -in {input_file.absolute()} "
+                f"> {log_file.absolute()} 2>&1 "
+                f"&& echo 'DONE' > {done_file.absolute()} &"
+            )
+            subprocess.Popen(cmd, shell=True, cwd=str(output_dir))
+            log_info(f"Started LAMMPS optimization for {input_file.name} (background)")
 
-        subprocess.Popen(
-            cmd,
-            shell=True,
-            cwd=str(output_dir),
-        )
-
-        log_info(f"Started LAMMPS optimization for {input_file.name} (background)")
         return True
 
     except Exception as e:

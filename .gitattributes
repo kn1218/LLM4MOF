@@ -2,5 +2,4 @@ data/hMOF/hmof_index.json filter=lfs diff=lfs merge=lfs -text
 data/qmof_index_v2.json filter=lfs diff=lfs merge=lfs -text
 data/qmof.csv filter=lfs diff=lfs merge=lfs -text
 data/total_characteristics*.csv filter=lfs diff=lfs merge=lfs -text
-/home/users/seunghh/_hd1/autollm/LLM2POR/core/mof2zeo/ckpt/epoch=478-step=213634.ckpt filter=lfs diff=lfs merge=lfs -text
 *.ckpt filter=lfs diff=lfs merge=lfs -text

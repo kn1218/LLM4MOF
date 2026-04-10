@@ -48,9 +48,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Data files
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
-MASTER_DB_PATH = os.path.join(
-    DATA_DIR, "total_characteristics&name_singleonly_20251203.csv"
-)
+MASTER_DB_PATH = os.path.join(DATA_DIR, "total_characteristics&name_singleonly_20251203.csv")
+PORMAKE_5BAR_CSV_PATH = os.path.join(DATA_DIR, "total_characteristics_h2_5bar_77K.csv")
 
 # Building Block and Topology Databases
 BB_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_bb_dictionary_v5.json")
@@ -86,6 +85,10 @@ HMOF_INDEX_PATH = os.path.join(DATA_DIR, "hMOF", "hmof_index.json")
 # Prompt files
 PROMPTS_DIR = os.path.join(BASE_DIR, "prompts")
 AGENT0_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent0_v3.md")  # Problem Consultant
+# Agent 1 prompt: locked at v2.2.9 (2026-04-07).
+# Earlier ablations (v2.3.0 with Rules A-F, v2.3.1 reflexion-only) showed no
+# measurable improvement over v2.2.9 and have been retired. They remain in
+# prompts/_archive/ for reproducibility of pre-v2.5 batches only.
 AGENT1_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent1_v2.2.9.md")
 AGENT2_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent2_v4.0.md")
 
@@ -151,7 +154,8 @@ CAPABILITY_MANIFEST = {
 # Maps application-friendly names to database column names
 METRIC_REGISTRY = {
     # PORMAKE H2 mode (building-block assembly)
-    "h2_storage": "target",  # Pre-mapped to 'target' in master CSV
+    "h2_storage": "target",                         # Pre-mapped to 'target' in master CSV (100bar 77K)
+    "h2_storage_5bar": "target",                    # 5bar 77K variant (uses PORMAKE_5BAR_CSV_PATH)
     "surface_area": "Rubre_Surface_Area",
     "void_fraction": "Void_Fraction",
     # QMOF mode (direct MOF filtering for bandgap)
@@ -192,6 +196,33 @@ def is_hmof_mode() -> bool:
     return ACTIVE_METRIC_COLUMN in _HMOF_METRICS
 
 
+# Track which PorMake markscheme variant is active (set by run_experiment.py)
+_PORMAKE_5BAR_ACTIVE = False
+
+
+def is_pormake_5bar_mode() -> bool:
+    """Check if the system is using the 5bar 77K H2 markscheme."""
+    return _PORMAKE_5BAR_ACTIVE
+
+
+def get_master_db_path() -> str:
+    """Return the active PorMake markscheme CSV path."""
+    if _PORMAKE_5BAR_ACTIVE:
+        return PORMAKE_5BAR_CSV_PATH
+    return MASTER_DB_PATH
+
+
+def get_agent1_prompt_path() -> str:
+    """Return the Agent 1 prompt path.
+
+    v2.5 (2026-04-07): Locked at v2.2.9 for all three database modes
+    (PORMAKE / QMOF / hMOF). The earlier v2.3.0 and v2.3.1 ablations
+    produced no measurable improvement and are retired to
+    prompts/_archive/ for batch reproducibility only.
+    """
+    return AGENT1_PROMPT_PATH
+
+
 # hMOF column mapping: hmof_index property names → sensitivity analyzer column names
 HMOF_COLUMN_MAP = {
     "lcd": "di",  # largest cavity diameter
@@ -230,7 +261,7 @@ def validate_api_keys():
 DEFAULT_INQUIRY = "Design a MOF for high capacity Hydrogen storage at 77K"
 
 # Feedback sample sizes (as per pilot notebook)
-FEEDBACK_SAMPLE_SIZE = 10  # For 3-Beam Diagnostic
+FEEDBACK_SAMPLE_SIZE = 8  # Budget-matched: 8 samples x 4 beams x 10 iters = 320 ~ BO@300
 FEEDBACK_SAMPLE_SIZE_LARGE = 30  # For Blind Random, Best vs Worst
 
 # Sampling mode: stochastic (different samples each iteration)
@@ -255,40 +286,77 @@ LLM_REQUEST_TIMEOUT = 120  # seconds
 # =============================================================================
 # MOF2ZEO CONFIGURATION (Agent 3 - Geometry Prediction)
 # =============================================================================
+# mof2zeo is a PyTorch Lightning model that predicts MOF geometric descriptors
+# (Di, Df, SA, VF, density, CV, Dif) from (topology, node, edge) triples.
+# Used by core/filter_candidate.py to rank matchmaker candidates before CIF
+# build + LAMMPS + RASPA3 simulation in core/run_simulation.py.
+# Model trained to predict: Di, Df, SA, VF, density, CV, Dif from MOF components.
 
-# mof2zeo model path: Predicts geometry from topology+node+edge combination
-# This model is used by Agent 3 when no database is available for matching
-# Model trained to predict: Di, Df, SA, VF, density, CV, Dif from MOF components
+
 MOF2ZEO_DIR = os.path.join(BASE_DIR, "core", "mof2zeo")
 
 # Config file for model hyperparameters
 MOF2ZEO_CONFIG_PATH = os.path.join(MOF2ZEO_DIR, "config.yaml")
 
-# Checkpoint file for trained mof2zeo model
+# Trained checkpoint (76 MB, Git LFS)
 MOF2ZEO_CKPT_PATH = os.path.join(MOF2ZEO_DIR, "ckpt", "epoch=478-step=213634.ckpt")
 
 # Scaler files for inverse transform (mean/std from training data)
 MOF2ZEO_SCALER_MEAN_PATH = os.path.join(MOF2ZEO_DIR, "scaler", "mean_all.csv")
 MOF2ZEO_SCALER_STD_PATH = os.path.join(MOF2ZEO_DIR, "scaler", "std_all.csv")
 
-# Dictionary files (topology, node, edge class mappings)
+# Vocabulary files (topology, node, edge class mappings)
 MOF2ZEO_TOPOLOGY_FILE = os.path.join(MOF2ZEO_DIR, "data", "topology.txt")
 MOF2ZEO_NODE_FILE = os.path.join(MOF2ZEO_DIR, "data", "node.txt")
 MOF2ZEO_EDGE_FILE = os.path.join(MOF2ZEO_DIR, "data", "edge.txt")
 MOF2ZEO_FEATURE_FILE = os.path.join(MOF2ZEO_DIR, "data", "feature_name.txt")
 
-# Model hyperparameters (from config.yaml)
+# Model hyperparameters (mirror core/mof2zeo/config.yaml)
 MOF2ZEO_LATENT_DIM = 128
 MOF2ZEO_HID_DIM1 = 64
 MOF2ZEO_HID_DIM2 = 32
-MOF2ZEO_DESC_DIM = 7  # Number of output features: sa, cv, density, vf, di, df, dif
+MOF2ZEO_DESC_DIM = 7  # sa, cv, density, vf, di, df, dif
 
 
 def is_mof2zeo_available() -> bool:
-    """Check if mof2zeo model and required files are available."""
-    return os.path.exists(MOF2ZEO_CKPT_PATH) and os.path.exists(
-        MOF2ZEO_SCALER_MEAN_PATH
-    )
+    """Check whether the mof2zeo checkpoint and scaler files exist on disk."""
+    return os.path.exists(MOF2ZEO_CKPT_PATH) and os.path.exists(MOF2ZEO_SCALER_MEAN_PATH)
+
+
+# =============================================================================
+# LIVE SIMULATION CONFIGURATION (Han pipeline as feedback source)
+# =============================================================================
+# These settings control the live-simulation loop (run_live_experiment.py).
+# The markscheme path (run_experiment.py) is unaffected.
+
+LIVE_SIM_N_PER_BEAM = 8            # Target successful simulations per beam
+LIVE_SIM_N_BEAMS = 4               # Z (full), A (chem-only), F (metal-only), Total (random)
+LIVE_SIM_POOL_MULTIPLIER = 3       # Pool size = N_PER_BEAM * POOL_MULTIPLIER (refill budget)
+LIVE_SIM_POOL_MULTIPLIER_RANDOM = 4  # Larger pool for Beam 4 (random baseline, higher failure rate)
+LIVE_SIM_MIN_SUCCESSES = 4         # Accept partial beam if >= this many successes
+
+LIVE_SIM_RASPA_CYCLES = 15000      # Production: 15k cycles (Han's production setting)
+LIVE_SIM_RASPA_INIT_CYCLES = 5000  # Production: 5k init cycles (Han's default)
+LIVE_SIM_RASPA_TEMPERATURE = 77.0  # K (hydrogen storage standard)
+LIVE_SIM_RASPA_PRESSURE = 10000000.0  # Pa (~100 bar)
+
+LIVE_SIM_SKIP_LAMMPS = False       # LAMMPS enabled on HPC (dirac1); local smoke tests override
+LIVE_SIM_LAMMPS_TIMEOUT = 900      # 15 min cap per MOF
+LIVE_SIM_RASPA_TIMEOUT = 3600      # 1 hour cap per MOF for RASPA3 (15k cycles need more time)
+
+LIVE_SIM_MOF2ZEO_TOPN = 50         # mof2zeo top-N candidates per beam before sampling
+LIVE_SIM_CACHE_DIR = os.path.join(BASE_DIR, "experiments")
+
+LIVE_SIM_MAX_ITERATIONS = 10       # 10 iterations for production run
+
+# HPC Configuration (dirac1 cluster)
+HPC_HOST = "dirac1"                 # SSH hostname (must be in ~/.ssh/config)
+HPC_BASE_DIR = "~/llm2por"          # Base directory on HPC
+HPC_NODE_PROPERTY = "ac"            # PBS node property for qsub
+HPC_POLL_INTERVAL = 300             # 5 minutes between SSH polls
+HPC_POLL_MAX_HOURS = 5              # Give up polling after this many hours
+HPC_SSH_RETRIES = 3                 # Retry SSH on connection failure
+HPC_SSH_RETRY_DELAYS = [30, 60, 120]  # Exponential backoff (seconds)
 
 
 # =============================================================================

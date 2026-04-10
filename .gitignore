@@ -1,5 +1,9 @@
 # ============================================================
-# LLM2POR .gitignore
+# LLM2POR v2.5 .gitignore — post-reorganization (2026-04-08)
+# ============================================================
+# Public GitHub surface = production code only.
+# Everything research / draft / experimental lives under research/
+# (local-only) and is excluded by the single rule below.
 # ============================================================
 
 # --- Secrets (NEVER commit) ---
@@ -11,35 +15,73 @@ __pycache__/
 *.pyo
 *.egg-info/
 
-# --- IDE ---
+# --- IDE / tool caches ---
 .vscode/
 .idea/
 *.swp
 *.swo
+.ruff_cache/
 
 # --- OS ---
 .DS_Store
 Thumbs.db
 NUL
 
-# --- Office temp/lock files ---
+# --- Office temp / lock files ---
 ~$*.pptx
 ~$*.docx
 ~$*.xlsx
 
-# --- Claude Code dev tooling ---
+# --- Claude Code / OMC dev tooling ---
 .claude/
+.omc/
 
-# --- Generated output (recreated every run) ---
+# ============================================================
+# LOCAL-ONLY: research artifacts (entire tree is gitignored)
+# ============================================================
+research/
+
+# --- Generated output (every experiment run goes here) ---
+# Note: kept as a top-level rule even though the directory currently
+# does not exist. Future runs will recreate it; this rule prevents
+# accidental commits of run results.
 experiments/
 
-# --- Source data (compiled into runtime index files) ---
-# These directories contain thousands of individual JSONs used only
-# by one-time migration scripts (scripts/migration/).
-# The runtime uses the compiled index files instead:
-#   qmof_enriched_v2/  -->  data/qmof_index_v2.json
-#   hmof_enriched_v2/  -->  data/hMOF/hmof_index.json
-#   pormake_buildingblock_jsons/  -->  data/pormake_bb_dictionary_v5.json
+# --- Simulation pipeline output (Han's run_simulation.py) ---
+# core/run_simulation.py writes to test_run_simulation/ by default.
+test_run_simulation/
+
+# --- mof2zeo training data (only needed if retraining from scratch) ---
+# Large training CSVs that are not needed at runtime.
+# Master ships only the trained checkpoint (LFS), the vocabulary files,
+# and the scaler files — which are enough for filter_candidate.py.
+core/mof2zeo/data/train.csv
+core/mof2zeo/data/valid.csv
+core/mof2zeo/data/Test.csv
+core/mof2zeo/data/test.csv
+
+# --- Local-only docs (REPORT 1 + REPORT 2 stay private) ---
+docs/
+
+# --- Dev / migration / audit scripts (not runtime) ---
+scripts/
+
+# ============================================================
+# DATA: source vs runtime
+# ============================================================
+# The runtime uses the compiled index files; the raw source dirs
+# stay local because they were used only by one-time migration scripts.
+# Compiled runtime index files (TRACKED, do not list here):
+#   data/pormake_bb_dictionary_v5.json
+#   data/pormake_topo_dictionary_v3.json
+#   data/qmof_index_v2.json
+#   data/hMOF/hmof_index.json
+#   data/unified_ontology.json
+#   data/total_characteristics&name_singleonly_20251203.csv
+#   data/total_characteristics_h2_5bar_77K.csv
+#   data/qmof.csv
+#   data/qmof_ids_with_topology.txt
+
 data/qmof/qmof_enriched_v2/
 data/qmof/qmof.csv
 data/hMOF/hmof_enriched_v2/
@@ -61,12 +103,14 @@ data/hMOF/README.md
 data/qmof/README.md
 data/pormake/README.md
 
-# --- One-time scripts (built the data files, not runtime) ---
-scripts/
-scriptsmigration/
-
-# --- Reports & documentation (not runtime) ---
+# ============================================================
+# DEFENSE: directories that no longer exist at top level but
+# previously caused commit-by-mistake. Keep ignored in case
+# they reappear (e.g., from a botched mv or a fresh checkout
+# of a stale branch).
+# ============================================================
 reports/
+comparison_study/
 implementation_plan/
 logs/
 runtime.log
@@ -79,3 +123,10 @@ test*
 
 
 AGENTS.md
+prompts/_archive/
+.sisyphus/
+.sisyphusplans/
+scriptsmigration/
+strategies.py
+run_batch_experiments.py
+UPDATE_LOG.md
