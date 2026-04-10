@@ -251,6 +251,10 @@ class LLMClient:
         """Return the full conversation history."""
         return self.conversation_history.copy()
     
+    def set_conversation_history(self, history: List[Dict[str, str]]) -> None:
+        """Restore conversation history (e.g., from checkpoint)."""
+        self.conversation_history = history.copy()
+
     def clear_history(self):
         """Clear conversation history, keeping only system prompt."""
         self.conversation_history = [

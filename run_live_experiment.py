@@ -223,6 +223,19 @@ def run_live_experiment() -> None:
                 break
         else:
             # ----- STEP A: AGENT 1 — GENERATE/REFINE HYPOTHESIS -----
+            # Restore handoff state from previous --collect (feedback + conversation)
+            if iteration > 1 and not current_feedback:
+                handoff_path = os.path.join(experiment_dir, "handoff_state.json")
+                if os.path.exists(handoff_path):
+                    print(f"[Handoff] Restoring Agent 1 state from {handoff_path}")
+                    with open(handoff_path, "r", encoding="utf-8") as f:
+                        handoff = json.load(f)
+                    current_feedback = handoff.get("feedback", "")
+                    conv_history = handoff.get("conversation_history", [])
+                    if conv_history:
+                        agent1.set_conversation_history(conv_history)
+                        print(f"[Handoff] Restored {len(conv_history)} conversation turns")
+
             if iteration == 1 and not current_feedback:
                 current_hypothesis = agent1.generate_initial_hypothesis(user_inquiry)
             else:
@@ -394,6 +407,17 @@ def run_live_experiment() -> None:
         )
 
         memory.save_conversation_history(agent1.get_conversation_history())
+
+        # ----- SAVE CROSS-ITERATION STATE (for --prepare/--collect handoff) -----
+        # This enables the next --prepare to restore Agent 1's context
+        handoff_path = os.path.join(experiment_dir, "handoff_state.json")
+        with open(handoff_path, "w", encoding="utf-8") as f:
+            json.dump({
+                "last_iteration": iteration,
+                "feedback": current_feedback,
+                "conversation_history": agent1.get_conversation_history(),
+            }, f, indent=2, ensure_ascii=False)
+        print(f"[System] Saved handoff state for next iteration")
 
         print(f"\n[System] Iteration {iteration} complete. "
               f"({live_results.wall_clock_seconds:.0f}s, "

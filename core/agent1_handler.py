@@ -186,6 +186,10 @@ Then, propose an improved hypothesis. Maintain the exact same JSON output format
         """Return the full conversation history for logging."""
         return self.client.get_conversation_history()
 
+    def set_conversation_history(self, history):
+        """Restore conversation history from checkpoint."""
+        self.client.set_conversation_history(history)
+
 
 
 # =============================================================================
