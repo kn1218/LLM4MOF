@@ -298,7 +298,7 @@ LIVE_SIM_RASPA_PRESSURE = 10000000.0  # Pa (~100 bar)
 
 LIVE_SIM_SKIP_LAMMPS = False       # LAMMPS enabled on HPC (dirac1); local smoke tests override
 LIVE_SIM_LAMMPS_TIMEOUT = 900      # 15 min cap per MOF
-LIVE_SIM_RASPA_TIMEOUT = 3600      # 1 hour cap per MOF for RASPA3 (15k cycles need more time)
+LIVE_SIM_RASPA_TIMEOUT = 7200      # 2 hours — empirical test showed 94 min max for 15k cycles
 
 LIVE_SIM_MOF2ZEO_TOPN = 50         # mof2zeo top-N candidates per beam before sampling
 LIVE_SIM_CACHE_DIR = os.path.join(BASE_DIR, "experiments")

@@ -80,7 +80,12 @@ def stage_pormake(job: dict, work_dir: str) -> tuple:
 
 
 def stage_lammps(cif_path: str, work_dir: str, cfg: dict) -> tuple:
-    """LAMMPS optimization. Returns (success, opt_cif_dir, error_msg, seconds)."""
+    """LAMMPS optimization. Returns (success, opt_cif_dir, error_msg, seconds).
+
+    Uses lammps_interface to generate LAMMPS data+input files from CIF,
+    then runs LAMMPS minimization. The API requires an options namespace
+    with a cif_file attribute (not a raw string path).
+    """
     if cfg.get("skip_lammps", False):
         return True, os.path.dirname(cif_path), "skipped", 0.0
 
@@ -89,38 +94,65 @@ def stage_lammps(cif_path: str, work_dir: str, cfg: dict) -> tuple:
 
     try:
         from lammps_interface.lammps_main import LammpsSimulation
+        from lammps_interface.structure_data import from_CIF
+        from lammps_interface.InputHandler import Options
+        from types import SimpleNamespace
 
         lammps_dir = os.path.join(work_dir, "lammps")
-        data_dir = os.path.join(lammps_dir, "data")
-        os.makedirs(data_dir, exist_ok=True)
+        os.makedirs(lammps_dir, exist_ok=True)
 
-        # Run lammps-interface to generate data file
-        sim = LammpsSimulation(cif_path)
-        sim.set_charges("uff")
-        data_file = os.path.join(data_dir, f"data.{Path(cif_path).stem}")
-        sim.write_lammps_files(data_file)
+        # Build options namespace — LammpsSimulation expects options.cif_file
+        # and from_CIF parses the CIF into (cell, graph) separately
+        options = SimpleNamespace(
+            cif_file=cif_path,
+            force_field="UFF",
+            minimize=True,
+            orthogonalize=False,
+            replication="1x1x1",
+            cutoff=12.8,
+            dreid_bond_type="harmonic",
+            h_bonding=False,
+            fix_metal=False,
+            mol_ff=None,
+            neighbour_size=2.0,
+            random_vel=False,
+            temp=298.15,
+            pressure=100.0,
+            npt=False,
+            nvt=False,
+            bulk_moduli=False,
+            thermal_scaling=False,
+            max_dev=0.01,
+            tol=0.0001,
+            iter_count=500,
+            neqstp=5000,
+            nprodstp=5000,
+            dump_dcd=False,
+            dump_xyz=False,
+            dump_lammpstrj=False,
+            restart=False,
+            output_cif=False,
+            output_pdb=False,
+            output_raspa=False,
+        )
 
-        if not os.path.exists(data_file):
-            return True, os.path.dirname(cif_path), "lammps-interface no output", time.time() - t0
+        sim = LammpsSimulation(options)
+        cell, graph = from_CIF(cif_path)
+        sim.set_cell(cell)
+        sim.set_graph(graph)
+        sim.split_graph()
+        sim.assign_force_fields()
+        sim.compute_simulation_size()
+        sim.merge_graphs()
+        sim.write_lammps_files(lammps_dir)
+        print(f"   [LAMMPS] lammps-interface OK for {Path(cif_path).stem}")
 
-        # Create minimize input
-        input_content = f"""# LAMMPS optimization
-read_data {data_file}
+        # Find generated input/data files
+        in_files = list(Path(lammps_dir).glob("in.*"))
+        if not in_files:
+            return True, os.path.dirname(cif_path), "lammps-interface no input file", time.time() - t0
 
-pair_style lj/cut 12.8
-pair_modify mix geometric
-
-thermo 1000
-
-fix llm2por_relax all box/relax iso 0.0 vmax 0.001
-minimize 1.0e-4 1.0e-6 5000 50000
-unfix llm2por_relax
-
-write_data {data_file}_opt
-"""
-        input_file = os.path.join(lammps_dir, f"in.{Path(cif_path).stem}")
-        with open(input_file, "w") as f:
-            f.write(input_content)
+        input_file = str(in_files[0])
 
         # Run LAMMPS
         lmp_bin = shutil.which("lmp_mpi") or shutil.which("lmp")
@@ -137,7 +169,9 @@ write_data {data_file}_opt
         if result.returncode != 0:
             return True, os.path.dirname(cif_path), f"lammps exit {result.returncode}", time.time() - t0
 
-        # Use original CIF dir (converting back is complex; RASPA can use original)
+        print(f"   [LAMMPS] Optimization OK for {Path(cif_path).stem}")
+        # Use original CIF dir for RASPA (converting LAMMPS data back to CIF
+        # is complex; the geometry change from minimization is typically small)
         return True, os.path.dirname(cif_path), "", time.time() - t0
 
     except subprocess.TimeoutExpired:
