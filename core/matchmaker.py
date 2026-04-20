@@ -363,10 +363,17 @@ class Matchmaker:
         candidates = {"topology": [], "node": [], "edge": [], "diagnostics": {}}
         
         # 1. PARSE CONNECTIVITY (Ensure List)
-        # Agent 2 might return int (8) or list ([8, 12]). We normalize to list.
+        # Agent 2 might return int (8), list ([8, 12]), or None (no constraint).
+        # Normalize to list; if None/missing, default to common single-node CNs.
         raw_cn = specs['node_query'].get('connectivity')
-        if isinstance(raw_cn, list):
-            target_connectivities = [int(c) for c in raw_cn]
+        if raw_cn is None:
+            target_connectivities = [3, 4, 6, 8, 12]  # default: all common single-node CNs
+            print("[Matchmaker] WARNING: node connectivity unspecified, defaulting to [3,4,6,8,12]")
+        elif isinstance(raw_cn, list):
+            target_connectivities = [int(c) for c in raw_cn if c is not None]
+            if not target_connectivities:
+                target_connectivities = [3, 4, 6, 8, 12]
+                print("[Matchmaker] WARNING: empty connectivity list, defaulting to [3,4,6,8,12]")
         else:
             target_connectivities = [int(raw_cn)]
             

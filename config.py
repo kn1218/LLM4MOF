@@ -48,14 +48,23 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Data files
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
-MASTER_DB_PATH = os.path.join(DATA_DIR, "total_characteristics&name_singleonly_20251203.csv")
+MASTER_DB_PATH = os.path.join(DATA_DIR, "total_characteristics_h2_100bar_77K.csv")
+
+# PorMake H2 unit variants — 2 pressures × 3 units = 6 CSVs
+# 100bar variants (MASTER_DB_PATH is the volumetric default)
+PORMAKE_100BAR_GPERL_CSV_PATH = os.path.join(DATA_DIR, "total_characteristics_h2_100bar_77K_gperL.csv")
+PORMAKE_100BAR_MOLKG_CSV_PATH = os.path.join(DATA_DIR, "total_characteristics_h2_100bar_77K_mol_kg.csv")
+# 5bar variants
 PORMAKE_5BAR_CSV_PATH = os.path.join(DATA_DIR, "total_characteristics_h2_5bar_77K.csv")
+PORMAKE_5BAR_GPERL_CSV_PATH = os.path.join(DATA_DIR, "total_characteristics_h2_5bar_77K_gperL.csv")
+PORMAKE_5BAR_MOLKG_CSV_PATH = os.path.join(DATA_DIR, "total_characteristics_h2_5bar_77K_mol_kg.csv")
 
 # Building Block and Topology Databases
-BB_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_bb_dictionary_v5.json")
-BB_DICTIONARY_V3_PATH = BB_DICTIONARY_PATH
-BB_DICTIONARY_V4_PATH = BB_DICTIONARY_PATH
-BB_DICTIONARY_V5_PATH = BB_DICTIONARY_PATH
+BB_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_bb_dictionary_v6.json")
+BB_DICTIONARY_V3_PATH = BB_DICTIONARY_PATH  # Alias for backward compatibility
+BB_DICTIONARY_V4_PATH = BB_DICTIONARY_PATH  # Alias for backward compatibility
+BB_DICTIONARY_V5_PATH = BB_DICTIONARY_PATH  # Alias for backward compatibility
+BB_DICTIONARY_V6_PATH = BB_DICTIONARY_PATH  # Current version
 TOPO_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_topo_dictionary_v3.json")
 TOPO_DICTIONARY_V3_PATH = TOPO_DICTIONARY_PATH
 
@@ -85,11 +94,16 @@ HMOF_INDEX_PATH = os.path.join(DATA_DIR, "hMOF", "hmof_index.json")
 # Prompt files
 PROMPTS_DIR = os.path.join(BASE_DIR, "prompts")
 AGENT0_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent0_v3.md")  # Problem Consultant
-# Agent 1 prompt: locked at v2.2.9 (2026-04-07).
-# Earlier ablations (v2.3.0 with Rules A-F, v2.3.1 reflexion-only) showed no
-# measurable improvement over v2.2.9 and have been retired. They remain in
-# prompts/_archive/ for reproducibility of pre-v2.5 batches only.
-AGENT1_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent1_v2.2.9.md")
+# Agent 1 prompt: v3.0 (2026-04-14).
+# v3.0 is fully database/application-agnostic. All DB-specific context
+# (metric, unit, pressure, structural constraints) is injected at runtime
+# by agent1_handler._build_system_context(). Prior versions (v2.2.9, v2.3.x)
+# are in prompts/_archive/ for reproducibility of pre-v3.0 batches.
+# v3.1 (2026-04-15): Restores concrete examples, incremental constraint discipline,
+# specific beam descriptions from v2.2.9. Keeps v3.0's unit awareness and
+# mechanism chain. Removes database-specific constraints (ditopic, scarce features)
+# from prompt — those belong in the user query if needed.
+AGENT1_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent1_v2.2.9.2.md")
 AGENT2_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent2_v4.0.md")
 
 # Output directory
@@ -104,46 +118,28 @@ EXPERIMENTS_DIR = os.path.join(BASE_DIR, "experiments")
 CAPABILITY_MANIFEST = {
     "available_datasets": ["pormake_h2", "qmof", "hmof"],
     "available_properties": [
-        "H2_uptake_77K_volumetric",
+        # PorMake H2 — 2 pressures × 3 units
+        "H2_uptake_100bar_77K_volumetric",   # cm³(STP)/cm³
+        "H2_uptake_100bar_77K_gperL",        # g/L
+        "H2_uptake_100bar_77K_gravimetric",  # mol/kg
+        "H2_uptake_5bar_77K_volumetric",     # cm³(STP)/cm³
+        "H2_uptake_5bar_77K_gperL",          # g/L
+        "H2_uptake_5bar_77K_gravimetric",    # mol/kg
+        # QMOF
         "bandgap",
-        "h2_uptake_2bar_77K",
-        "h2_uptake_100bar_77K",
-        "ch4_uptake_35bar_298K",
-        "co2_uptake_2_5bar_298K",
-        "xe_loading_1bar_273K",
-        "kr_loading_1bar_273K",
-        "xekr_selectivity_1bar",
-    ],
-    "available_geometry_fields": [
-        "di",
-        "df",
-        "sa",
-        "cv",
-        "density",
-        "vf",
-        "dif",
-        "surface_area_m2g",
-        "void_fraction",
-        "pld",
-        "lcd",
-    ],
-    "supported_domains": [
-        "storage",
-        "separation",
-        "dac",
-        "catalysis",
-        "sensing",
-        "electronic",
-        "bandgap",
-        "gas_adsorption",
-        "xe_kr_selectivity",
+        # hMOF
+        "h2_uptake_2bar_77K", "h2_uptake_100bar_77K",
+        "ch4_uptake_35bar_298K", "co2_uptake_2_5bar_298K",
+        "xe_loading_1bar_273K", "kr_loading_1bar_273K",
+        "xekr_selectivity_1bar"
     ],
     "execution_mode": "markscheme-driven",
     "notes": (
-        "Supports H2 storage at 77K using PORMAKE database, "
-        "electronic band gap prediction using QMOF database, "
-        "and multi-gas adsorption (H2, CH4, CO2, Xe/Kr) using hMOF database (51K hypothetical MOFs)."
-    ),
+        "Supports H2 storage at 77K using PORMAKE database (100bar and 5bar conditions) "
+        "in three unit variants: cm³(STP)/cm³ (volumetric), g/L, and mol/kg (gravimetric). "
+        "Electronic band gap prediction using QMOF database. "
+        "Multi-gas adsorption (H2, CH4, CO2, Xe/Kr) using hMOF database (51K hypothetical MOFs)."
+    )
 }
 
 # =============================================================================
@@ -185,6 +181,63 @@ _HMOF_METRICS = {
 # Default: H2 Storage (column renamed to 'target' in master DB)
 ACTIVE_METRIC_COLUMN = "target"
 
+# =============================================================================
+# UNIT REGISTRY — maps metric columns to their display unit and conversion info
+# =============================================================================
+# Each entry: column_name -> {display, type}
+#   display: human-readable unit string for feedback tables
+#   type: unit category (volumetric, gravimetric, energy, ratio, etc.)
+UNIT_REGISTRY: dict[str, dict[str, str]] = {
+    # PorMake H2 (100bar & 5bar) — pre-computed in cm³(STP)/cm³ (volumetric)
+    "target": {"display": "cm³(STP)/cm³", "type": "volumetric"},
+    # QMOF band gap — eV
+    "outputs.pbe.bandgap": {"display": "eV", "type": "energy"},
+    # hMOF gas uptakes — cm³(STP)/g (gravimetric per gram, Wilmer et al. 2012)
+    # NOTE: hMOF is gravimetric (per gram), PorMake is volumetric (per cm³ framework)
+    "h2_uptake_100bar_77K": {"display": "cm³(STP)/g", "type": "gravimetric"},
+    "h2_uptake_2bar_77K": {"display": "cm³(STP)/g", "type": "gravimetric"},
+    "ch4_uptake_35bar_298K": {"display": "cm³(STP)/g", "type": "gravimetric"},
+    "co2_uptake_2_5bar_298K": {"display": "cm³(STP)/g", "type": "gravimetric"},
+    # hMOF Xe/Kr loading — mol/kg (molar gravimetric)
+    "xe_loading_1bar_273K": {"display": "mol/kg", "type": "gravimetric_molar"},
+    "kr_loading_1bar_273K": {"display": "mol/kg", "type": "gravimetric_molar"},
+    # hMOF Xe/Kr selectivity — dimensionless ratio
+    "xekr_selectivity_1bar": {"display": "dimensionless", "type": "ratio"},
+}
+
+# Molar volume at STP: 22414 cm³/mol = 22.414 L/mol
+MOLAR_VOL_STP_CM3_PER_MMOL = 22.414  # cm³(STP) per mmol → used as: mol/kg * g/cm³ * 22.414 = cm³(STP)/cm³
+
+
+def get_active_unit() -> str:
+    """Return the display unit string for the currently active metric.
+
+    When a PorMake unit variant is active, overrides the default
+    volumetric unit for 'target' column.
+    """
+    if ACTIVE_METRIC_COLUMN == "target":
+        if _PORMAKE_GRAVIMETRIC_ACTIVE:
+            return "mol/kg"
+        if _PORMAKE_GPERL_ACTIVE:
+            return "g/L"
+    entry = UNIT_REGISTRY.get(ACTIVE_METRIC_COLUMN)
+    if entry:
+        return entry["display"]
+    return ""
+
+
+def get_active_unit_type() -> str:
+    """Return the unit type (volumetric, gravimetric, energy, ratio) for the active metric."""
+    if ACTIVE_METRIC_COLUMN == "target":
+        if _PORMAKE_GRAVIMETRIC_ACTIVE:
+            return "gravimetric"
+        if _PORMAKE_GPERL_ACTIVE:
+            return "volumetric_mass"
+    entry = UNIT_REGISTRY.get(ACTIVE_METRIC_COLUMN)
+    if entry:
+        return entry["type"]
+    return "unknown"
+
 
 def is_qmof_mode() -> bool:
     """Check if the system is running in QMOF (band gap) mode."""
@@ -197,7 +250,11 @@ def is_hmof_mode() -> bool:
 
 
 # Track which PorMake markscheme variant is active (set by run_experiment.py)
+# Pressure selector
 _PORMAKE_5BAR_ACTIVE = False
+# Unit selectors (at most one should be True; both False → volumetric cm³(STP)/cm³)
+_PORMAKE_GRAVIMETRIC_ACTIVE = False  # mol/kg
+_PORMAKE_GPERL_ACTIVE = False        # g/L
 
 
 def is_pormake_5bar_mode() -> bool:
@@ -205,20 +262,41 @@ def is_pormake_5bar_mode() -> bool:
     return _PORMAKE_5BAR_ACTIVE
 
 
+def is_pormake_gravimetric_mode() -> bool:
+    """Check if the system is using the gravimetric (mol/kg) PorMake markscheme."""
+    return _PORMAKE_GRAVIMETRIC_ACTIVE
+
+
+def is_pormake_gperL_mode() -> bool:
+    """Check if the system is using the g/L PorMake markscheme."""
+    return _PORMAKE_GPERL_ACTIVE
+
+
 def get_master_db_path() -> str:
-    """Return the active PorMake markscheme CSV path."""
+    """Return the active PorMake markscheme CSV path.
+
+    Routes based on pressure (5bar vs 100bar) × unit (volumetric, g/L, mol/kg).
+    """
     if _PORMAKE_5BAR_ACTIVE:
+        if _PORMAKE_GPERL_ACTIVE:
+            return PORMAKE_5BAR_GPERL_CSV_PATH
+        if _PORMAKE_GRAVIMETRIC_ACTIVE:
+            return PORMAKE_5BAR_MOLKG_CSV_PATH
         return PORMAKE_5BAR_CSV_PATH
+    # 100bar (default pressure)
+    if _PORMAKE_GPERL_ACTIVE:
+        return PORMAKE_100BAR_GPERL_CSV_PATH
+    if _PORMAKE_GRAVIMETRIC_ACTIVE:
+        return PORMAKE_100BAR_MOLKG_CSV_PATH
     return MASTER_DB_PATH
 
 
 def get_agent1_prompt_path() -> str:
     """Return the Agent 1 prompt path.
 
-    v2.5 (2026-04-07): Locked at v2.2.9 for all three database modes
-    (PORMAKE / QMOF / hMOF). The earlier v2.3.0 and v2.3.1 ablations
-    produced no measurable improvement and are retired to
-    prompts/_archive/ for batch reproducibility only.
+    v2.2.9.2 (2026-04-15): Production prompt. Database/application-agnostic
+    with concrete examples and incremental constraint discipline.
+    Prior versions in prompts/_archive/ for reproducibility.
     """
     return AGENT1_PROMPT_PATH
 

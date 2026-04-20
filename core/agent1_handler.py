@@ -49,17 +49,7 @@ class Agent1Handler:
         print("\n[Agent 1] Generating initial hypothesis...")
         print(f"   User Inquiry: {user_inquiry}")
 
-        # Chemistry-first guidance: prevent over-constraining on iteration 1
-        first_iter_guidance = (
-            "\n\nFIRST-ITERATION STRATEGY: You have no feedback yet. "
-            "Focus on CHEMISTRY only - specify metals and linker functional groups "
-            "based on your domain knowledge. Leave geometry_filter EMPTY or specify "
-            "at most 1-2 key descriptors. Do NOT constrain all geometry parameters "
-            "simultaneously - the database is finite and each constraint removes ~50%% "
-            "of candidates. You will refine geometry in iteration 2+ based on the "
-            "4-beam diagnostic data."
-        )
-        response = self.client.send_message(user_inquiry + first_iter_guidance)
+        response = self.client.send_message(user_inquiry, temperature=0.0)
         
         if not response:
             print("[Agent 1] ERROR: No response received")
@@ -111,7 +101,7 @@ Then, propose an improved hypothesis. Maintain the exact same JSON output format
 {feedback}
 """
         
-        response = self.client.send_message(feedback_message)
+        response = self.client.send_message(feedback_message, temperature=0.0)
         
         if not response:
             print("[Agent 1] ERROR: No response received")

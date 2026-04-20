@@ -2,16 +2,26 @@
 
 An autonomous agent system that designs Metal-Organic Frameworks (MOFs) through iterative hypothesis generation, constraint extraction, and database-driven feedback. The system uses LLMs (GPT / Gemini) to propose MOF designs and evaluates them against real computational databases (QMOF, hMOF, PORMAKE).
 
-**v2.5 status:** Agent 1 prompt locked at `agent1_v2.2.9.md` after a three-way ablation (v2.2.9 / v2.3.0 / v2.3.1) showed no measurable improvement from the v2.3.x reasoning rules. Retired prompts are retained by the maintainer locally for reproducibility of pre-v2.5 batches but are not shipped with this GitHub release. See [Version History](#version-history) for details.
+**v2.5 status:** Agent 1 prompt is `agent1_v2.2.9.2.md` — a database-agnostic prompt with concrete examples and incremental constraint discipline. Agent 1 receives the raw user query with no hidden injection; unit and pressure info are carried naturally in the query text. Retired prompts are in `prompts/_archive/` locally.
+
+## Changelog
+
+### BB Dictionary v5 → v6 (2026-04-20)
+
+Resolved all 333 `has_open_metal_site: null` values in `pormake_bb_dictionary_v6.json`:
+
+- **314 organic BBs** (no metals): set to `false` — purely organic linkers cannot have open metal sites.
+- **8 metal-containing BBs** set to `true` (coordinatively unsaturated):
+  E56 (Cd, 2N), E74 (Rh, 2-coord), E103 (2×Ir), E105 (Ni, 2O), E172 (Mn, 2O), E191 (Ni, 2N), E207 (Cu₂ paddle-wheel), E230 (Cu, 2N).
+- **11 metal-containing BBs** set to `false` (coordination sphere saturated):
+  E54 (Ag linear), E60 (Cu N4 macrocycle), E99 (Ag linear), E109 (Ni octahedral 6-coord), E129 (Cu 4-coord + NCS), E133 (Mn 5-coord + Cl), E169 (Ag linear), E197 (Cu 6-coord), E208 (In 5-coord), E210 (Cu 4N), E213 (B tetrahedral).
+
+**Final distribution:** 241 true / 626 false / 0 null (867 total). v5 archived in `data/`.
 
 ## How It Works
 
 ```
-User Inquiry ("Design a MOF with band gap 3-4 eV")
-        |
-        v
-  [Agent 0] Problem Consultant (optional)
-    Clarifies requirements via interview
+User Inquiry ("Design a MOF to maximize gravimetric H2 storage in mol/kg at 77K and 100 bar.")
         |
         v
   [Agent 1] Hypothesis Generator
@@ -91,9 +101,17 @@ This downloads the large database files (~175 MB total):
 - `data/qmof_index_v2.json` (25 MB) — 20,373 QMOF MOFs for band gap mode
 - `data/hMOF/hmof_index.json` (50 MB) — 51,163 hypothetical MOFs for gas adsorption mode
 - `data/qmof.csv` (21 MB) — QMOF property database
-- `data/total_characteristics&name_singleonly_20251203.csv` (1 MB) — PORMAKE master database (100 bar variant)
-- `data/total_characteristics_h2_5bar_77K.csv` (1 MB) — PORMAKE master database (5 bar variant)
 - `core/mof2zeo/ckpt/epoch=478-step=213634.ckpt` (76 MB) — mof2zeo geometry prediction model
+- PorMake H2 markscheme CSVs (~1 MB each, 6 files):
+
+| CSV File | Pressure | Unit |
+|----------|----------|------|
+| `total_characteristics_h2_100bar_77K.csv` | 100 bar | cm3(STP)/cm3 (volumetric) |
+| `total_characteristics_h2_100bar_77K_mol_kg.csv` | 100 bar | mol/kg (gravimetric) |
+| `total_characteristics_h2_100bar_77K_gperL.csv` | 100 bar | g/L (gravimetric) |
+| `total_characteristics_h2_5bar_77K.csv` | 5 bar | cm3(STP)/cm3 (volumetric) |
+| `total_characteristics_h2_5bar_77K_mol_kg.csv` | 5 bar | mol/kg (gravimetric) |
+| `total_characteristics_h2_5bar_77K_gperL.csv` | 5 bar | g/L (gravimetric) |
 
 ## Usage
 
@@ -113,20 +131,48 @@ You will be prompted to choose:
 
 | # | Category | Inquiry | Database |
 |---|----------|---------|----------|
-| 1 | H2 Storage | High capacity hydrogen storage at 77K | PORMAKE |
-| 2 | Band Gap | Optimal band gap for visible-light water splitting | QMOF |
-| 3 | Band Gap | Band gap between 3-4 eV | QMOF |
-| 4 | Band Gap | Band gap for UV activity | QMOF |
-| 5 | Band Gap | Band gap below 0.1 eV | QMOF |
-| 6 | Band Gap | Band gap above 4 eV | QMOF |
-| 7 | CH4 Storage | High methane storage at 298K. **Metals: Cu/V/Zn/Zr only.** | hMOF |
-| 8 | CO2 Capture | CO2 capture at low pressure. **Metals: Cu/V/Zn/Zr only.** | hMOF |
-| 9 | Xe/Kr Selectivity | High Xe/Kr selectivity. **Metals: Cu/V/Zn/Zr only.** | hMOF |
-| 10 | H2 Storage | High H2 uptake at 100 bar 77K. **Metals: Cu/V/Zn/Zr only.** | hMOF |
-| 11 | H2 Storage | High H2 uptake at 5 bar 77K | PORMAKE (5bar) |
-| 12 | Custom | Type your own design inquiry | Auto-detected |
+| **PorMake H2 (100 bar, 77K)** |||
+| 1 | Volumetric | Maximize volumetric H2 storage capacity (cm3/cm3) | PORMAKE |
+| 2 | Gravimetric | Maximize gravimetric H2 storage capacity (mol/kg) | PORMAKE |
+| 3 | Gravimetric | Maximize H2 storage density (g/L) | PORMAKE |
+| **PorMake H2 (5 bar, 77K)** |||
+| 4 | Volumetric | Maximize volumetric H2 storage capacity (cm3/cm3) | PORMAKE |
+| 5 | Gravimetric | Maximize gravimetric H2 storage capacity (mol/kg) | PORMAKE |
+| 6 | Gravimetric | Maximize H2 storage density (g/L) | PORMAKE |
+| **QMOF Band Gap** |||
+| 7 | Band Gap | Optimal band gap for visible-light water splitting | QMOF |
+| 8 | Band Gap | Band gap between 3-4 eV | QMOF |
+| 9 | Band Gap | Band gap for UV activity | QMOF |
+| 10 | Band Gap | Band gap below 0.1 eV | QMOF |
+| 11 | Band Gap | Band gap above 4 eV | QMOF |
+| **hMOF Gas Adsorption** |||
+| 12 | CH4 Storage | High methane storage at 298K, 35 bar. **Cu/V/Zn/Zr only.** | hMOF |
+| 13 | CO2 Capture | CO2 capture at 2.5 bar, 298K. **Cu/V/Zn/Zr only.** | hMOF |
+| 14 | Xe/Kr | High Xe/Kr selectivity at 1 bar. **Cu/V/Zn/Zr only.** | hMOF |
+| 15 | H2 Storage | High H2 uptake at 100 bar, 77K. **Cu/V/Zn/Zr only.** | hMOF |
+| 16 | Custom | Type your own design inquiry | Auto-detected |
 
-**hMOF metal constraint:** The hMOF database (Snurr group, 51K hypothetical MOFs) contains only Cu (25.6%), V (7.2%), Zn (62.1%), and Zr (4.7%) metal nodes. All other metals have <0.4% representation. The metal constraint is included in the user query (not the system prompt) so the LLM knows what materials are available without revealing database identity. This is constraint specification (what reagents are available), not bias (which to prefer).
+**Unit-aware queries:** PorMake queries carry unit and pressure information naturally in the query text (e.g. "maximize gravimetric H2 storage capacity in mol/kg at 77K and 100 bar"). The system detects unit keywords and routes to the correct CSV automatically. No hidden injection to Agent 1.
+
+**hMOF metal constraint:** The hMOF database (Snurr group, 51K hypothetical MOFs) contains only Cu (25.6%), V (7.2%), Zn (62.1%), and Zr (4.7%) metal nodes. The metal constraint is included in the user query so the LLM knows what materials are available without revealing database identity.
+
+### Batch / Automated Mode
+
+For non-interactive runs (scripting, ablation studies):
+
+```bash
+python run_experiment.py --auto \
+  --inquiry "Design a MOF to maximize volumetric H2 storage capacity at 77K and 100 bar." \
+  --iterations 10 \
+  --mode direct \
+  --database pormake
+```
+
+Additional CLI flags for ablation control:
+- `--agent1-prompt <filename>` — Override Agent 1 prompt file
+- `--pormake-unit {volumetric,molkg,gperL}` — Force unit variant
+- `--pormake-pressure {5bar,100bar}` — Force pressure variant
+- `--database {pormake,hmof,qmof}` — Force database routing
 
 ### Feedback Types
 
@@ -150,12 +196,30 @@ Type `quit` at any feedback prompt to end the experiment.
 
 Results are saved to `experiments/exp_YYYYMMDD_HHMM_{mode}/`:
 - `raw_user_input.txt` — Your original inquiry
+- `experiment_meta.json` — Run metadata (prompt, query, CSV path, unit, model)
 - `experiment_log.txt` — Full run log
-- `iteration_N/` — Per-iteration outputs (hypothesis, constraints, sensitivity reports)
+- `iteration_N/` — Per-iteration outputs:
+  - `agent1_output.json` — Agent 1 hypothesis
+  - `agent2_output.json` — Agent 2 constraints
+  - `beam_data.csv` — All beam candidates with performance values
+  - `Sensitivity_Report_iterN.csv` — 22-filter-set evaluation
+  - `feedback_selected.txt` — Feedback text sent to Agent 1
 
 ---
 
 ## Core Architecture
+
+### Agent Pipeline (Clean Pipe)
+
+Agent 1 receives the raw user query with no hidden injection. Unit, pressure, and application information are carried in the query text itself. The handler is a pass-through:
+
+```
+user_inquiry = "Design a MOF to maximize gravimetric H2 storage in mol/kg at 77K and 100 bar."
+    -> Agent 1 reads unit info from query text naturally
+    -> Agent 2 extracts constraints (stateless, single-turn)
+    -> Matchmaker finds candidates in the unit-matched CSV
+    -> Feedback labels use correct unit from config
+```
 
 ### Constraint Engine: Branched Hypothesis Matching
 
@@ -191,22 +255,20 @@ The default feedback type runs four parallel database searches per iteration and
 
 QMOF gets a different beam design because it has no geometry gate — Beams 1 and 2 would be identical under the PORMAKE/hMOF design, wasting a diagnostic slot. The QMOF-specific design isolates metal vs. linker electronic contributions instead.
 
-**Agent 1 blinding:** Chemistry profiles use anonymous `MOF-1, MOF-2, ...` labels (not the internal `N419+E12` / `qmof-XXX` / `hmof-XXX` IDs). Beam headers say "4-BEAM DIAGNOSTIC" with no database name. The orchestrator's prompts say "analyze beams as labeled" without specifying which beam configuration to expect. This prevents Agent 1 from inferring which database is active and hardcoding strategies.
+**Agent 1 blinding:** Chemistry profiles use anonymous `MOF-1, MOF-2, ...` labels (not the internal `N419+E12` / `qmof-XXX` / `hmof-XXX` IDs). Beam headers say "4-BEAM DIAGNOSTIC" with no database name. This prevents Agent 1 from inferring which database is active and hardcoding strategies.
 
-### Agent 1 Prompt: Locked at v2.2.9
+### Agent 1 Prompt: v2.2.9.2
 
-Agent 1 uses `prompts/agent1_v2.2.9.md` for all three database modes (PORMAKE, QMOF, hMOF). The prompt encodes four core principles:
+Agent 1 uses `prompts/agent1_v2.2.9.2.md` for all three database modes (PORMAKE, QMOF, hMOF). The prompt encodes four core principles:
 
-1. **Mechanism-Grounded Reasoning** — every component choice must be justified by chemical rationale, not popularity. ("Use Zr because it's popular" is forbidden.)
+1. **Mechanism-Grounded Reasoning** — every component choice must be justified by chemical rationale, not popularity.
 2. **Causal Hierarchy / Inverse Design** — start from the Performance Goal, derive the required Geometry, then select Components.
-3. **Stateless Execution** — explicitly list all metals and functional groups in every iteration. The pipeline has no memory of previous hypotheses other than what is in the multi-turn conversation buffer.
-4. **Scientific Skepticism / Radical Pivots** — if performance plateaus for 3 iterations, abandon the current chemistry entirely and pivot to a fundamentally different mechanism.
+3. **Stateless Execution** — explicitly list all metals and functional groups in every iteration. The pipeline has no memory other than the multi-turn conversation buffer.
+4. **Scientific Skepticism / Radical Pivots** — if performance plateaus, abandon the current chemistry and pivot to a fundamentally different mechanism.
 
 The prompt's output schema has 8 fields: `meta_cognition.reasoning`, `target_application`, `hypothesis_mechanism`, `ideal_pore_geometry`, `node_composition`, `linker_composition`, `novelty_justification`, `lesson_learnt` — all rich text.
 
-**Memory model:** Multi-turn conversation only. Agent 1 sees its full conversation history (all prior hypotheses and feedback) via the `LLMClient.messages` buffer. There is no external "Scientific Journal" injection — that mechanism existed in earlier versions and was removed in v2.5 (it duplicated information already in the multi-turn context and cost ~7K tokens per iteration by iteration 10).
-
-For the deep technical reference on every component (matchmaker filter pipelines, AND/OR/NOT/branch logic, the schema-to-logic contract, worked examples), see `docs/REPORT_2_System_Logic_and_Methodology.md`.
+**Memory model:** Multi-turn conversation only. Agent 1 sees its full conversation history (all prior hypotheses and feedback) via the `LLMClient.messages` buffer. No external injection.
 
 ---
 
@@ -214,30 +276,32 @@ For the deep technical reference on every component (matchmaker filter pipelines
 
 ### v2.5 (current)
 
-- **Agent 1 prompt locked at v2.2.9.** Three-way ablation (v2.2.9 / v2.3.0 / v2.3.1) found no measurable improvement from the v2.3.x "Reasoning Strategy" rules (Rules A-F) or the v2.3.1 reflexion-only structured output. Retired prompts moved out of the public tree (retained locally by the maintainer for batch reproducibility, not shipped with the GitHub release).
-- **hMOF metal constraint** added to all 4 hMOF preset queries (Cu/V/Zn/Zr only). Eliminated zero-match failures (H2_Storage went from 80% zero-match rate to 0%) and improved Top-1 across all hMOF targets.
-- **Scientific Journal removed.** The cumulative `{SCIENTIFIC_JOURNAL}` placeholder injection is gone. Agent 1 relies on the multi-turn conversation buffer plus the iteration feedback string.
-- **Unified 4-beam feedback for QMOF.** Merged the separate QMOF feedback branch into the unified design. For QMOF, Beam 1 ≈ Beam 2 naturally (no geometry gate), which correctly signals "geometry irrelevant" without a separate beam layout.
-- **hMOF sensitivity crash fix** — `core/sensitivity_analyzer.py` was falling through to PORMAKE's node/edge logic on hMOF and crashing on `connectivity: None`. Killed multiple iterations across the previous batch (CH4@iter6, CO2@iter8, XeKr@iter1) until fixed.
+- **Agent 1 prompt updated to v2.2.9.2.** Database-agnostic with concrete examples and incremental constraint discipline. Chemistry hint annotations on geometric descriptors removed to prevent database-identity leaks.
+- **Unit-diversified query system.** Interactive menu expanded to 16 options covering 6 PorMake H2 variants (2 pressures x 3 units), 5 QMOF bandgap queries, and 4 hMOF gas adsorption targets. Unit/pressure info carried naturally in query text.
+- **Clean agent pipeline.** Agent 1 handler simplified to pass-through — sends raw user query to LLM with no appended guidance or injection.
+- **6 PorMake H2 markscheme CSVs** — per-condition files for volumetric (cm3/cm3), gravimetric (mol/kg), and mass-density (g/L) at both 100 bar and 5 bar.
+- **hMOF metal constraint** added to all 4 hMOF preset queries (Cu/V/Zn/Zr only). Eliminated zero-match failures.
+- **Scientific Journal removed.** Agent 1 relies on the multi-turn conversation buffer plus iteration feedback.
+- **Matchmaker null-safety** — defaults connectivity to [3,4,6,8,12] when Agent 2 returns None instead of crashing.
+- **Unified 4-beam feedback for QMOF.**
 
 ### v2.4
 
 - **Chemistry-first feedback** with the 4-beam diagnostic and database-aware variants.
-- **Agent 1 blinding** — anonymous MOF labels, generic beam headers, unified footer messages, generic prompt instructions. Prevents Agent 1 from inferring database identity.
-- **Bug fixes:** QMOF `"Any"` metal guard added (matched PORMAKE/hMOF behavior); SA negative-tag substring matching replaced with shared `check_negative_tags()` from `constraint_utils.py` for consistency with the matchmakers.
+- **Agent 1 blinding** — anonymous MOF labels, generic beam headers, unified footer messages.
 
 ### v2.3.x — Retired ablations
 
 Three Agent 1 prompt variants tested in head-to-head comparison and rejected:
 
-- **v2.3.0** (`agent1_v2.3.0.md` + `_qmof.md` + `_hmof.md`): Added a "Reasoning Strategy: Beat Bayesian Optimization" section with six explicit rules (pattern extraction over anecdotes, hypothesis falsification, exploration budget management, beam comparison rules, etc.). Plus per-database variants for QMOF and hMOF.
-- **v2.3.1** (`agent1_v2.3.1_reflexion_only.md`): The structured output format from v2.3.0 (4-field `meta_cognition`, 4-field `lesson_learnt`) but **without** the explicit rules. Designed to isolate the "format effect" from the "rules effect".
+- **v2.3.0**: Added "Reasoning Strategy: Beat Bayesian Optimization" rules + per-database variants.
+- **v2.3.1**: Structured output format from v2.3.0 without the explicit rules (isolating format effect from rules effect).
 
-All three were locally available simultaneously and chosen at runtime via a `set_agent1_strategy()` registry. Result: no measurable improvement over v2.2.9 for either v2.3.0 or v2.3.1. The registry, the strategy switch, and the per-database routing have all been removed in v2.5. The retired prompt files are retained locally by the maintainer (not in this GitHub release) solely so pre-v2.5 batch experiments can be rerun for reproducibility.
+No measurable improvement over v2.2.9 for either variant. Retired prompts retained locally for reproducibility.
 
 ### v2.x — Branched Hypothesis Matching
 
-The `linker_branches` schema was introduced in earlier v2.x work to fix an information-loss bug where Agent 2's flat AND/OR could only express the lowest-common-denominator tag across alternative linker strategies. Agent 1 frequently proposes 2-4 alternative chemistries per iteration; before branched matching, all 178 sampled `agent2_output.json` files collapsed these into a single tag like `Aromatic`, which matched 52-72% of every database and produced essentially unfiltered results. The OR-of-ANDs branch schema preserves the full alternative structure. This is now stable and used by all three matchmakers.
+The `linker_branches` schema was introduced to fix an information-loss bug where Agent 2's flat AND/OR collapsed alternative linker strategies into a single tag. The OR-of-ANDs branch schema preserves the full alternative structure and is used by all three matchmakers.
 
 ---
 
@@ -245,14 +309,17 @@ The `linker_branches` schema was introduced in earlier v2.x work to fix an infor
 
 ```
 .
-├── run_experiment.py          # Interactive entry point (single experiment)
-├── config.py                  # All configuration, data paths, metric registry
+├── run_experiment.py          # Interactive + batch entry point (16-option menu)
+├── run_live_experiment.py     # Live simulation pipeline (RASPA3 + Zeo++)
+├── run_prepare_step.py        # HPC orchestration: prepare step
+├── run_collect_step.py        # HPC orchestration: collect step
+├── config.py                  # Configuration, data paths, unit/pressure routing
+├── setup.py                   # Package installer
 ├── requirements.txt           # Python dependencies
 ├── setup.py                   # pip install -e .
 ├── .env                       # API keys (not in git)
 ├── core/                      # Runtime modules
-│   ├── agent0_handler.py      # Problem Consultant (interview)
-│   ├── agent1_handler.py      # Hypothesis Generator (multi-turn)
+│   ├── agent1_handler.py      # Hypothesis Generator (multi-turn, clean pipe)
 │   ├── agent2_handler.py      # Constraint Extractor (stateless)
 │   ├── agent3_260324.py       # Geometry Predictor (mof2zeo)
 │   ├── constraint_utils.py    # Tag/ontology parsing + AND/OR/NOT/branch logic
@@ -277,23 +344,26 @@ The `linker_branches` schema was introduced in earlier v2.x work to fix an infor
 │       ├── opt/                # LAMMPS optimization
 │       └── gcmc/              # RASPA3 GCMC simulations
 ├── prompts/                   # Active LLM system prompts
-│   ├── agent0_v3.md           # Problem Consultant prompt
-│   ├── agent1_v2.2.9.md       # ACTIVE Agent 1 prompt (locked v2.5)
+│   ├── agent1_v2.2.9.2.md     # ACTIVE Agent 1 prompt
 │   └── agent2_v4.0.md         # Constraint Extractor (with linker_branches schema)
 └── data/                      # Databases (large files via Git LFS)
-    ├── pormake_bb_dictionary_v5.json
+    ├── pormake_bb_dictionary_v6.json
     ├── pormake_topo_dictionary_v3.json
     ├── unified_ontology.json
     ├── qmof.csv
     ├── qmof_ids_with_topology.txt
     ├── qmof_index_v2.json
-    ├── total_characteristics&name_singleonly_20251203.csv
+    ├── total_characteristics_h2_100bar_77K.csv
+    ├── total_characteristics_h2_100bar_77K_mol_kg.csv
+    ├── total_characteristics_h2_100bar_77K_gperL.csv
     ├── total_characteristics_h2_5bar_77K.csv
+    ├── total_characteristics_h2_5bar_77K_mol_kg.csv
+    ├── total_characteristics_h2_5bar_77K_gperL.csv
     └── hMOF/
         └── hmof_index.json
 ```
 
-The repository ships only the production runtime. All research artifacts (paper drafts, presentations, analysis scripts, figure outputs, comparison-study results, retired prompts, archived experiment batches) live under a local-only `research/` tree on the maintainer's machine and are excluded from this GitHub release via `.gitignore`. Experiment outputs from `python run_experiment.py` are written to a local `experiments/` directory, which is also gitignored.
+The repository ships only the production runtime. All research artifacts (paper drafts, presentations, analysis scripts, figure outputs, retired prompts, experiment batches) live under local-only directories and are excluded from this GitHub release via `.gitignore`.
 
 ## Configuration
 
@@ -303,8 +373,7 @@ Key settings in `config.py`:
 |---------|---------|-------------|
 | `LLM_MAX_OUTPUT_TOKENS` | 32000 | Max tokens for LLM response |
 | `LLM_REQUEST_TIMEOUT` | 120 | API timeout in seconds |
-| `FEEDBACK_SAMPLE_SIZE` | 8 | Sample size per beam (8 × 4 beams × 10 iters = 320 samples) |
+| `FEEDBACK_SAMPLE_SIZE` | 8 | Sample size per beam (8 x 4 beams x 10 iters = 320 samples) |
 | `STOCHASTIC_SAMPLING` | True | Different samples each iteration |
-| `AGENT0_MAX_TURNS` | 10 | Max interview turns for Agent 0 |
-| `AGENT1_PROMPT_PATH` | `prompts/agent1_v2.2.9.md` | Active Agent 1 prompt (locked at v2.2.9 for v2.5) |
+| `AGENT1_PROMPT_PATH` | `prompts/agent1_v2.2.9.2.md` | Active Agent 1 prompt |
 | `AGENT2_PROMPT_PATH` | `prompts/agent2_v4.0.md` | Active Agent 2 prompt |

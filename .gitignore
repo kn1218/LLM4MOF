@@ -35,6 +35,16 @@ NUL
 # --- Claude Code / OMC dev tooling ---
 .claude/
 .omc/
+.scratch/
+
+# --- Runtime / session logs ---
+runtime.log
+
+# --- Local docs / presentations ---
+presentations/
+
+# --- HPC test scripts ---
+hpc/timeout_test_submit.sh
 
 # ============================================================
 # LOCAL-ONLY: research artifacts (entire tree is gitignored)
@@ -72,12 +82,12 @@ scripts/
 # The runtime uses the compiled index files; the raw source dirs
 # stay local because they were used only by one-time migration scripts.
 # Compiled runtime index files (TRACKED, do not list here):
-#   data/pormake_bb_dictionary_v5.json
+#   data/pormake_bb_dictionary_v6.json
 #   data/pormake_topo_dictionary_v3.json
 #   data/qmof_index_v2.json
 #   data/hMOF/hmof_index.json
 #   data/unified_ontology.json
-#   data/total_characteristics&name_singleonly_20251203.csv
+#   data/total_characteristics_h2_100bar_77K.csv
 #   data/total_characteristics_h2_5bar_77K.csv
 #   data/qmof.csv
 #   data/qmof_ids_with_topology.txt
