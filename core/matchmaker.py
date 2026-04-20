@@ -164,6 +164,34 @@ class Matchmaker:
         
         return True
 
+    @staticmethod
+    def _check_abstract_features_or(item: dict, required_features: dict) -> bool:
+        """OR-gate version for linker abstract_features.
+
+        Passes if the item matches AT LEAST ONE required feature.
+        Used for linker_af to prevent AND-trap (e.g., HBD AND HBA → 0 linker matches).
+        Falls back to True when required_features is empty or all values are None.
+        """
+        if not required_features:
+            return True
+
+        effective = [(k, v) for k, v in required_features.items() if v is not None]
+        if not effective:
+            return True  # All requirements were null = no filter
+
+        item_af = item.get('abstract_features', {})
+        if not item_af:
+            return True  # No abstract_features data on item = benefit of doubt
+
+        for feat_key, feat_val in effective:
+            item_val = item_af.get(feat_key)
+            if item_val is None:
+                continue  # unknown = skip
+            if item_val == feat_val:
+                return True  # OR: any match is sufficient
+
+        return False  # No feature matched
+
     def _search_nodes(self, specs: dict, req_cn: int) -> tuple:
         """Search nodes using V3 JSON logic."""
         node_candidates = []
@@ -305,8 +333,8 @@ class Matchmaker:
 
             diag["chem_match"] += 1
 
-            # --- ABSTRACT FEATURES FILTER ---
-            if not self._check_abstract_features(item, linker_af):
+            # --- ABSTRACT FEATURES FILTER (OR logic: linker passes if ANY feature matches) ---
+            if not self._check_abstract_features_or(item, linker_af):
                 continue
             diag["af_match"] += 1
 
@@ -466,7 +494,15 @@ class Matchmaker:
 
         print(f"Linkers Found: {len(candidates['edge'])}")
         print(f"   Diagnostics: {candidates['diagnostics']}")
-        
+
+        # Extract preferred_features (soft preference — not filtered, only used for ranking bonus)
+        candidates['preferred_features'] = {
+            'node': specs.get('node_query', {}).get('preferred_features') or {},
+            'linker': specs.get('linker_query', {}).get('preferred_features') or {},
+        }
+        if any(candidates['preferred_features'].values()):
+            print(f"   Preferred features: {candidates['preferred_features']}")
+
         return candidates
 
 

@@ -268,21 +268,17 @@ class FeedbackGenerator:
                 linker_fg = row.get('_linker_fg_cat', {})
                 node_metals = row.get('_node_metals', [])
 
-                # Only show TRUE abstract features (compact format)
-                true_feats = set()
-                for af_dict in [node_af, linker_af]:
-                    if isinstance(af_dict, dict):
-                        for k, v in af_dict.items():
-                            if v is True:
-                                # Clean up feature names for readability
-                                clean = k.replace('is_', '').replace('has_', '')
-                                true_feats.add(clean)
+                # Separate node and linker abstract features so Agent 1 can distinguish sources
+                node_true = [k.replace('is_', '').replace('has_', '') for k, v in (node_af or {}).items() if v is True]
+                linker_true = [k.replace('is_', '').replace('has_', '') for k, v in (linker_af or {}).items() if v is True]
 
                 parts = []
                 if node_metals and isinstance(node_metals, list):
                     parts.append(f"Metals:[{','.join(node_metals[:3])}]")
-                if true_feats:
-                    parts.append(f"Features:[{','.join(sorted(true_feats)[:5])}]")
+                if node_true:
+                    parts.append(f"NodeFeatures:[{','.join(sorted(node_true)[:4])}]")
+                if linker_true:
+                    parts.append(f"LinkerFeatures:[{','.join(sorted(linker_true)[:4])}]")
                 if isinstance(linker_fg, dict):
                     bk = linker_fg.get('backbone', [])
                     sb = linker_fg.get('substituents', [])
@@ -394,7 +390,16 @@ class FeedbackGenerator:
             lines.append(f"  Substituents: {subs_str}")
         if feats_str:
             lines.append(f"  Features: {feats_str}")
-        
+            # Minority features: present but not dominant — informational only
+            if not is_qmof and not is_hmof and feat_counter and n >= 2:
+                top3_keys = {k for k, _ in sorted(feat_counter.items(), key=lambda x: x[1], reverse=True)[:3]}
+                minority = {k: v for k, v in feat_counter.items()
+                            if k not in top3_keys and 10 <= v * 100 // n <= 75}
+                if minority:
+                    minor_sorted = sorted(minority.items(), key=lambda x: x[1], reverse=True)[:3]
+                    minor_str = ', '.join(f"{k}({v*100//n}%)" for k, v in minor_sorted)
+                    lines.append(f"  Minority (informational, do NOT require as mandatory): {minor_str}")
+
         # Geometry ranges (available in all modes)
         for col, label in [('di', 'Di'), ('df', 'Df'), ('sa', 'SA'), ('vf', 'VF')]:
             if col in df.columns:
@@ -532,7 +537,7 @@ class FeedbackGenerator:
         
         return '\n'.join(parts)
     
-    def _generate_diagnostic_footer(self, filter_sets: dict) -> str:
+    def _generate_diagnostic_footer(self, filter_sets: dict, diag_info: dict = None) -> str:
         """
         Generates a diagnostic footer if results are zero or low.
         Explains WHY the search failed based on filter counts.
@@ -558,9 +563,27 @@ class FeedbackGenerator:
         if count_a == 0:
             footer += "[CRITICAL FAILURE] CHEMISTRY: No entries match your Metal + Functional Group constraints.\n"
             footer += "  Possible causes:\n"
-            footer += "  -> Functional Groups too strict: All specified tags must be present (AND logic).\n"
+            footer += "  -> abstract_features OR functional_groups too strict.\n"
+            footer += "  -> abstract_features are AND-combined: ALL specified features must match simultaneously.\n"
             footer += "  -> Metal + Linker combination may not exist in this search space.\n"
-            footer += "  SUGGESTION: Broaden metal list or relax functional group requirements.\n"
+
+            # Use diag to give more specific diagnosis
+            if diag_info:
+                z_diag = diag_info.get("Z", {})
+                a_diag = diag_info.get("A", {})
+                best_diag = z_diag if z_diag else a_diag
+                chem_match = best_diag.get("chem_match", -1)
+                af_match = best_diag.get("af_match", -1)
+                if chem_match > 0 and af_match == 0:
+                    footer += f"  [DIAGNOSIS] chem_match={chem_match} but af_match=0 → abstract_features is the bottleneck.\n"
+                    footer += "  SUGGESTION: Use at most ONE abstract_feature per linker query.\n"
+                elif chem_match == 0:
+                    footer += "  [DIAGNOSIS] chem_match=0 → functional_groups / branch tags too strict.\n"
+                    footer += "  SUGGESTION: Broaden metal list or reduce branch tag requirements.\n"
+                else:
+                    footer += "  SUGGESTION: Reduce abstract_features to 1 OR broaden functional_group tags.\n"
+            else:
+                footer += "  SUGGESTION: Reduce abstract_features to at most 1, or broaden metal list.\n"
         else:
             footer += "[PASS] CHEMISTRY: Your chemical constraints match entries in the database.\n"
 
@@ -585,7 +608,8 @@ class FeedbackGenerator:
 
         return footer
 
-    def generate_feedback(self, feedback_type: int, filter_sets: dict, metric_name: str = "H2 Uptake") -> str:
+    def generate_feedback(self, feedback_type: int, filter_sets: dict, metric_name: str = "H2 Uptake",
+                          geometry_null: bool = False) -> str:
         """
         Generate feedback prompt based on selected type.
         """
@@ -613,7 +637,7 @@ class FeedbackGenerator:
         if feedback_type == 1:
             # Unified 4-beam diagnostic for ALL databases (chemistry-first)
             # For QMOF: Beam 1 ~ Beam 2 (no geometry gate), which correctly signals "geometry irrelevant"
-            content = self._generate_four_beam(set_z, set_a, set_f, set_total, metric_name)
+            content = self._generate_four_beam(set_z, set_a, set_f, set_total, metric_name, geometry_null=geometry_null)
         elif feedback_type == 2:
             content = self._generate_universe_baseline(set_total, metric_name)
         elif feedback_type == 3:
@@ -631,7 +655,8 @@ class FeedbackGenerator:
             
         # Append Diagnostic Footer conditionally
         if feedback_type != 7:
-            content += self._generate_diagnostic_footer(filter_sets)
+            diag_info = filter_sets.get("_diag_info", None)
+            content += self._generate_diagnostic_footer(filter_sets, diag_info=diag_info)
         
         return content
     
@@ -640,7 +665,7 @@ class FeedbackGenerator:
     # =========================================================================
     def _generate_four_beam(self, set_z: pd.DataFrame, set_a: pd.DataFrame,
                              set_f: pd.DataFrame, set_total: pd.DataFrame,
-                             metric_name: str) -> str:
+                             metric_name: str, geometry_null: bool = False) -> str:
         """
         4-Beam Diagnostic: Chemistry-first design with geometry as second-stage gate.
         BEAM 1: Full Hypothesis (Z) - Chemistry + Geometry gate applied
@@ -659,7 +684,7 @@ We ran 4 parallel search beams to diagnose your strategy.
 
 BEAM 1: FULL HYPOTHESIS (Your Chemistry + Your Geometry Prediction as Second-Stage Gate)
 {self._generate_enriched_beam(set_z, FEEDBACK_SAMPLE_SIZE, "Beam 1", metric_name)}
--> Compare with Beam 2: does your geometry prediction improve or hurt performance?
+-> {self._geometry_comparison_message(geometry_null)}
 
 BEAM 2: CHEMISTRY ONLY (Your Metals + Your Linker Constraints, Any Geometry)
 {self._generate_enriched_beam(set_a, FEEDBACK_SAMPLE_SIZE, "Beam 2", metric_name)}
@@ -672,9 +697,110 @@ BEAM 3: METAL ONLY (Your Metals, Any Linker, Any Geometry)
 BEAM 4: GLOBAL BASELINE (Random Sample from Entire Database)
 {self._generate_enriched_beam(set_total, FEEDBACK_SAMPLE_SIZE, "Beam 4", metric_name)}
 -> Calibration: if Beam 2 >> Beam 4, your chemistry is better than random selection.
+{self._generate_cross_beam_top_n(set_z, set_a, set_f, set_total, metric_name)}
+{self._generate_suggested_geometry(set_a, set_total)}
 """
 
-    def _generate_qmof_four_beam(self, set_z: pd.DataFrame, set_f: pd.DataFrame, 
+    def _geometry_comparison_message(self, geometry_null: bool) -> str:
+        if geometry_null:
+            return ("NOTE: geometry_filter was null this iteration — "
+                    "Beam 1 = Beam 2 (no geometry gate was active). "
+                    "This comparison does NOT measure geometry contribution. "
+                    "To activate the geometry gate, specify numeric targets "
+                    "(e.g., target_vf_min, target_Di_min) in your hypothesis.")
+        return "Compare with Beam 2: does your geometry prediction improve or hurt performance?"
+
+    def _generate_cross_beam_top_n(self, set_z: pd.DataFrame, set_a: pd.DataFrame,
+                                     set_f: pd.DataFrame, set_total: pd.DataFrame,
+                                     metric_name: str, top_n: int = 10) -> str:
+        """Generate top-N performers across all beams for pattern analysis.
+
+        This gives Agent 1 the correct signal: 'what features do high-uptake MOFs share?'
+        instead of 'what features appear in a random sample?'
+        """
+        import config as _cfg
+        if _cfg.is_qmof_mode() or _cfg.is_hmof_mode():
+            return ""  # Only for PORMAKE live mode
+
+        # Combine all beam results
+        all_dfs = [df for df in [set_z, set_a, set_f, set_total] if not df.empty]
+        if not all_dfs:
+            return ""
+
+        combined = pd.concat(all_dfs, ignore_index=True)
+        if 'filename' in combined.columns:
+            combined = combined.drop_duplicates(subset='filename')
+
+        if len(combined) < 2:
+            return ""
+
+        # Select top-N by target value (H2 uptake)
+        top = combined.nlargest(min(top_n, len(combined)), 'target')
+
+        # Enrich and generate pattern
+        top = self._enrich_pormake_rows(top)
+        pattern = self._generate_pattern_summary(top, f"Top-{len(top)} Pattern (All Beams Combined)")
+        if not pattern:
+            return ""
+
+        # Build a brief table of top performers
+        beam_label_map = {}
+        for beam_name, df in [("Z", set_z), ("A", set_a), ("F", set_f), ("T", set_total)]:
+            if not df.empty and 'filename' in df.columns:
+                for fn in df['filename']:
+                    beam_label_map[fn] = beam_name
+
+        header = f"\n=== TOP {len(top)} PERFORMERS (ALL BEAMS COMBINED — ranked by {metric_name}) ==="
+        table_lines = [f"{'Rank':<5} {'Beam':<5} {metric_name:<12} {'MOF'}"]
+        for rank, (_, row) in enumerate(top.iterrows(), 1):
+            fn = row.get('filename', '?')
+            beam = beam_label_map.get(fn, '?')
+            target = row.get('target', 0.0)
+            table_lines.append(f"{rank:<5} {beam:<5} {target:<12.2f} {self._translate_mof(fn)}")
+
+        return f"\n{header}\n" + '\n'.join(table_lines) + f"\n\n{pattern}\n"
+
+    def _generate_suggested_geometry(self, set_a: pd.DataFrame, set_total: pd.DataFrame,
+                                       top_n: int = 5) -> str:
+        """Suggest concrete geometry_filter values based on top performers.
+
+        Agent 1 sees top MOF geometry values but lacks guidance on converting
+        them to geometry_filter numbers. This provides a concrete suggestion.
+        """
+        import config as _cfg
+        if _cfg.is_qmof_mode() or _cfg.is_hmof_mode():
+            return ""
+
+        # Use chemistry-only beam (set_a) or fall back to total
+        source = set_a if not set_a.empty else set_total
+        if source.empty:
+            return ""
+
+        top = source.nlargest(min(top_n, len(source)), 'target')
+        if top.empty:
+            return ""
+
+        lines = ["\n=== SUGGESTED GEOMETRY TARGETS (based on top performers) ==="]
+        lines.append("Use these as starting points for geometry_filter in your next hypothesis:")
+
+        for col, label, field_name in [
+            ('vf', 'VF', 'target_vf_min'),
+            ('di', 'Di (Å)', 'target_Di_min'),
+            ('df', 'Df (Å)', 'target_Df_min'),
+            ('sa', 'SA (m²/g)', 'target_sa_min'),
+        ]:
+            if col in top.columns:
+                vals = [float(v) for v in top[col] if pd.notna(v) and float(v) > 0]
+                if len(vals) >= 2:
+                    lo, hi = min(vals), max(vals)
+                    med = sorted(vals)[len(vals)//2]
+                    lines.append(f"  {label}: range {lo:.2f}–{hi:.2f} (median {med:.2f}) → "
+                                  f"suggest {field_name}: {lo * 0.9:.2f}")
+
+        lines.append("(Only set these if your hypothesis mechanistically predicts specific geometry ranges.)")
+        return '\n'.join(lines)
+
+    def _generate_qmof_four_beam(self, set_z: pd.DataFrame, set_f: pd.DataFrame,
                                   set_g: pd.DataFrame, set_total: pd.DataFrame, metric_name: str) -> str:
         """
         Custom QMOF 4-Beam Diagnostic: Isolates the electronic contributions of Metals versus Linkers.

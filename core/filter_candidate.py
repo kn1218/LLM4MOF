@@ -483,6 +483,8 @@ class MOFRanker:
         combinations: List[MOFComponent],
         predicted_geometries: List[PredictedGeometry],
         target_geometry: Dict[str, Any],
+        preferred_features: Dict[str, Any] = None,
+        bb_lookup: Dict[str, Any] = None,
     ) -> List[RankedMOF]:
 
         results = []
@@ -491,6 +493,8 @@ class MOFRanker:
             score, match_details = self._calculate_match_score(
                 pred_geo, target_geometry
             )
+            if preferred_features and bb_lookup:
+                score += self._calculate_preferred_bonus(comp, preferred_features, bb_lookup)
             results.append(
                 RankedMOF(
                     rank=0,
@@ -507,6 +511,48 @@ class MOFRanker:
             r.rank = i + 1
 
         return results
+
+    @staticmethod
+    def _calculate_preferred_bonus(
+        comp: "MOFComponent", preferred_features: Dict[str, Any], bb_lookup: Dict[str, Any]
+    ) -> float:
+        """Compute a soft ranking bonus for preferred (non-mandatory) abstract features.
+
+        Unlike abstract_features (hard AND filter), preferred_features only boost
+        match_score — no candidate is excluded. Bonus is capped at 0.15 so geometry
+        always dominates; preferred features act as a tiebreaker when geometry is null.
+
+        Args:
+            comp: The MOF component (topology + node_id + edge_id).
+            preferred_features: Dict with optional 'node' and 'linker' sub-dicts,
+                e.g. {'node': {'is_conjugated': True}, 'linker': {'has_hydrogen_bond_acceptor': True}}.
+            bb_lookup: Building block lookup dict keyed by BB ID.
+
+        Returns:
+            Float bonus in range [0.0, 0.15].
+        """
+        if not preferred_features or not bb_lookup:
+            return 0.0
+
+        bonus = 0.0
+        per_feature_bonus = 0.05  # each matching preferred feature adds 0.05
+
+        node_pf = preferred_features.get('node') or {}
+        linker_pf = preferred_features.get('linker') or {}
+
+        for bb_id, pf_dict in [(comp.node, node_pf), (comp.edge, linker_pf)]:
+            if not pf_dict:
+                continue
+            item_af = bb_lookup.get(bb_id, {}).get('abstract_features', {})
+            if not item_af:
+                continue
+            for feat_key, feat_val in pf_dict.items():
+                if feat_val is None:
+                    continue
+                if item_af.get(feat_key) == feat_val:
+                    bonus += per_feature_bonus
+
+        return min(bonus, 0.15)  # cap total bonus
 
     def _calculate_match_score(
         self, pred: PredictedGeometry, target: Dict[str, Any]

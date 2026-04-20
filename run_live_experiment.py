@@ -601,9 +601,14 @@ def run_live_experiment() -> None:
         # Convert live results → filter_sets format → feedback type 1 (4-beam)
         filter_sets = live_results_to_filter_sets(live_results)
 
+        # Detect if geometry_filter was null (all fields None) → prevents spurious geometry comparison
+        gf = constraints.get("geometry_filter", {}) or {}
+        geometry_null = not any(v is not None for v in gf.values())
+
         feedback_type = 1  # Always 4-beam diagnostic in live mode
         current_feedback = feedback_gen.generate_feedback(
-            feedback_type, filter_sets, metric_name=active_metric_name
+            feedback_type, filter_sets, metric_name=active_metric_name,
+            geometry_null=geometry_null
         )
 
         print(f"\n--- Feedback Preview ---")

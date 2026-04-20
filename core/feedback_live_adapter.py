@@ -86,9 +86,16 @@ def live_results_to_filter_sets(live_results: LiveResults) -> Dict[str, pd.DataF
         "g": pd.DataFrame(),
     }
 
+    # Include per-beam matchmaker diagnostics for use in diagnostic footer
+    filter_sets["_diag_info"] = {
+        "Z": z_beam.matchmaker_diag if z_beam else {},
+        "A": a_beam.matchmaker_diag if a_beam else {},
+        "F": f_beam.matchmaker_diag if f_beam else {},
+    }
+
     # Log summary
     for key, df in filter_sets.items():
-        if not df.empty:
+        if isinstance(df, pd.DataFrame) and not df.empty:
             avg_target = df["target"].mean()
             print(f"[LiveAdapter] Set '{key}': {len(df)} entries, "
                   f"avg target={avg_target:.2f}")

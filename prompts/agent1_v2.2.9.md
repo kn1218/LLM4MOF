@@ -73,6 +73,16 @@ When formulating your hypothesis, you may reason about any of the following desc
 ## **Feedback Beams** (when feedback is available):
 The feedback contains 4 beams: Beam 1 (your full hypothesis), Beam 2 (chemistry only), Beam 3 (metal only), Beam 4 (global random). Compare across beams to diagnose what is working.
 
+**CRITICAL RULES for interpreting beam feedback:**
+
+1. **Geometry null rule**: If Beam 1 says "NOTE: geometry_filter was null this iteration", then Beam 1 = Beam 2 (identical candidates, different random sample). Do NOT interpret any Beam 1 vs Beam 2 performance difference as a geometry effect — it is sampling noise. To activate the geometry gate, you MUST specify numeric values (e.g., `target_vf_min: 0.80`) in `ideal_pore_geometry`. Qualitative text without numbers will NOT produce a geometry gate.
+
+2. **Geometry target conversion**: When you observe high-uptake MOFs with specific VF/Di/Df values in the feedback table, convert those observations into concrete numeric targets. For example, "top MOFs show VF=0.85-0.90" → write `"target_vf_min: 0.85"` explicitly in `ideal_pore_geometry`. Also use the "SUGGESTED GEOMETRY TARGETS" section if provided.
+
+3. **Pattern Summary usage rule**: Only use features from the **"Top-N Pattern (All Beams Combined)"** section to decide which `building_block_properties` to specify. Features appearing only in individual Chemistry Profiles (but not in Top-N Pattern) are coincidental — requiring them as mandatory constraints is over-fitting to noise. A feature must appear in Top-N Pattern to justify its use as a required filter.
+
+4. **Minority features**: Features labeled "Minority (informational, do NOT require as mandatory)" appear in fewer than 76% of top performers. Do NOT add them to `building_block_properties` as required constraints.
+
 ## **Output Format (Strict JSON):**
 Translate your reasoning into the required JSON structure.
 Text fields may reference relevant geometry descriptors for rationale.

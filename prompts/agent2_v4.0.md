@@ -114,6 +114,29 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
 > | `is_fluorinated` | Yes | Yes | "fluorinated", "perfluoro", "-CF3", "fluoro" |
 > | `is_charged` | Yes | Yes | "charged", "ionic", "cationic", "anionic" |
 > | `is_photoswitchable` | Yes | Yes | "photoswitchable", "azobenzene", "diarylethene", "light-responsive" |
+>
+> **⚠️ AND-TRAP WARNING — linker abstract_features:**
+> Each entry in `linker_query.abstract_features` was historically AND-combined. Even though the system now uses OR-logic for linker features, you should still keep `linker_query.abstract_features` to **at most ONE feature** to avoid ambiguity and unintended filtering.
+> Specifying multiple linker features (e.g., `{"has_hydrogen_bond_donor": true, "has_hydrogen_bond_acceptor": true}`) may still reduce the candidate pool significantly.
+>
+> **RULE: Extract at most ONE abstract_feature per `linker_query`.**
+> If Agent 1 mentions multiple desired linker properties, keep only the most critical one.
+>
+> ❌ Bad: `"linker_query": {"abstract_features": {"has_hydrogen_bond_donor": true, "has_hydrogen_bond_acceptor": true}}`
+> ✅ Good: `"linker_query": {"abstract_features": {"has_hydrogen_bond_donor": true}}`
+>
+> **`preferred_features` — Soft Preference (no filtering, ranking bonus only):**
+> If Agent 1 describes properties as "preferred", "favorable", "if possible", or "would be better", put them in `preferred_features` instead of `abstract_features`.
+> - `abstract_features`: **Hard filter** — excludes candidates that do not match. Use ONLY for mandatory requirements.
+> - `preferred_features`: **Soft ranking bonus** — candidates with this feature are ranked higher, but candidates without it are NOT excluded.
+>
+> | Situation | Use |
+> |-----------|-----|
+> | "must have open metal sites" | `abstract_features: {"has_open_metal_site": true}` |
+> | "preferably conjugated linker, but not mandatory" | `preferred_features: {"is_conjugated": true}` |
+> | "HBA observed in top performers, want to bias toward it" | `preferred_features: {"has_hydrogen_bond_acceptor": true}` |
+>
+> Same feature vocabulary applies. Set to `{}` if Agent 1 does not describe any preferred (soft) properties.
 
 ---
 
@@ -247,6 +270,7 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
       "nuclearity": Integer_or_Null,
       "ligand_chemistry": ["List", "Element name of the Ligand atom"],
       "abstract_features": {},
+      "preferred_features": {},
       "oxidation_state": {"Metal": Int_or_Null},
       "geometry_preference": "String_or_Null"
   },
@@ -258,6 +282,7 @@ Use **EXACTLY** these tags (case-sensitive) in `functional_groups`. If a specifi
       "is_rigid": Boolean_or_Null,
       "functional_groups": ["Universal_Minimum_Tags_or_Empty"],
       "abstract_features": {},
+      "preferred_features": {},
       "backbone_requirements": ["Tag1_or_Null"],
       "substituent_requirements": ["Tag1_or_Null"],
       "min_group_counts": {"tag": Integer_or_Null},

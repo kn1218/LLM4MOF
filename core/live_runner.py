@@ -59,6 +59,7 @@ class BeamResult:
     failures: List[SimResult] = field(default_factory=list)
     pool_size: int = 0
     target_n: int = 0
+    matchmaker_diag: Dict = field(default_factory=dict)
 
     @property
     def is_complete(self) -> bool:
@@ -426,6 +427,8 @@ def run_live_iteration(
         os.makedirs(iter_dir, exist_ok=True)
 
         # --- Build ranked candidate pool ---
+        beam_mm_diag = {}
+        beam_preferred = {}  # preferred_features for soft ranking bonus
         if beam_id == "total":
             # Random baseline: skip matchmaker, sample from full space
             components = _build_random_pool(pool_size)
@@ -434,12 +437,15 @@ def run_live_iteration(
             # Run matchmaker with beam-specific specs
             beam_specs = _build_beam_specs(specs, beam_id)
             mm_result = matchmaker.smart_matchmaker_single_node(beam_specs)
+            beam_mm_diag = mm_result.get("diagnostics", {})  # capture before filter
+            beam_preferred = mm_result.get("preferred_features", {})
 
             if mm_result.get("status") == "error":
                 print(f"[Beam {beam_id}] Matchmaker error: {mm_result.get('message')}")
                 live_results.beams[beam_id] = BeamResult(
                     beam_id=beam_id, beam_label=beam_label,
                     pool_size=0, target_n=n_per_beam,
+                    matchmaker_diag=beam_mm_diag,
                 )
                 live_results.aborted_beams.append(beam_id)
                 continue
@@ -452,6 +458,7 @@ def run_live_iteration(
                 live_results.beams[beam_id] = BeamResult(
                     beam_id=beam_id, beam_label=beam_label,
                     pool_size=0, target_n=n_per_beam,
+                    matchmaker_diag=beam_mm_diag,
                 )
                 live_results.aborted_beams.append(beam_id)
                 continue
@@ -464,6 +471,7 @@ def run_live_iteration(
                 live_results.beams[beam_id] = BeamResult(
                     beam_id=beam_id, beam_label=beam_label,
                     pool_size=0, target_n=n_per_beam,
+                    matchmaker_diag=beam_mm_diag,
                 )
                 live_results.aborted_beams.append(beam_id)
                 continue
@@ -471,7 +479,11 @@ def run_live_iteration(
         # --- mof2zeo predict + rank ---
         print(f"[Beam {beam_id}] Predicting geometry for {len(components)} candidates...")
         predictions = predictor.predict_batch(components)
-        ranked = ranker.rank(components, predictions, target_geometry)
+        ranked = ranker.rank(
+            components, predictions, target_geometry,
+            preferred_features=beam_preferred or None,
+            bb_lookup=matchmaker.bb_lookup if beam_preferred else None,
+        )
 
         # Take top pool_size candidates
         ranked_pool = ranked[:pool_size]
@@ -490,6 +502,7 @@ def run_live_iteration(
         beam_result = BeamResult(
             beam_id=beam_id, beam_label=beam_label,
             pool_size=len(ranked_pool), target_n=n_per_beam,
+            matchmaker_diag=beam_mm_diag,
         )
 
         for ranked_mof in ranked_pool:
@@ -601,12 +614,14 @@ def prepare_beam_pools(
         print(f"\n[Prepare] Beam {beam_id}: {beam_label}")
         pool_size = n_per_beam * pool_mult
 
+        beam_preferred = {}
         if beam_id == "total":
             components = _build_random_pool(pool_size)
             print(f"[Prepare] Random pool: {len(components)} candidates")
         else:
             beam_specs = _build_beam_specs(specs, beam_id)
             mm_result = matchmaker.smart_matchmaker_single_node(beam_specs)
+            beam_preferred = mm_result.get("preferred_features", {})
 
             if mm_result.get("status") == "error":
                 print(f"[Prepare] Beam {beam_id} matchmaker error: {mm_result.get('message')}")
@@ -629,7 +644,11 @@ def prepare_beam_pools(
 
         print(f"[Prepare] Predicting geometry for {len(components)} candidates...")
         predictions = predictor.predict_batch(components)
-        ranked = ranker.rank(components, predictions, target_geometry)
+        ranked = ranker.rank(
+            components, predictions, target_geometry,
+            preferred_features=beam_preferred or None,
+            bb_lookup=matchmaker.bb_lookup if beam_preferred else None,
+        )
 
         ranked_pool = ranked[:pool_size]
         if ranked_pool:
