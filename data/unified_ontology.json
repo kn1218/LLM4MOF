@@ -1,0 +1,1025 @@
+{
+    "version": "1.2",
+    "created": "2026-03-06T18:39:00+09:00",
+    "description": "Unified ontology mapping for LLM4MOF functional group vocabulary. Consolidates tags from BB dictionary v3.2, V7 edge metadata, QMOF global JSONs, and hMOF index into a single canonical vocabulary.",
+    "notes": [
+        "canonical_form is Title_Case to match Agent 2 APPROVED VOCABULARY convention",
+        "All alias lookups should be case-insensitive (lowercase before lookup)",
+        "Metal symbols (Zn, Cu, etc.) are NOT included here - they are handled separately",
+        "QMOF-only terminal ligand tags (Aqua_Ligands, Oxo_Ligands, etc.) are kept in a separate section"
+    ],
+    "canonical_tags": {
+        "Aromatic": {
+            "aliases": [
+                "Aromatic_Ring",
+                "aromatic",
+                "aromatic_ring"
+            ],
+            "category": "backbone",
+            "agent2_approved": true
+        },
+        "Aryl": {
+            "aliases": [
+                "aryl"
+            ],
+            "category": "backbone",
+            "agent2_approved": true
+        },
+        "Ring": {
+            "aliases": [
+                "ring"
+            ],
+            "category": "backbone",
+            "agent2_approved": true
+        },
+        "Benzene": {
+            "aliases": [
+                "benzene",
+                "benzene_ring"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Naphthalene": {
+            "aliases": [
+                "naphthalene"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Biphenyl": {
+            "aliases": [
+                "biphenyl"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Anthracene": {
+            "aliases": [
+                "anthracene"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Phenanthrene": {
+            "aliases": [
+                "phenanthrene"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Fluorene": {
+            "aliases": [
+                "fluorene"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Terphenyl": {
+            "aliases": [
+                "terphenyl"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Pyrene": {
+            "aliases": [
+                "pyrene"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Triptycene": {
+            "aliases": [
+                "triptycene"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Carbon-Framework": {
+            "aliases": [
+                "carbon_framework"
+            ],
+            "category": "backbone",
+            "agent2_approved": false
+        },
+        "Heterocycle": {
+            "aliases": [
+                "heterocycle"
+            ],
+            "category": "backbone",
+            "agent2_approved": true
+        },
+        "Pyridine": {
+            "aliases": [
+                "Pyridine_Ring",
+                "pyridine",
+                "pyridine_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": true
+        },
+        "Imidazole": {
+            "aliases": [
+                "Imidazole_Ring",
+                "imidazole",
+                "imidazole_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": true
+        },
+        "Azole": {
+            "aliases": [
+                "azole"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": true
+        },
+        "Azolate": {
+            "aliases": [
+                "azolate"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Thiophene": {
+            "aliases": [
+                "Thiophene_Ring",
+                "thiophene",
+                "thiophene_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": true
+        },
+        "Furan": {
+            "aliases": [
+                "Furan_Ring",
+                "furan",
+                "furan_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Pyrazole": {
+            "aliases": [
+                "Pyrazole_Ring",
+                "pyrazole",
+                "pyrazole_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Triazole": {
+            "aliases": [
+                "Triazole_Ring",
+                "triazole_ring",
+                "triazole_124",
+                "triazole_123",
+                "triazole_any",
+                "triazole_1_2_3",
+                "triazole_1_2_4"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Tetrazole": {
+            "aliases": [
+                "Tetrazole_Ring",
+                "tetrazole_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Tetrazine": {
+            "aliases": [
+                "Tetrazine_Ring",
+                "tetrazine",
+                "tetrazine_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Pyrimidine": {
+            "aliases": [
+                "Pyrimidine_Ring",
+                "pyrimidine",
+                "pyrimidine_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Pyrazine": {
+            "aliases": [
+                "Pyrazine_Ring",
+                "pyrazine",
+                "pyrazine_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Pyridazine": {
+            "aliases": [
+                "Pyridazine_Ring",
+                "pyridazine",
+                "pyridazine_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Triazine": {
+            "aliases": [
+                "Triazine_Ring",
+                "triazine_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Oxadiazole": {
+            "aliases": [
+                "Oxadiazole_Ring",
+                "oxadiazole",
+                "oxadiazole_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Thiadiazole": {
+            "aliases": [
+                "Thiadiazole_Ring",
+                "thiadiazole",
+                "thiadiazole_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Thiazole": {
+            "aliases": [
+                "Thiazole_Ring",
+                "thiazole",
+                "thiazole_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Quinoline": {
+            "aliases": [
+                "quinoline"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Isoquinoline": {
+            "aliases": [
+                "isoquinoline"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Benzofuran": {
+            "aliases": [
+                "benzofuran"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Benzothiophene": {
+            "aliases": [
+                "benzothiophene"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Benzodioxole": {
+            "aliases": [
+                "benzodioxole"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Piperazine": {
+            "aliases": [
+                "Piperazine_Ring",
+                "piperazine",
+                "piperazine_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Piperidine": {
+            "aliases": [
+                "Piperidine_Ring",
+                "piperidine",
+                "piperidine_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "DABCO": {
+            "aliases": [
+                "Dabco",
+                "dabco"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Pyridinium": {
+            "aliases": [
+                "pyridinium"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Nitrogen": {
+            "aliases": [
+                "nitrogen"
+            ],
+            "category": "element",
+            "agent2_approved": true
+        },
+        "Oxygen": {
+            "aliases": [
+                "oxygen"
+            ],
+            "category": "element",
+            "agent2_approved": true
+        },
+        "Sulfur": {
+            "aliases": [
+                "sulfur"
+            ],
+            "category": "element",
+            "agent2_approved": true
+        },
+        "Phosphorus": {
+            "aliases": [
+                "phosphorus"
+            ],
+            "category": "element",
+            "agent2_approved": false
+        },
+        "Carbon": {
+            "aliases": [
+                "carbon"
+            ],
+            "category": "element",
+            "agent2_approved": false
+        },
+        "Amine": {
+            "aliases": [
+                "amine",
+                "amine_any"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Primary_Amine": {
+            "aliases": [
+                "primary_amine"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Secondary_Amine": {
+            "aliases": [
+                "secondary_amine"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Tertiary_Amine": {
+            "aliases": [
+                "tertiary_amine"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Quaternary_N": {
+            "aliases": [
+                "quaternary_n"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Amide": {
+            "aliases": [
+                "Amide_Link",
+                "amide",
+                "amide_link",
+                "primary_amide"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Imine": {
+            "aliases": [
+                "imine",
+                "imine_any"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Diimine": {
+            "aliases": [
+                "diimine"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Azine": {
+            "aliases": [
+                "Azine_Spacer",
+                "azine",
+                "azine_spacer"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Nitro": {
+            "aliases": [
+                "nitro"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Nitrile": {
+            "aliases": [
+                "nitrile",
+                "nitrile_sub"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Hydroxyl": {
+            "aliases": [
+                "hydroxyl"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Carbonyl": {
+            "aliases": [
+                "carbonyl"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Ketone": {
+            "aliases": [
+                "ketone"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Aldehyde": {
+            "aliases": [
+                "aldehyde"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Carboxyl": {
+            "aliases": [
+                "Carboxylate",
+                "carboxyl",
+                "carboxylate",
+                "carboxylic_acid",
+                "carboxyl_any"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Ether": {
+            "aliases": [
+                "ether",
+                "ether_link",
+                "aryl_ether"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Thioether": {
+            "aliases": [
+                "thioether",
+                "thioether_link"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Methoxy": {
+            "aliases": [
+                "methoxy"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Sulfonyl": {
+            "aliases": [
+                "sulfonyl",
+                "sulfone"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Sulfonate": {
+            "aliases": [
+                "Sulfonic_Acid",
+                "sulfonate",
+                "sulfonic_acid"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Sulfonamide": {
+            "aliases": [
+                "sulfonamide"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Phosphonate": {
+            "aliases": [
+                "phosphonate",
+                "phosphonic_acid"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Phenoxide": {
+            "aliases": [
+                "phenoxide"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Oxo": {
+            "aliases": [
+                "oxo"
+            ],
+            "category": "functional_group",
+            "agent2_approved": true
+        },
+        "Azo": {
+            "aliases": [
+                "Azo_Spacer",
+                "azo",
+                "azo_spacer"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Thiol": {
+            "aliases": [
+                "thiol"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Trifluoromethyl": {
+            "aliases": [
+                "trifluoromethyl"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "BODIPY": {
+            "aliases": [
+                "bodipy"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Halogen": {
+            "aliases": [
+                "halogen"
+            ],
+            "category": "halogen",
+            "agent2_approved": true
+        },
+        "Fluoro": {
+            "aliases": [
+                "Fluorine",
+                "fluoro",
+                "fluorine"
+            ],
+            "category": "halogen",
+            "agent2_approved": true
+        },
+        "Chloro": {
+            "aliases": [
+                "Chlorine",
+                "chloro",
+                "chlorine"
+            ],
+            "category": "halogen",
+            "agent2_approved": true
+        },
+        "Bromo": {
+            "aliases": [
+                "Bromine",
+                "bromo",
+                "bromine"
+            ],
+            "category": "halogen",
+            "agent2_approved": true
+        },
+        "Iodo": {
+            "aliases": [
+                "Iodine",
+                "iodo",
+                "iodine"
+            ],
+            "category": "halogen",
+            "agent2_approved": true
+        },
+        "Perfluoro": {
+            "aliases": [
+                "perfluoro"
+            ],
+            "category": "halogen",
+            "agent2_approved": false
+        },
+        "Alkyne": {
+            "aliases": [
+                "Alkyne_Spacer",
+                "alkyne",
+                "alkyne_spacer",
+                "acetylene"
+            ],
+            "category": "linker_type",
+            "agent2_approved": true
+        },
+        "Alkene": {
+            "aliases": [
+                "Alkene_Spacer",
+                "alkene",
+                "alkene_spacer",
+                "vinyl"
+            ],
+            "category": "linker_type",
+            "agent2_approved": true
+        },
+        "Alkyl": {
+            "aliases": [
+                "Alkane_Chain",
+                "Alkane_Chain_Spacer",
+                "alkyl",
+                "alkane_chain",
+                "alkane_chain_spacer"
+            ],
+            "category": "linker_type",
+            "agent2_approved": false
+        },
+        "Butadiyne": {
+            "aliases": [
+                "Butadiyne_Spacer",
+                "butadiyne",
+                "butadiyne_spacer"
+            ],
+            "category": "linker_type",
+            "agent2_approved": false
+        },
+        "Butadiene": {
+            "aliases": [
+                "Butadiene_Spacer",
+                "butadiene",
+                "butadiene_spacer"
+            ],
+            "category": "linker_type",
+            "agent2_approved": false
+        },
+        "Hexatriyne": {
+            "aliases": [
+                "Hexatriyne_Spacer",
+                "hexatriyne",
+                "hexatriyne_spacer"
+            ],
+            "category": "linker_type",
+            "agent2_approved": false
+        },
+        "Methyl": {
+            "aliases": [
+                "methyl"
+            ],
+            "category": "substituent",
+            "agent2_approved": false
+        },
+        "Ethyl": {
+            "aliases": [
+                "ethyl"
+            ],
+            "category": "substituent",
+            "agent2_approved": false
+        },
+        "Isopropyl": {
+            "aliases": [
+                "isopropyl"
+            ],
+            "category": "substituent",
+            "agent2_approved": false
+        },
+        "tert-Butyl": {
+            "aliases": [
+                "tert_butyl"
+            ],
+            "category": "substituent",
+            "agent2_approved": false
+        },
+        "Metal_Complex": {
+            "aliases": [
+                "metal_complex"
+            ],
+            "category": "metal",
+            "agent2_approved": true
+        },
+        "Metallolinker": {
+            "aliases": [
+                "metallolinker"
+            ],
+            "category": "metal",
+            "agent2_approved": false
+        },
+        "Transition_Metal": {
+            "aliases": [
+                "transition_metal"
+            ],
+            "category": "metal",
+            "agent2_approved": false
+        },
+        "Macrocycle": {
+            "aliases": [
+                "macrocycle"
+            ],
+            "category": "topology",
+            "agent2_approved": false
+        },
+        "Cage": {
+            "aliases": [
+                "cage"
+            ],
+            "category": "topology",
+            "agent2_approved": false
+        },
+        "Branch": {
+            "aliases": [
+                "branch"
+            ],
+            "category": "topology",
+            "agent2_approved": false
+        },
+        "Aliphatic_Ring": {
+            "aliases": [
+                "aliphatic_ring"
+            ],
+            "category": "topology",
+            "agent2_approved": false
+        },
+        "Cyclohexane": {
+            "aliases": [
+                "cyclohexane"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Cyclopentane": {
+            "aliases": [
+                "cyclopentane"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Adamantane": {
+            "aliases": [
+                "adamantane"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Cubane": {
+            "aliases": [
+                "cubane"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Barrelene": {
+            "aliases": [
+                "barrelene"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Indane": {
+            "aliases": [
+                "indane"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        },
+        "Phenol": {
+            "aliases": [
+                "phenol",
+                "phenolic"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Ester": {
+            "aliases": [
+                "ester",
+                "ester_group"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Anhydride": {
+            "aliases": [
+                "anhydride"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Urea": {
+            "aliases": [
+                "urea"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Hydrazine": {
+            "aliases": [
+                "hydrazine"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Hydrazide": {
+            "aliases": [
+                "hydrazide"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Thiourea": {
+            "aliases": [
+                "thiourea"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Sulfoxide": {
+            "aliases": [
+                "sulfoxide"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Isothiocyanate": {
+            "aliases": [
+                "isothiocyanate"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Boronic_Acid": {
+            "aliases": [
+                "boronic_acid",
+                "boron_any"
+            ],
+            "category": "functional_group",
+            "agent2_approved": false
+        },
+        "Pyrrole": {
+            "aliases": [
+                "pyrrole",
+                "pyrrole_ring"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Benzimidazole": {
+            "aliases": [
+                "benzimidazole"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Phenanthroline": {
+            "aliases": [
+                "phenanthroline"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Indole": {
+            "aliases": [
+                "indole"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Bipyridine": {
+            "aliases": [
+                "bipyridine",
+                "bipy"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Benzothiazole": {
+            "aliases": [
+                "benzothiazole"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Isothiazole": {
+            "aliases": [
+                "isothiazole"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Isoxazole": {
+            "aliases": [
+                "isoxazole"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Oxazole": {
+            "aliases": [
+                "oxazole"
+            ],
+            "category": "heterocycle",
+            "agent2_approved": false
+        },
+        "Boron": {
+            "aliases": [
+                "boron"
+            ],
+            "category": "element",
+            "agent2_approved": false
+        },
+        "Porphyrin": {
+            "aliases": [
+                "porphyrin",
+                "porphyrin_ring"
+            ],
+            "category": "scaffold",
+            "agent2_approved": false
+        }
+    },
+    "qmof_terminal_ligand_tags": {
+        "_description": "These tags appear only in QMOF JSONs under metal_terminal_ligands. They are kept as-is and NOT unified into the main canonical vocabulary because they describe node-level coordination, not linker chemistry.",
+        "tags": [
+            "Aqua_Ligands",
+            "Aqua",
+            "Aqua (x2)",
+            "Aqua (x3)",
+            "Aqua (x4)",
+            "Aqua (x5)",
+            "Aqua (x6)",
+            "Aqua (x7)",
+            "Aqua (x8)",
+            "Aqua (x10)",
+            "Aqua (x11)",
+            "Aqua (x12)",
+            "Aqua (x14)",
+            "Oxo_Ligands",
+            "Hydroxo_Ligands",
+            "Hydroxo",
+            "Hydroxo (x2)",
+            "Hydroxo (x3)",
+            "Hydroxo (x4)",
+            "Hydroxo (x6)",
+            "Hydroxo (x8)",
+            "Hydroxo (x10)",
+            "Hydroxo (x12)",
+            "Hydroxo (x16)",
+            "Bromido",
+            "Chlorido",
+            "Fluorido"
+        ]
+    },
+    "qmof_oxo_count_tags": {
+        "_description": "Oxo count variants from QMOF. The base 'Oxo' is in the canonical set; counted variants are QMOF-specific metadata.",
+        "tags": [
+            "Oxo (x2)",
+            "Oxo (x3)",
+            "Oxo (x4)",
+            "Oxo (x5)",
+            "Oxo (x6)",
+            "Oxo (x8)",
+            "Oxo (x10)",
+            "Oxo (x12)",
+            "Oxo (x16)",
+            "Oxo (x18)",
+            "Oxo (x20)"
+        ]
+    },
+    "methylene_bridge_tag": {
+        "_description": "V7-only tag for methylene bridge spacers. Maps to Alkyl in the unified vocab.",
+        "raw": "methylene_bridge",
+        "maps_to": "Alkyl"
+    }
+}
