@@ -1,0 +1,225 @@
+import json
+import os
+import pandas as pd
+from typing import List, Dict, Tuple, Any
+
+import config
+from core.constraint_utils import parse_functional_groups, check_negative_tags, canon, get_approved_vocab, check_categorized_groups, check_linker_branches
+
+class QMOFMatchmaker:
+    """
+    Direct MOF-level filtering for QMOF database.
+    Unlike standard Matchmaker (which assembles nodes/edges/topologies),
+    QMOFMatchmaker filters whole QMOFs directly based on Agent 2 constraints.
+    """
+    def __init__(self, index_path=None):
+        if index_path is None:
+            index_path = getattr(config, 'QMOF_INDEX_PATH', None)
+            
+        self.qmof_index = []
+        if index_path and os.path.exists(index_path):
+            with open(index_path, "r", encoding="utf-8") as f:
+                self.qmof_index = json.load(f)
+        else:
+            print(f"Warning: QMOF index not found at {index_path}. QMOF mode will not yield matches.")
+            
+    def _check_metals(self, item: dict, required_metals: List[str]) -> bool:
+        if not required_metals:
+            return True
+        item_metals = [canon(m) for m in item.get("metals", [])]
+        req_metals = [canon(m) for m in required_metals]
+
+        # "Any" metal = no metal constraint (matches hMOF/PORMake behavior)
+        if any(m == "any" for m in req_metals):
+            return True
+
+        # Check if ANY of the required metals are present (OR Logic)
+        return any(rm in item_metals for rm in req_metals)
+        
+    def _check_connectivity(self, item: dict, node_query: dict) -> bool:
+        conns = node_query.get("connectivity", [])
+        if not conns:
+            return True
+        item_conn = item.get("connectivity_points")
+        if item_conn in conns:
+            return True
+        # also check str versions just in case
+        if str(item_conn) in [str(c) for c in conns]:
+            return True
+        return False
+
+    def _check_and_tags(self, item: dict, and_tags: List[str]) -> bool:
+        """Check that ALL specified AND tags are present (SP-3.09 fix)."""
+        if not and_tags:
+            return True
+        item_tags = [canon(t) for t in item.get("functional_groups", [])]
+        return all(tag in item_tags for tag in and_tags)
+
+    def _check_or_tags(self, item: dict, or_tags: List[str]) -> bool:
+        """Check that at least one of the OR tags is present."""
+        if not or_tags:
+            return True
+        item_tags = [canon(t) for t in item.get("functional_groups", [])]
+        return any(tag in item_tags for tag in or_tags)
+
+    # ── Electronic metadata filters (Phase 3) ────────────────────────
+
+    def _check_oxidation_state(self, item: dict, node_query: dict) -> bool:
+        """For every entry metal covered by the query, require matching oxidation state.
+
+        The iteration direction matters: we walk the entry's metals, not the query's.
+        Metals in the query that are absent from the entry are a non-event — the entry
+        simply lacks that metal; other entries will cover it. The prior version
+        iterated the query side, requiring every queried metal to appear in every
+        entry, which turned a per-metal constraint into a vacuous AND and produced
+        zero matches whenever the hypothesis listed more metals than any single MOF.
+        null/empty on either side is passthrough.
+        """
+        ox_query = node_query.get("oxidation_state")
+        if not ox_query or not isinstance(ox_query, dict):
+            return True
+        item_ox = item.get("oxidation_states", {})
+        if not isinstance(item_ox, dict) or not item_ox:
+            return True  # No data = benefit of doubt
+        # Canonicalize the query once for O(1) per-metal lookup
+        query_canon = {canon(m): s for m, s in ox_query.items() if s is not None}
+        if not query_canon:
+            return True
+        for item_metal, item_state in item_ox.items():
+            required_state = query_canon.get(canon(item_metal))
+            if required_state is None:
+                continue  # query doesn't constrain this metal
+            if item_state != required_state:
+                return False
+        return True
+
+    def _check_geometry(self, item: dict, node_query: dict) -> bool:
+        """Check coordination geometry via canon() match. null/empty = passthrough."""
+        geom_pref = node_query.get("geometry_preference")
+        if not geom_pref:
+            return True
+        item_geom = item.get("geometry", "")
+        if not item_geom or str(item_geom) in ("", "nan", "null", "Unknown"):
+            return True  # No data = benefit of doubt
+        return canon(str(item_geom)) == canon(str(geom_pref))
+
+    def _check_open_metal_sites(self, item: dict, node_query: dict) -> bool:
+        """Check open metal sites via abstract_features. null/omitted = passthrough."""
+        af = node_query.get("abstract_features", {})
+        req = af.get("has_open_metal_site")
+        if req is None:
+            return True
+        item_val = item.get("has_open_metal_sites")
+        if item_val is None:
+            return True  # No data = benefit of doubt
+        return item_val == req
+
+    def _check_topology(self, item: dict, node_query: dict) -> bool:
+        """Check topology. Mirrors hMOF pattern. null/empty = passthrough."""
+        req_topologies = node_query.get("topology", [])
+        if isinstance(req_topologies, str):
+            req_topologies = [req_topologies] if req_topologies else []
+        if not req_topologies:
+            return True
+        topo = item.get("topology")
+        if topo is None:
+            return False
+        return canon(topo) in [canon(t) for t in req_topologies]
+
+    def match(self, specs: dict, tracker: Any = None, search_mode: str = "full") -> List[str]:
+        """
+        Takes Agent 2 specs and returns a list of matching qmof_ids.
+        Reuses constraint_utils logic for tags.
+        search_mode: "full", "metal_only", or "linker_only"
+        """
+        # Parse tags — keep AND and OR semantics separate (SP-3.09 / TAG-001 fix)
+        global_and_tags, linker_or_tags, neg_tags = parse_functional_groups(specs, approved_vocab=get_approved_vocab(), tracker=tracker)
+        # DO NOT merge: global_and_tags require ALL present, linker_or_tags require ANY present
+        all_pos_tags = global_and_tags + linker_or_tags  # Only for tracker recording
+        linker_branches = specs.get('linker_query', {}).get('linker_branches', [])
+        
+        node_query = specs.get("node_query", {})
+        req_metals = node_query.get("metals_include", [])
+        
+        matched_ids = []
+        
+        for qmof in self.qmof_index:
+            if search_mode in ["full", "linker_only"]:
+                # 1. Negative tag check
+                if not check_negative_tags(qmof, neg_tags):
+                    continue
+                
+            if search_mode in ["full", "metal_only"]:
+                # 2. Connectivity check
+                if not self._check_connectivity(qmof, node_query):
+                    continue
+                    
+                # 3. Metals check
+                if not self._check_metals(qmof, req_metals):
+                    continue
+
+                # 3b. Electronic metadata checks (Phase 3)
+                if not self._check_oxidation_state(qmof, node_query):
+                    continue
+                if not self._check_geometry(qmof, node_query):
+                    continue
+                if not self._check_open_metal_sites(qmof, node_query):
+                    continue
+                if not self._check_topology(qmof, node_query):
+                    continue
+                
+            if search_mode in ["full", "linker_only"]:
+                # 4a. AND tags: ALL must be present (global requirements) — SP-3.09 fix
+                if not self._check_and_tags(qmof, global_and_tags):
+                    if tracker and search_mode == "full":
+                        first_tag = global_and_tags[0] if global_and_tags else "Unknown"
+                        tracker.record_first_fail(first_tag)
+                    continue
+
+                # 4b. OR tags: at least one must be present (linker functional groups)
+                if not self._check_or_tags(qmof, linker_or_tags):
+                    if tracker and search_mode == "full":
+                        first_tag = linker_or_tags[0] if linker_or_tags else "Unknown"
+                        tracker.record_first_fail(first_tag)
+                    continue
+
+                # 4c. Branch matching (OR-of-ANDs)
+                if linker_branches:
+                    if not check_linker_branches(qmof, linker_branches):
+                        continue
+
+                # 5. Categorized functional group check (OPTIONAL)
+                linker_q = specs.get('linker_query', {})
+                backbone_reqs = linker_q.get('backbone_requirements') or []
+                substituent_reqs = linker_q.get('substituent_requirements') or []
+                min_counts = linker_q.get('min_group_counts') or {}
+                if backbone_reqs or substituent_reqs or min_counts:
+                    if not check_categorized_groups(qmof, backbone_reqs, substituent_reqs, min_counts):
+                        continue
+
+            # Record success if tracker exists
+            if tracker and search_mode == "full":
+                for t in all_pos_tags:
+                    tracker.record(t, "both", "exact_feature", qmof["qmof_id"], "none", None)
+                
+            matched_ids.append(qmof["qmof_id"])
+            
+        return matched_ids
+
+    def get_bandgap_data(self, qmof_ids: List[str]) -> pd.DataFrame:
+        """
+        Fetches band gap data from the index for the given list of matched qmof_ids.
+        Returns a DataFrame for display or analysis.
+        """
+        df_rows = []
+        qmof_lookup = {q["qmof_id"]: q for q in self.qmof_index}
+        
+        for qid in qmof_ids:
+            if qid in qmof_lookup:
+                qmof = qmof_lookup[qid]
+                df_rows.append({
+                    "qmof_id": qid,
+                    "bandgap": qmof.get("bandgap")
+                })
+                
+        return pd.DataFrame(df_rows)
