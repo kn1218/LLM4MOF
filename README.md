@@ -1,4 +1,4 @@
-# LLM4MOF — Interpretable Inverse Design of MOFs with LLM Agents
+# LLM4MOF: Interpretable Inverse Design of MOFs with LLM Agents
 
 A closed-loop multi-agent framework for inverse design of Metal–Organic Frameworks (MOFs).
 Language-model agents (OpenAI GPT) propose interpretable design hypotheses, translate them into
