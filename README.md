@@ -11,22 +11,39 @@ with Large Language Model Agents"* (Nam, Han, Kim).
 
 ## How it works
 User query  ("Maximize gravimetric H2 storage in mol/kg at 77 K and 100 bar.")
+
 │
+
 ▼
+
 [Agent 1] Hypothesis generator   — proposes metal nodes, linkers, target pore geometry (multi-turn)
+
 │
+
 ▼
+
 [Agent 2] Constraint translator  — converts the hypothesis into searchable database constraints
+
 │
+
 ▼
+
 [Matchmaker]                     — applies constraints; organizes candidates into four diagnostic beams
+
 │
+
 ▼
+
 [Hypothesis testing]             — retrieves properties (database mode) or runs live simulation (discovery mode)
+
 │
+
 ▼
+
 [Feedback generator]             — builds blinded beam feedback + memory ledger, returns it to Agent 1
+
 │
+
 └──────────────────────────  Agent 1 refines the hypothesis (loop ×10)
 
 The Matchmaker organizes candidates into a **4-beam diagnostic** that isolates which design axis drives
@@ -155,15 +172,25 @@ A documented revert prompt is retained at `prompts/agent1_v2.2.9_clean_v2_stag.m
 .
 
 ├── run_experiment.py          # Database-mode entry point (interactive + batch)
+
 ├── run_live_experiment.py     # Live HPC simulation entry point (discovery mode)
+
 ├── run_prepare_step.py        # HPC orchestration: prepare
+
 ├── run_collect_step.py        # HPC orchestration: collect
+
 ├── config.py                  # Paths, models, unit/pressure routing, toggles
+
 ├── setup.py  requirements.txt
+
 ├── core/                      # Runtime modules (agents, matchmaker, feedback, mof2zeo, simulation, hpc)
+
 ├── prompts/                   # Active Agent 1 / Agent 2 prompts (+ one revert fallback)
+
 ├── data/                      # Databases (4 large files via Git LFS)
+
 ├── hpc/                       # Cluster-side scripts (uploaded and run on HPC)
+
 └── scripts/                   # build_canonical_db.py — rebuilds the shipped data files
 
 ## Code and data availability
