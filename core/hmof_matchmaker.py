@@ -108,6 +108,21 @@ class HMOFMatchmaker:
             return False
         return True
 
+    def _check_open_metal_sites(self, item: dict, node_query: dict) -> bool:
+        """Check open metal sites via node_query.abstract_features. null/omitted = passthrough.
+
+        Mirrors QMOFMatchmaker._check_open_metal_sites so the hMOF arm honours the
+        `has_open_metal_site` node constraint like the PORMAKE and QMOF matchmakers.
+        """
+        af = node_query.get("abstract_features") or {}
+        req = af.get("has_open_metal_site")
+        if req is None:
+            return True
+        item_val = item.get("has_open_metal_sites")
+        if item_val is None:
+            return True  # No data = benefit of doubt
+        return item_val == req
+
     # ── Main match method ─────────────────────────────────────────────
 
     def match(
@@ -159,6 +174,11 @@ class HMOFMatchmaker:
             # 3. Topology check
             if search_mode in ["full", "metal_only"]:
                 if not self._check_topology(hmof, req_topologies):
+                    continue
+
+            # 3.5 Open-metal-site check (node abstract feature)
+            if search_mode in ["full", "metal_only"]:
+                if not self._check_open_metal_sites(hmof, node_query):
                     continue
 
             # 4a. AND tags
