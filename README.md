@@ -166,8 +166,6 @@ HPC settings (host, base dir, scheduler) are in the `LIVE SIMULATION CONFIGURATI
 | `STRATIFIED_SAMPLING` | True | Metal-stratified feedback sampling (env: `LLM4MOF_STRATIFIED_SAMPLING`) |
 | `USE_MEMORY_LEDGER` | True | Facts-only design-memory prepend (env: `LLM4MOF_USE_MEMORY_LEDGER`) |
 
-A documented revert prompt is retained at `prompts/agent1_v2.2.9_clean_v2_stag.md`.
-
 ## Repository layout
 .
 
@@ -185,7 +183,7 @@ A documented revert prompt is retained at `prompts/agent1_v2.2.9_clean_v2_stag.m
 
 ├── core/                      # Runtime modules (agents, matchmaker, feedback, mof2zeo, simulation, hpc)
 
-├── prompts/                   # Active Agent 1 / Agent 2 prompts (+ one revert fallback)
+├── prompts/                   # Active Agent 1 / Agent 2 prompts
 
 ├── data/                      # Databases (4 large files via Git LFS)
 
