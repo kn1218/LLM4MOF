@@ -338,7 +338,7 @@ def run_simulation_background(
         print(f"   [SKIP] {filename} - already completed")
         return True
 
-    # FIX 2026-04-09: Han's original used a bash-style "cd && raspa3 ..." shell
+    # FIX 2026-04-09: the original used a bash-style "cd && raspa3 ..." shell
     # string via subprocess.Popen(shell=True). On Windows that becomes
     # `cmd.exe /c "cd <path> && raspa3 simulation.json > log 2>&1 && ..."`
     # which fails with "The system cannot find the path specified" because of

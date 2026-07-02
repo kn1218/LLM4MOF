@@ -62,7 +62,7 @@ File: `data/hMOF/hmof_index.json`
 | **H2** (2 & 100 bar, 77 K) | 10.1021/acs.jpcc.6b08729 | Bobbitt et al., *J. Phys. Chem. C* **2016**, 120, 27328--27341 | UFF (framework), Darkrim-Levesque (H2) | 2 pressure points |
 | **Xe/Kr** (1, 5, 10 bar, 273 K) | 10.1039/C2SC01097F | Sikora et al., *Chem. Sci.* **2012**, 3, 2217--2223 | UFF (framework), Hirschfelder/Talu (Xe, Kr) | Binary mixture (20/80 Xe/Kr), 3 pressure points |
 
-**Unit note (verified 2026-05-26 against `LLM4MOF_Database_20260311/hMOF/_source_data/hmof_raw_cache.jsonl`):** MOFX-DB stores CH4 in cm3(STP)/cm3, CO2 in mol/kg, H2 in g/L, Xe/Kr in mol/kg. Our `hmof_index.json` stores these values **unchanged** — the pipeline (`01_hmof_pipeline_v2.py:148`, `02_build_hmof_index.py:94`) is pure pass-through, no unit conversion. The previous version of this document (and `config.py`) wrongly asserted "cm3(STP)/g" for CH4/CO2/H2 — that was a mislabel, not a real conversion. Audit log + fix in `scripts/experiment_configs/CHANGELOG.md`.
+**Unit note (verified against the hMOF raw source data):** MOFX-DB stores CH4 in cm3(STP)/cm3, CO2 in mol/kg, H2 in g/L, Xe/Kr in mol/kg. Our `hmof_index.json` stores these values **unchanged** — the build pipeline is pure pass-through, no unit conversion. The previous version of this document (and `config.py`) wrongly asserted "cm3(STP)/g" for CH4/CO2/H2 — that was a mislabel, not a real conversion.
 
 ---
 

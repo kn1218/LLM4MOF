@@ -9,7 +9,7 @@ NEVER reads `target`/performance. The within-metal draw is random. Displayed res
 own targets. No full-matched-set statistic is used. → firewall-clean, mode-universal, no-injection (every
 present metal gets fair representation; no metal is favored; no RE value hardcoded).
 
-Validated in research/top1&0.1 as the only fully cross-app-validated universal lever. Gated by
+Validated as the only fully cross-task-validated universal lever. Gated by
 config.STRATIFIED_SAMPLING; with the flag OFF this module is never called and behavior is unchanged.
 
 FAIL-SAFE: `stratified_reduce` returns the input df unchanged on any error, so a load/parse failure silently
