@@ -1,10 +1,14 @@
+# Database-mode dependencies — everything run_experiment.py needs.
+# Pure-Python wheels: installs cleanly with pip or uv on any OS, no compiler or cluster required.
+# Pinned to the versions used for the paper.
+#
+#   pip install -r requirements.txt      # (or: uv pip install -r requirements.txt)
+#
+# Discovery / live-simulation mode (run_live_experiment.py) needs extra packages AND external
+# compiled engines (RASPA3, LAMMPS) — see requirements-live.txt.
 numpy==2.4.2
 openai==2.26.0
 pandas==3.0.1
 python-dotenv==1.1.0
 Requests==2.32.5
 scipy==1.17.1
-raspa
-lammps
-lammps-interface
-PACMAN-charge

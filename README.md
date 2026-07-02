@@ -63,17 +63,28 @@ generic headers, so Agent 1 cannot infer which database is active or look up str
 
 ### 1. Python environment
 
-Requires **Python 3.10+**.
+Requires **Python 3.10+**. Database mode needs only pure-Python packages, so any of `venv` + pip, `uv`,
+or `conda` works — pick one:
 
 ```bash
+# --- venv + pip ---
 python -m venv llm4mof
-# Windows:
-llm4mof\Scripts\activate
-# macOS/Linux:
-source llm4mof/bin/activate
+llm4mof\Scripts\activate        # Windows   (macOS/Linux: source llm4mof/bin/activate)
+pip install -r requirements.txt
 
+# --- or uv (fast) ---
+uv venv && uv pip install -r requirements.txt
+
+# --- or conda ---
+conda create -n llm4mof python=3.11 -y && conda activate llm4mof
 pip install -r requirements.txt
 ```
+
+`requirements.txt` is **database-mode only** and installs cleanly with no compiler or cluster.
+Discovery / live-simulation mode needs extra Python packages **and** the external RASPA3 + LAMMPS
+engines — see [`requirements-live.txt`](requirements-live.txt) and the "discovery mode" section below.
+For that path **conda is recommended**, since RASPA3/LAMMPS are compiled binaries best obtained from
+conda-forge or HPC modules (uv/pip cannot provide them).
 
 ### 2. API keys
 
@@ -144,6 +155,13 @@ cluster (via SSH/qsub) instead of the precomputed property tables. This path **r
 cluster** (RASPA3, LAMMPS, Zeo++, a PBS scheduler, and an SSH host entry); it is included for
 transparency and reproducibility of the discovery-mode results, and is not runnable on a laptop.
 
+Install the extra dependencies first (on top of `requirements.txt`):
+
+```bash
+pip install -r requirements.txt -r requirements-live.txt
+# plus the external engines RASPA3 + LAMMPS — see requirements-live.txt
+```
+
 ```bash
 python run_live_experiment.py --hpc --pressure 5 \
   --inquiry "Design a MOF for high hydrogen storage at 5 bar and 77K" --iterations 10
@@ -205,9 +223,13 @@ See `PROVENANCE.md` for how this repository was derived. Licensed under MIT — 
 
 ```bibtex
 @article{nam2026llm4mof,
-  title   = {Interpretable Inverse Design of Metal--Organic Frameworks with Large Language Model Agents},
-  author  = {Nam, Kyungmin and Han, Seunghee and Kim, Jihan},
-  journal = {arXiv preprint},
-  year    = {2026}
+  title         = {Interpretable Inverse Design of Metal--Organic Frameworks with Large Language Model Agents},
+  author        = {Nam, Kyungmin and Han, Seunghee and Kim, Jihan},
+  journal       = {arXiv preprint arXiv:2606.29459},
+  year          = {2026},
+  eprint        = {2606.29459},
+  archivePrefix = {arXiv}
 }
 ```
+
+Preprint: <https://arxiv.org/abs/2606.29459>
