@@ -7,6 +7,7 @@ experiment logs that produced it.
 
 | File | Content | Backing data |
 |------|---------|--------------|
+| `Figure1.{png,svg}` | Framework schematic (method overview) | — (schematic) |
 | `Figure2.{png,pdf}` | Database-mode reasoning-beam comparison | all `database_mode/*` runs |
 | `Figure3/<task>.{png,pdf}` | Search-space design surfaces (one panel per task) | one replicate per task (below) |
 | `Figure4.{png,pdf}` | Live-discovery composite (H₂, 77 K & 160 K / 5 bar) | `live_simulation/H2_{77K,160K}_5bar/*` |
