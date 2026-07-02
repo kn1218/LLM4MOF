@@ -118,7 +118,7 @@ The six `data/total_characteristics_h2_*.csv` PORMAKE H₂ property tables are s
 files (no LFS).
 
 If the LFS quota is exhausted, the same files are archived on Zenodo with a DOI and SHA-256
-checksums — see [`DATA.md`](DATA.md).
+checksums — see [`DATA.md`](docs/DATA.md).
 
 ## Usage — database mode (no cluster required)
 
@@ -191,33 +191,33 @@ HPC settings (host, base dir, scheduler) are in the `LIVE SIMULATION CONFIGURATI
 
 ├── run_live_experiment.py     # Live HPC simulation entry point (discovery mode)
 
-├── run_prepare_step.py        # HPC orchestration: prepare
-
-├── run_collect_step.py        # HPC orchestration: collect
-
 ├── config.py                  # Paths, models, unit/pressure routing, toggles
 
-├── setup.py  requirements.txt
+├── setup.py  requirements.txt  requirements-live.txt
 
 ├── core/                      # Runtime modules (agents, matchmaker, feedback, mof2zeo, simulation, hpc)
 
 ├── prompts/                   # Active Agent 1 / Agent 2 prompts
 
-├── data/                      # Databases (4 large files via Git LFS)
+├── data/                      # Databases (large files via Git LFS)
 
-├── hpc/                       # Cluster-side scripts (uploaded and run on HPC)
+├── hpc/                       # Cluster-side scripts + HPC step helpers (run_prepare_step / run_collect_step)
 
-└── scripts/                   # build_canonical_db.py — rebuilds the shipped data files
+├── scripts/                   # build_canonical_db.py — rebuilds the shipped data files
+
+├── paper/                     # Publication figures + figure-to-data map
+
+└── docs/                      # DATA.md (data manifest) · PROVENANCE.md
 
 ## Code and data availability
 
 - **Code** — this repository (MIT-licensed; see `LICENSE`).
 - **Data** — the three evaluation databases (PORMAKE, hMOF, QMOF) and the MOF2Zeo model checkpoint
   ship in-repo via Git LFS and are also archived on Zenodo with a permanent DOI and SHA-256
-  checksums. See [`DATA.md`](DATA.md) for the file manifest, integrity hashes, and third-party
+  checksums. See [`DATA.md`](docs/DATA.md) for the file manifest, integrity hashes, and third-party
   database citations.
 
-See `PROVENANCE.md` for how this repository was derived. Licensed under MIT — see `LICENSE`.
+See [`PROVENANCE.md`](docs/PROVENANCE.md) for how this repository was derived. Licensed under MIT — see `LICENSE`.
 
 ## Citation
 
