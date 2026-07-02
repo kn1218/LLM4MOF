@@ -12,7 +12,7 @@ with Large Language Model Agents"* (Nam, Han, Kim).
 ## How it works
 
 <p align="center">
-  <img src="paper/figures/Figure1.png" width="880"
+  <img src="paper/figures/Figure1.png" width="640"
        alt="LLM4MOF closed-loop framework: Agent 1 (hypothesis) -> Agent 2 (constraints) -> Matchmaker -> four diagnostic beams -> hypothesis testing -> feedback">
 </p>
 
