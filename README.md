@@ -10,41 +10,27 @@ This repository accompanies the preprint *"Interpretable Inverse Design of Metal
 with Large Language Model Agents"* (Nam, Han, Kim).
 
 ## How it works
-User query  ("Maximize gravimetric H2 storage in mol/kg at 77 K and 100 bar.")
 
-│
-
-▼
-
-[Agent 1] Hypothesis generator   — proposes metal nodes, linkers, target pore geometry (multi-turn)
-
-│
-
-▼
-
-[Agent 2] Constraint translator  — converts the hypothesis into searchable database constraints
-
-│
-
-▼
-
-[Matchmaker]                     — applies constraints; organizes candidates into four diagnostic beams
-
-│
-
-▼
-
-[Hypothesis testing]             — retrieves properties (database mode) or runs live simulation (discovery mode)
-
-│
-
-▼
-
-[Feedback generator]             — builds blinded beam feedback + memory ledger, returns it to Agent 1
-
-│
-
-└──────────────────────────  Agent 1 refines the hypothesis (loop ×10)
+```text
+User query   "Maximize gravimetric H2 storage in mol/kg at 77 K and 100 bar."
+      |
+      v
+[Agent 1]  Hypothesis generator    proposes metal nodes, linkers, target pore geometry (multi-turn)
+      |
+      v
+[Agent 2]  Constraint translator   converts the hypothesis into searchable constraints
+      |
+      v
+[Matchmaker]                       applies constraints; sorts candidates into four diagnostic beams
+      |
+      v
+[Hypothesis testing]               retrieves properties (database mode) or runs live simulation (discovery)
+      |
+      v
+[Feedback generator]               builds blinded beam feedback + memory ledger, returns it to Agent 1
+      |
+      +---- Agent 1 refines the hypothesis  (loop x10)
+```
 
 The Matchmaker organizes candidates into a **4-beam diagnostic** that isolates which design axis drives
 performance:
@@ -117,8 +103,8 @@ git lfs pull
 The six `data/total_characteristics_h2_*.csv` PORMAKE H₂ property tables are small and ship as normal
 files (no LFS).
 
-If the LFS quota is exhausted, the same files are archived on Zenodo with a DOI and SHA-256
-checksums — see [`DATA.md`](docs/DATA.md).
+If the LFS quota is exhausted, the same files will also be deposited on Zenodo with a DOI and SHA-256
+checksums (DOI pending) — see [`DATA.md`](docs/DATA.md).
 
 ## Usage — database mode (no cluster required)
 
@@ -185,36 +171,29 @@ HPC settings (host, base dir, scheduler) are in the `LIVE SIMULATION CONFIGURATI
 | `USE_MEMORY_LEDGER` | True | Facts-only design-memory prepend (env: `LLM4MOF_USE_MEMORY_LEDGER`) |
 
 ## Repository layout
+
+```text
 .
-
-├── run_experiment.py          # Database-mode entry point (interactive + batch)
-
-├── run_live_experiment.py     # Live HPC simulation entry point (discovery mode)
-
-├── config.py                  # Paths, models, unit/pressure routing, toggles
-
-├── setup.py  requirements.txt  requirements-live.txt
-
-├── core/                      # Runtime modules (agents, matchmaker, feedback, mof2zeo, simulation, hpc)
-
-├── prompts/                   # Active Agent 1 / Agent 2 prompts
-
-├── data/                      # Databases (large files via Git LFS)
-
-├── hpc/                       # Cluster-side scripts + HPC step helpers (run_prepare_step / run_collect_step)
-
-├── scripts/                   # build_canonical_db.py — rebuilds the shipped data files
-
-├── paper/                     # Publication figures + figure-to-data map
-
-└── docs/                      # DATA.md (data manifest) · PROVENANCE.md
+|-- run_experiment.py          # Database-mode entry point (interactive + batch)
+|-- run_live_experiment.py     # Live HPC simulation entry point (discovery mode)
+|-- config.py                  # Paths, models, unit/pressure routing, toggles
+|-- setup.py  requirements.txt  requirements-live.txt
+|-- core/                      # Runtime modules (agents, matchmaker, feedback, mof2zeo, simulation, hpc)
+|-- prompts/                   # Active Agent 1 / Agent 2 prompts
+|-- data/                      # Databases (large files via Git LFS)
+|-- hpc/                       # Cluster-side scripts + HPC step helpers (run_prepare_step / run_collect_step)
+|-- scripts/                   # build_canonical_db.py -- rebuilds the shipped data files
+|-- paper/                     # Publication figures + figure-to-data map
+`-- docs/                      # DATA.md (data manifest), PROVENANCE.md
+```
 
 ## Code and data availability
 
 - **Code** — this repository (MIT-licensed; see `LICENSE`).
+- **Figures** — publication figures and a figure-to-data map are in [`paper/`](paper/).
 - **Data** — the three evaluation databases (PORMAKE, hMOF, QMOF) and the MOF2Zeo model checkpoint
-  ship in-repo via Git LFS and are also archived on Zenodo with a permanent DOI and SHA-256
-  checksums. See [`DATA.md`](docs/DATA.md) for the file manifest, integrity hashes, and third-party
+  ship in-repo via Git LFS and will also be archived on Zenodo with a permanent DOI and SHA-256
+  checksums (DOI pending). See [`DATA.md`](docs/DATA.md) for the file manifest, integrity hashes, and third-party
   database citations.
 
 See [`PROVENANCE.md`](docs/PROVENANCE.md) for how this repository was derived. Licensed under MIT — see `LICENSE`.
