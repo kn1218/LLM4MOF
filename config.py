@@ -182,8 +182,7 @@ UNIT_REGISTRY: dict[str, dict[str, str]] = {
     "outputs.pbe.bandgap": {"display": "eV", "type": "energy"},
     # hMOF gas uptakes — units are PER-FIELD per Wilmer source DOIs (verified 2026-05-26
     # from hmof_raw_cache.jsonl `adsorptionUnits` field). Pipeline performs NO unit
-    # conversion (01_hmof_pipeline_v2.py:148, 02_build_hmof_index.py:94 are pass-through).
-    # See memory project-hmof-unit-truth for full audit.
+    # conversion (the build pipeline is pass-through).
     "h2_uptake_100bar_77K": {"display": "g/L", "type": "volumetric_mass"},
     "h2_uptake_2bar_77K": {"display": "g/L", "type": "volumetric_mass"},
     "ch4_uptake_35bar_298K": {"display": "cm³(STP)/cm³", "type": "volumetric"},
@@ -341,7 +340,7 @@ AGENT2_TEMPERATURE = 0.0   # Deterministic constraint extraction (validated via 
 # -----------------------------------------------------------------------------
 # UNIVERSAL-LEVER TOGGLES (productionized research levers; default ON, reversible)
 # -----------------------------------------------------------------------------
-# Validated in research/top1&0.1 (markscheme, 5-rep). Each is firewall-clean
+# Validated across the evaluation tasks (database mode, 5 replicates each). Each is firewall-clean
 # (signals only from the agent's paid-for sampled candidates; identity-only keys;
 # facts-only memory). Set False to fall back to legacy behavior bit-for-bit.
 #   - STRATIFIED_SAMPLING: round-robin the feedback samples across the METALS present
@@ -450,7 +449,7 @@ def is_mof2zeo_available() -> bool:
 
 
 # =============================================================================
-# LIVE SIMULATION CONFIGURATION (Han pipeline as feedback source)
+# LIVE SIMULATION CONFIGURATION (live-simulation pipeline as feedback source)
 # =============================================================================
 # These settings control the live-simulation loop (run_live_experiment.py).
 # The markscheme path (run_experiment.py) is unaffected.
@@ -477,7 +476,7 @@ LIVE_SIM_MAX_COMBOS = 5000        # Max mof2zeo prediction candidates per beam (
 LAMMPS_TOPOLOGY_BLACKLIST: set = set()
 
 LIVE_SIM_RASPA_CYCLES = 5000       # Production: 5k cycles (reduced for speed; 5bar converges fast)
-LIVE_SIM_RASPA_INIT_CYCLES = 5000  # Production: 5k init cycles (Han's default)
+LIVE_SIM_RASPA_INIT_CYCLES = 5000  # Production: 5k init cycles (production default)
 LIVE_SIM_RASPA_TEMPERATURE = 77.0  # K (hydrogen storage standard)
 LIVE_SIM_RASPA_PRESSURE = 10000000.0  # Pa (~100 bar)
 

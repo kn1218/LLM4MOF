@@ -256,7 +256,7 @@ def run_lammps_optimization(input_file: Path, output_dir: Path) -> bool:
         return True
 
     try:
-        # FIX 2026-04-09: Han's original code hardcoded "lmp_mpi" in the cmd string,
+        # FIX 2026-04-09: the original code hardcoded "lmp_mpi" in the cmd string,
         # ignoring the LAMMPS_EXECUTABLE env var defined at line 34. This patch
         # uses the env var so a custom binary path (e.g. Windows lmp.exe) is honored.
         # Also: nohup is unreliable on Windows Git Bash; use direct subprocess.run
