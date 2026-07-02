@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the accompanying preprint."
+title: "LLM4MOF: Interpretable Inverse Design of MOFs with LLM Agents"
+authors:
+  - family-names: Nam
+    given-names: Kyungmin
+  - family-names: Han
+    given-names: Seunghee
+  - family-names: Kim
+    given-names: Jihan
+repository-code: "https://github.com/kn1218/LLM4MOF"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Interpretable Inverse Design of Metal-Organic Frameworks with Large Language Model Agents"
+  authors:
+    - family-names: Nam
+      given-names: Kyungmin
+    - family-names: Han
+      given-names: Seunghee
+    - family-names: Kim
+      given-names: Jihan
+  year: 2026
+  journal: "arXiv preprint"
+  identifiers:
+    - type: other
+      value: "arXiv:2606.29459"
+      description: "arXiv preprint ID"
+  url: "https://arxiv.org/abs/2606.29459"

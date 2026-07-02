@@ -1,0 +1,19 @@
+# Discovery / live-simulation EXTRA dependencies (run_live_experiment.py), on top of requirements.txt.
+# These drive de-novo PORMAKE assembly and the MOF2Zeo geometry predictor.
+#
+#   pip install -r requirements.txt -r requirements-live.txt
+#
+# Pins are the versions used for the paper (the MOF2Zeo checkpoint loads under this torch/lightning line).
+torch==2.2.0
+pytorch-lightning==2.6.1
+pormake==0.2.2
+ase==3.28.0
+lammps-interface==0.2.2
+PACMAN-charge==1.4.2          # partial-atomic-charge assignment (HPC-side step)
+
+# ---------------------------------------------------------------------------------------------
+# NOT pip-installable — external compiled engines. Install separately (conda-forge or HPC modules):
+#   RASPA3   GCMC adsorption engine     e.g.  conda install -c conda-forge raspa3     (or build from source)
+#   LAMMPS   force-field relaxation      e.g.  conda install -c conda-forge lammps     (or an HPC module)
+# Live mode also assumes a PBS/qsub cluster reachable over SSH; see the LIVE SIMULATION CONFIGURATION
+# section of config.py. This path is not runnable on a laptop and is shipped for reproducibility.
