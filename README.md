@@ -11,26 +11,12 @@ with Large Language Model Agents"* (Nam, Han, Kim).
 
 ## How it works
 
-```text
-User query   "Maximize gravimetric H2 storage in mol/kg at 77 K and 100 bar."
-      |
-      v
-[Agent 1]  Hypothesis generator    proposes metal nodes, linkers, target pore geometry (multi-turn)
-      |
-      v
-[Agent 2]  Constraint translator   converts the hypothesis into searchable constraints
-      |
-      v
-[Matchmaker]                       applies constraints; sorts candidates into four diagnostic beams
-      |
-      v
-[Hypothesis testing]               retrieves properties (database mode) or runs live simulation (discovery)
-      |
-      v
-[Feedback generator]               builds blinded beam feedback + memory ledger, returns it to Agent 1
-      |
-      +---- Agent 1 refines the hypothesis  (loop x10)
-```
+<p align="center">
+  <img src="paper/figures/Figure1.png" width="880"
+       alt="LLM4MOF closed-loop framework: Agent 1 (hypothesis) -> Agent 2 (constraints) -> Matchmaker -> four diagnostic beams -> hypothesis testing -> feedback">
+</p>
+
+The framework runs a **closed discovery loop** (Figure 1): **Agent 1** proposes an interpretable design hypothesis (metal nodes, linkers, target pore geometry); **Agent 2** translates it into searchable constraints; the **Matchmaker** deterministically assembles candidates and splits them into four diagnostic beams; each beam is evaluated by database lookup (**database mode**) or live simulation (**discovery mode**); and the **Feedback generator** returns blinded per-beam feedback plus a memory ledger. Agent 1 then refines its hypothesis — repeated for ten iterations.
 
 The Matchmaker organizes candidates into a **4-beam diagnostic** that isolates which design axis drives
 performance:
