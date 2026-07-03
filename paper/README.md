@@ -27,10 +27,11 @@ experiment logs that produced it.
 | `bandgap_high`         | `database_mode/bandgap_high/replicate_1` |
 | `bandgap_low`          | `database_mode/bandgap_low/replicate_5` |
 
-## Experimental data (archived on Zenodo)
+## Experimental data
 
-The full closed-loop experiment logs behind these figures are archived on Zenodo (DOI: _pending_), not in this
-repository (they are large). Structure:
+The full closed-loop experiment logs behind these figures are not included in this repository (~1.6 GB).
+They are **available from the authors upon reasonable request**, and will be deposited in a public archive
+with a DOI upon publication. Structure:
 
 ```
 experiments/

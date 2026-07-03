@@ -89,8 +89,8 @@ git lfs pull
 The six `data/total_characteristics_h2_*.csv` PORMAKE H₂ property tables are small and ship as normal
 files (no LFS).
 
-If the LFS quota is exhausted, the same files will also be deposited on Zenodo with a DOI and SHA-256
-checksums (DOI pending) — see [`DATA.md`](docs/DATA.md).
+If the LFS quota is exhausted, the same files are available from the authors upon reasonable request —
+see [`DATA.md`](docs/DATA.md).
 
 ## Usage — database mode (no cluster required)
 
@@ -177,10 +177,12 @@ HPC settings (host, base dir, scheduler) are in the `LIVE SIMULATION CONFIGURATI
 
 - **Code** — this repository (MIT-licensed; see `LICENSE`).
 - **Figures** — publication figures and a figure-to-data map are in [`paper/`](paper/).
-- **Data** — the three evaluation databases (PORMAKE, hMOF, QMOF) and the MOF2Zeo model checkpoint
-  ship in-repo via Git LFS and will also be archived on Zenodo with a permanent DOI and SHA-256
-  checksums (DOI pending). See [`DATA.md`](docs/DATA.md) for the file manifest, integrity hashes, and third-party
-  database citations.
+- **Databases & model** — the three evaluation databases (PORMAKE, hMOF, QMOF) and the MOF2Zeo model
+  checkpoint ship in-repo via Git LFS; see [`DATA.md`](docs/DATA.md) for the file manifest, integrity
+  hashes, and the third-party database citations they derive from.
+- **Experiment logs** — the full closed-loop run logs behind the figures (~1.6 GB; see [`paper/`](paper/)
+  for the figure-to-run map) are **available from the authors upon reasonable request**, and will be
+  deposited in a public archive with a DOI upon publication.
 
 See [`PROVENANCE.md`](docs/PROVENANCE.md) for how this repository was derived. Licensed under MIT — see `LICENSE`.
 

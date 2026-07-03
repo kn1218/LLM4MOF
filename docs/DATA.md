@@ -1,16 +1,13 @@
 # Data Availability
 
 LLM4MOF evaluates LLM-proposed designs against three precomputed MOF databases and one
-geometry-prediction model checkpoint. These files total ~200 MB and are distributed two ways:
+geometry-prediction model checkpoint. These files total ~200 MB and **ship in this repository via
+Git LFS** for immediate use after cloning (`git lfs pull`).
 
-1. **In-repository (Git LFS)** — the four large files ship via Git LFS for immediate use after
-   cloning (`git lfs pull`). Convenient, but GitHub LFS bandwidth is quota-limited.
-2. **Archival (Zenodo, DOI)** — the complete data + model bundle is archived on Zenodo with a
-   permanent DOI for citation and quota-free download. **This is the canonical "data" reference
-   for the paper's Code and Data Availability statement.**
-
-> **Zenodo DOI:** _pending — to be assigned when the data deposit is published (see "Depositing
-> to Zenodo" below). Until then, the data ship in-repo via Git LFS._
+> **Archival note:** these files — and the closed-loop experiment logs behind the paper's figures —
+> will be deposited in a public archive with a permanent DOI **upon publication**. During peer review
+> they are **available from the authors upon reasonable request**; if the GitHub LFS bandwidth quota is
+> exhausted, request them from the authors.
 
 ## Contents
 
@@ -67,17 +64,16 @@ git lfs install
 git lfs pull
 ```
 
-**From Zenodo (recommended for archival / if LFS quota is exhausted):**
-Download the bundle from the DOI above and place each file at the repository-relative path shown
-in the Contents table.
+**If the GitHub LFS quota is exhausted:** request the files from the authors (a public archive with a
+permanent DOI will be linked here upon publication).
 
-## Depositing to Zenodo (maintainer steps)
+## Planned archival (maintainer steps, on publication)
 
 1. Bundle the 13 files above (preserving relative paths) into a single archive, e.g.
    `llm4mof_data_v1.zip`.
 2. Create a new deposit at <https://zenodo.org> → upload the archive → set the title
    (e.g. *"LLM4MOF evaluation databases and mof2zeo checkpoint"*), authors, and an open license
    (CC-BY-4.0 is typical for data).
-3. Reserve/publish to mint the DOI, then replace the "pending" note in the **Zenodo DOI** line
-   above with the minted DOI.
+3. Reserve/publish to mint the DOI, then add it to the **Archival note** above and to the paper's
+   Data Availability statement.
 4. (Optional) Link the GitHub release to Zenodo so future tagged releases are auto-archived.
