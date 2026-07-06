@@ -1,0 +1,248 @@
+{
+  "bb_id": "N109",
+  "bb_type": "node",
+  "layer1_facts": {
+    "formula": "C4InO8",
+    "molecular_weight": 290.854,
+    "atom_counts": {
+      "C": 4,
+      "In": 1,
+      "O": 8
+    },
+    "total_atoms": 13,
+    "connection_points": {
+      "count": 4,
+      "points": [
+        {
+          "atom_index": 13,
+          "coordinates": [
+            -4.072,
+            0.1913,
+            -0.0879
+          ],
+          "bonded_to_index": 4,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        },
+        {
+          "atom_index": 14,
+          "coordinates": [
+            1.8576,
+            0.2497,
+            -0.7958
+          ],
+          "bonded_to_index": 7,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        },
+        {
+          "atom_index": 15,
+          "coordinates": [
+            -1.3076,
+            -3.2573,
+            -2.5363
+          ],
+          "bonded_to_index": 9,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        },
+        {
+          "atom_index": 16,
+          "coordinates": [
+            -1.2502,
+            3.1067,
+            -2.7957
+          ],
+          "bonded_to_index": 10,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        }
+      ],
+      "connection_chemistry": [
+        "C",
+        "C",
+        "C",
+        "C"
+      ],
+      "distance_matrix": [
+        [
+          0.0,
+          5.972,
+          5.0527,
+          4.8779
+        ],
+        [
+          5.972,
+          0.0,
+          5.0346,
+          4.6712
+        ],
+        [
+          5.0527,
+          5.0346,
+          0.0,
+          6.3695
+        ],
+        [
+          4.8779,
+          4.6712,
+          6.3695,
+          0.0
+        ]
+      ]
+    },
+    "bond_graph": {
+      "num_bonds": 15,
+      "bond_type_counts": {
+        "S": 8,
+        "D": 1,
+        "T": 0,
+        "A": 6
+      },
+      "num_rings": 3,
+      "ring_sizes": [
+        4,
+        4,
+        4
+      ],
+      "is_connected": true
+    },
+    "metals": [
+      "In"
+    ],
+    "has_metal": true,
+    "is_rigid": true,
+    "degree_of_unsaturation": 5.0,
+    "num_rings": 3,
+    "is_planar": false,
+    "smiles": "O=C([*])O[In]123(oc([*])o1)(oc([*])o2)oc([*])o3",
+    "smiles_canonical": "O=C([*])O[In]123(oc([*])o1)(oc([*])o2)oc([*])o3",
+    "selfies": null,
+    "smiles_method": "explicit_bond_block",
+    "net_charge": 0,
+    "length_angstroms": null,
+    "topological_distance": null,
+    "nuclearity": 1,
+    "geometry_inferred": "tetrahedral",
+    "metal_coordination": [
+      {
+        "metal_index": 8,
+        "element": "In",
+        "bonded_atoms": [
+          {
+            "index": 0,
+            "element": "O",
+            "bond_type": "S"
+          },
+          {
+            "index": 1,
+            "element": "O",
+            "bond_type": "S"
+          },
+          {
+            "index": 2,
+            "element": "O",
+            "bond_type": "S"
+          },
+          {
+            "index": 3,
+            "element": "O",
+            "bond_type": "S"
+          },
+          {
+            "index": 5,
+            "element": "O",
+            "bond_type": "S"
+          },
+          {
+            "index": 11,
+            "element": "O",
+            "bond_type": "S"
+          },
+          {
+            "index": 12,
+            "element": "O",
+            "bond_type": "S"
+          }
+        ],
+        "coordination_number": 7
+      }
+    ]
+  },
+  "layer2_semantics": {
+    "source": "rule-based+llm",
+    "readable_name": "indium octahedral node",
+    "functional_groups": {
+      "backbone": [
+        "carboxyl_any",
+        "carboxylic_acid"
+      ],
+      "substituents": [],
+      "rule_based": [
+        "carboxyl_any",
+        "carboxylic_acid"
+      ],
+      "rule_based_counts": {
+        "carboxyl_any": 4,
+        "carboxylic_acid": 1
+      },
+      "llm_additions": []
+    },
+    "core_scaffold": [],
+    "abstract_features": {
+      "is_fluorinated": false,
+      "is_electron_deficient": false,
+      "is_electron_rich": false,
+      "is_symmetric": false,
+      "is_conjugated": true,
+      "is_metalated": true,
+      "has_hydrogen_bond_donor": true,
+      "has_hydrogen_bond_acceptor": true,
+      "is_charged": false,
+      "is_photoswitchable": false,
+      "has_open_metal_site": false
+    },
+    "design_hints": "This indium-based node features a rigid structure with multiple carboxylate linkages, promoting strong coordination with organic linkers. Its octahedral geometry may enhance the stability and gas adsorption potential of the resulting MOF.",
+    "sbu_type": "In1_O7_tetrahedral_4c",
+    "ligand_chemistry": [
+      "O"
+    ],
+    "oxidation_states": null,
+    "spin_state": null
+  },
+  "provenance": {
+    "pipeline_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-11T12:35:50.281150+00:00",
+    "source_file": "N109.xyz",
+    "source_file_sha256": "b311e9de812fbe33dd38f2212d3c28b092414f692d8d3ac4d1ae42533454440a",
+    "tool_versions": {
+      "rdkit": "2022.09.5",
+      "networkx": "3.6.1",
+      "python": "3.11.14",
+      "selfies": "2.1.1"
+    },
+    "dummy_atom_placeholder": "Lr",
+    "layer1_method": "deterministic",
+    "layer2_method": "smarts_rules+llm"
+  },
+  "validation_report": {
+    "status": "pass",
+    "checks": {
+      "formula_nonempty": true,
+      "mw_positive": true,
+      "atoms_positive": true,
+      "atom_count_consistent": true,
+      "has_connection_points": true,
+      "cp_count_consistent": true,
+      "has_bonds": true,
+      "graph_connected": true,
+      "smiles_generated": true,
+      "smiles_has_wildcard": true,
+      "node_nuclearity_nonneg": true,
+      "metals_consistent": true
+    },
+    "warnings": [],
+    "errors": []
+  }
+}

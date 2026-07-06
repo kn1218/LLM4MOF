@@ -1,0 +1,174 @@
+{
+  "bb_id": "E1",
+  "bb_type": "edge",
+  "layer1_facts": {
+    "formula": "C18H12",
+    "molecular_weight": 228.294,
+    "atom_counts": {
+      "C": 18,
+      "H": 12
+    },
+    "total_atoms": 30,
+    "connection_points": {
+      "count": 2,
+      "points": [
+        {
+          "atom_index": 30,
+          "coordinates": [
+            3.8157,
+            -0.0035,
+            -0.3172
+          ],
+          "bonded_to_index": 3,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        },
+        {
+          "atom_index": 31,
+          "coordinates": [
+            -9.7909,
+            -0.0643,
+            1.9142
+          ],
+          "bonded_to_index": 15,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        }
+      ],
+      "connection_chemistry": [
+        "C",
+        "C"
+      ],
+      "distance_matrix": [
+        [
+          0.0,
+          13.7885
+        ],
+        [
+          13.7885,
+          0.0
+        ]
+      ]
+    },
+    "bond_graph": {
+      "num_bonds": 32,
+      "bond_type_counts": {
+        "S": 14,
+        "D": 0,
+        "T": 0,
+        "A": 18
+      },
+      "num_rings": 3,
+      "ring_sizes": [
+        6,
+        6,
+        6
+      ],
+      "is_connected": true
+    },
+    "metals": [],
+    "has_metal": false,
+    "is_rigid": false,
+    "degree_of_unsaturation": 13.0,
+    "num_rings": 3,
+    "is_planar": false,
+    "smiles": "[H]c1c([H])c(-c2c([H])c([H])c(-c3c([H])c([H])c([*])c([H])c3[H])c([H])c2[H])c([H])c([H])c1[*]",
+    "smiles_canonical": "[H]c1c([H])c(-c2c([H])c([H])c(-c3c([H])c([H])c([*])c([H])c3[H])c([H])c2[H])c([H])c([H])c1[*]",
+    "selfies": "[H][C][=C][Branch1][C][H][C][Branch2][Ring2][N][C][=C][Branch1][C][H][C][Branch1][C][H][=C][Branch2][Ring1][=Branch1][C][=C][Branch1][C][H][C][Branch1][C][H][=C][Branch1][C][*][C][Branch1][C][H][=C][Ring1][#Branch2][H][C][Branch1][C][H][=C][Ring2][Ring1][Ring2][H][=C][Branch1][C][H][C][Branch1][C][H][=C][Ring2][Ring1][=C][*]",
+    "smiles_method": "explicit_bond_block",
+    "net_charge": 0,
+    "length_angstroms": 13.7885,
+    "topological_distance": [
+      [
+        0,
+        11
+      ],
+      [
+        11,
+        0
+      ]
+    ],
+    "nuclearity": null,
+    "geometry_inferred": null,
+    "metal_coordination": null
+  },
+  "layer2_semantics": {
+    "source": "rule-based+llm",
+    "readable_name": "triphenylene linker",
+    "functional_groups": {
+      "backbone": [
+        "benzene_ring",
+        "biphenyl"
+      ],
+      "substituents": [],
+      "rule_based": [
+        "benzene_ring",
+        "biphenyl"
+      ],
+      "rule_based_counts": {
+        "benzene_ring": 3,
+        "biphenyl": 2
+      },
+      "llm_additions": []
+    },
+    "core_scaffold": [
+      "benzene_ring",
+      "biphenyl"
+    ],
+    "abstract_features": {
+      "is_fluorinated": false,
+      "is_electron_deficient": false,
+      "is_electron_rich": false,
+      "is_symmetric": true,
+      "is_conjugated": true,
+      "is_metalated": false,
+      "has_hydrogen_bond_donor": false,
+      "has_hydrogen_bond_acceptor": false,
+      "is_charged": false,
+      "is_photoswitchable": false,
+      "has_open_metal_site": null
+    },
+    "design_hints": "This building block features a triphenylene core, which provides a relatively planar structure that can enhance π-π stacking interactions in MOFs. Its non-rigid nature may lead to flexible pore geometries, potentially improving gas adsorption capabilities.",
+    "sbu_type": null,
+    "ligand_chemistry": null,
+    "oxidation_states": null,
+    "spin_state": null
+  },
+  "provenance": {
+    "pipeline_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-11T12:35:49.029442+00:00",
+    "source_file": "E1.xyz",
+    "source_file_sha256": "dca76431cd9f684d3a973f1823a8f312b2fe60c444bfac23144f08b54e4e854c",
+    "tool_versions": {
+      "rdkit": "2022.09.5",
+      "networkx": "3.6.1",
+      "python": "3.11.14",
+      "selfies": "2.1.1"
+    },
+    "dummy_atom_placeholder": "Lr",
+    "layer1_method": "deterministic",
+    "layer2_method": "smarts_rules+llm"
+  },
+  "validation_report": {
+    "status": "pass",
+    "checks": {
+      "formula_nonempty": true,
+      "mw_positive": true,
+      "atoms_positive": true,
+      "atom_count_consistent": true,
+      "has_connection_points": true,
+      "cp_count_consistent": true,
+      "has_bonds": true,
+      "graph_connected": true,
+      "smiles_generated": true,
+      "smiles_has_wildcard": true,
+      "dou_nonneg": true,
+      "edge_has_2cp": true,
+      "edge_length_positive": true,
+      "metals_consistent": true
+    },
+    "warnings": [],
+    "errors": []
+  }
+}

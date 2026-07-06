@@ -1,0 +1,425 @@
+[
+  {
+    "bb_id": "E1",
+    "discrepancies": [
+      "RIGID: ours=False, LLM=True"
+    ],
+    "our_formula": "C18H12",
+    "llm_formula": "C18H12",
+    "our_mw": 228.294,
+    "llm_mw": 228.292,
+    "our_atoms": 30,
+    "llm_atoms": 30,
+    "our_cp": 2,
+    "llm_cp": 2,
+    "our_metals": [],
+    "llm_metals": [],
+    "our_rings": 3,
+    "llm_rings": 3,
+    "our_rigid": false,
+    "llm_rigid": true,
+    "our_name": "triphenylene linker",
+    "llm_name": "9,10-disubstituted anthracene linker",
+    "our_smiles": "[H]c1c([H])c(-c2c([H])c([H])c(-c3c([H])c([H])c([*])c([H])c3[H])c([H])c2[H])c([H])c([H])c1[*]",
+    "llm_smiles": "[*]c1ccc(cc1)c2ccc(cc2)c3ccc(cc3)[*]",
+    "our_fgs": [
+      "benzene_ring",
+      "biphenyl"
+    ],
+    "llm_fgs": [
+      "polycyclic aromatic system (three fused benzene rings; anthracene core)",
+      "aryl connection points (two terminal aryl substitution sites)"
+    ]
+  },
+  {
+    "bb_id": "E101",
+    "discrepancies": [
+      "FORMULA: ours=C6H14N2, LLM=C6H16N2",
+      "MW: ours=114.2, LLM=116.2"
+    ],
+    "our_formula": "C6H14N2",
+    "llm_formula": "C6H16N2",
+    "our_mw": 114.192,
+    "llm_mw": 116.208,
+    "our_atoms": 22,
+    "llm_atoms": 22,
+    "our_cp": 2,
+    "llm_cp": 2,
+    "our_metals": [],
+    "llm_metals": [],
+    "our_rings": 0,
+    "llm_rings": 0,
+    "our_rigid": false,
+    "llm_rigid": false,
+    "our_name": "diamine linker",
+    "llm_name": "1,6-diaminohexane linker",
+    "our_smiles": "[H]N([*])C([H])([H])C([H])([H])C([H])([H])C([H])([H])C([H])([H])C([H])([H])N([H])[*]",
+    "llm_smiles": "[*]NCC(C)CC(C)N[*]",
+    "our_fgs": [
+      "amine_any"
+    ],
+    "llm_fgs": [
+      "primary amine (x2)",
+      "alkane (saturated carbon chain)"
+    ]
+  },
+  {
+    "bb_id": "E118",
+    "discrepancies": [
+      "MW: ours=332.2, LLM=336.2",
+      "RIGID: ours=False, LLM=True"
+    ],
+    "our_formula": "C12H4N4O8",
+    "llm_formula": "C12H4N4O8",
+    "our_mw": 332.184,
+    "llm_mw": 336.172,
+    "our_atoms": 28,
+    "llm_atoms": 28,
+    "our_cp": 2,
+    "llm_cp": 2,
+    "our_metals": [],
+    "llm_metals": [],
+    "our_rings": 2,
+    "llm_rings": 2,
+    "our_rigid": false,
+    "llm_rigid": true,
+    "our_name": "biphenyl dicarboxylate linker",
+    "llm_name": "dinitro-nitro naphthalene linker",
+    "our_smiles": "[H]c1c([*])c([H])c(-n(o)o)c(-c2c(-n(o)o)c([H])c([*])c([H])c2-n(o)o)c1-n(o)o",
+    "llm_smiles": "[*]c1c([N+](=O)[O-])c([N+](=O)[O-])c2c(c1)[n+](=O)[O-]c([N+](=O)[O-])c2[*]",
+    "our_fgs": [
+      "benzene_ring",
+      "biphenyl",
+      "nitro"
+    ],
+    "llm_fgs": [
+      "fused aromatic ring system (naphthalene-like)",
+      "nitro groups (4x, resonance-delocalized N–O)"
+    ]
+  },
+  {
+    "bb_id": "E52",
+    "discrepancies": [
+      "RIGID: ours=False, LLM=True"
+    ],
+    "our_formula": "C7H4O2",
+    "llm_formula": "C7H4O2",
+    "our_mw": 120.107,
+    "llm_mw": 120.105,
+    "our_atoms": 13,
+    "llm_atoms": 13,
+    "our_cp": 2,
+    "llm_cp": 2,
+    "our_metals": [],
+    "llm_metals": [],
+    "our_rings": 1,
+    "llm_rings": 1,
+    "our_rigid": false,
+    "llm_rigid": true,
+    "our_name": "hydroxybenzoic acid linker",
+    "llm_name": "isophthalic acid linker fragment",
+    "our_smiles": "[H]OC(=O)c1c([H])c([*])c([H])c([*])c1[H]",
+    "llm_smiles": "[*]c1c(C(=O)O)c([*])ccc1",
+    "our_fgs": [
+      "benzene_ring",
+      "carboxyl_any",
+      "carboxylate",
+      "carboxylic_acid"
+    ],
+    "llm_fgs": [
+      "benzene ring (aromatic)",
+      "carboxylic acid (carboxylate-capable)",
+      "ditopic linker (two connection points)"
+    ]
+  },
+  {
+    "bb_id": "E22",
+    "discrepancies": [
+      "MW: ours=128.1, LLM=132.1"
+    ],
+    "our_formula": "C6N4",
+    "llm_formula": "C6N4",
+    "our_mw": 128.094,
+    "llm_mw": 132.122,
+    "our_atoms": 10,
+    "llm_atoms": 10,
+    "our_cp": 2,
+    "llm_cp": 2,
+    "our_metals": [],
+    "llm_metals": [],
+    "our_rings": 1,
+    "llm_rings": 1,
+    "our_rigid": true,
+    "llm_rigid": true,
+    "our_name": "tetrazine acetylene linker",
+    "llm_name": "diethynyl tetrazine linker",
+    "our_smiles": "[*]C#Cc1nnc(C#C[*])nn1",
+    "llm_smiles": "[*]C#Cc1ncnc(n1)C#C[*]",
+    "our_fgs": [
+      "acetylene",
+      "tetrazine"
+    ],
+    "llm_fgs": [
+      "1,2,4,5-tetrazine ring (aromatic/resonance)",
+      "alkyne (ethynyl) groups (2)"
+    ]
+  },
+  {
+    "bb_id": "E129",
+    "discrepancies": [],
+    "our_formula": "C12H8CuN4S2",
+    "llm_formula": "C12H8CuN4S2",
+    "our_mw": 335.89,
+    "llm_mw": 335.885,
+    "our_atoms": 27,
+    "llm_atoms": 27,
+    "our_cp": 2,
+    "llm_cp": 2,
+    "our_metals": [
+      "Cu"
+    ],
+    "llm_metals": [
+      "Cu"
+    ],
+    "our_rings": 2,
+    "llm_rings": 2,
+    "our_rigid": true,
+    "llm_rigid": true,
+    "our_name": "copper isothiocyanate pyridine linker",
+    "llm_name": "Cu bis(sulfonyl quinoxaline) linker",
+    "our_smiles": "[H]c1c([*])c([H])c([H])n([Cu](N=C=S)(N=C=S)n2c([H])c([H])c([*])c([H])c2[H])c1[H]",
+    "llm_smiles": "[*]c1ccc(nc1n2)c2n(c3ccc([*])nc3n4)S(=O)=O.[Cu]",
+    "our_fgs": [
+      "isothiocyanate",
+      "pyridine"
+    ],
+    "llm_fgs": [
+      "copper(I/II) coordination center",
+      "two fused aromatic/heteroaromatic rings (quinoxaline-like fragments)",
+      "sulfone groups (S(=O)2) (2x)",
+      "imine/azine nitrogens (ring nitrogens)",
+      "two linker connection points (dummy atoms)"
+    ]
+  },
+  {
+    "bb_id": "N1",
+    "discrepancies": [
+      "RINGS: ours=4, LLM=3"
+    ],
+    "our_formula": "C16H6",
+    "llm_formula": "C16H6",
+    "our_mw": 198.224,
+    "llm_mw": 198.2208,
+    "our_atoms": 22,
+    "llm_atoms": 22,
+    "our_cp": 4,
+    "llm_cp": 4,
+    "our_metals": [],
+    "llm_metals": [],
+    "our_rings": 4,
+    "llm_rings": 3,
+    "our_rigid": true,
+    "llm_rigid": true,
+    "our_name": "pyrene-based node",
+    "llm_name": "Tetratopic pyrene linker",
+    "our_smiles": "[H]c1c([*])c2c([H])c([H])c3c([*])c([H])c([*])c4c([H])c([H])c(c1[*])c2c34",
+    "llm_smiles": "[*]c1ccc2c(c1[*])c1ccc([*])c3ccc([*])c2c13",
+    "our_fgs": [
+      "benzene_ring",
+      "naphthalene",
+      "pyrene"
+    ],
+    "llm_fgs": [
+      "polycyclic aromatic hydrocarbon (fused aromatic rings)",
+      "aryl connection points (4)"
+    ]
+  },
+  {
+    "bb_id": "N100",
+    "discrepancies": [
+      "MW: ours=395.6, LLM=403.6",
+      "RINGS: ours=8, LLM=5"
+    ],
+    "our_formula": "C20H8ClFeN4",
+    "llm_formula": "C20H8ClFeN4",
+    "our_mw": 395.607,
+    "llm_mw": 403.591,
+    "our_atoms": 34,
+    "llm_atoms": 34,
+    "our_cp": 4,
+    "llm_cp": 4,
+    "our_metals": [
+      "Fe"
+    ],
+    "llm_metals": [
+      "Fe"
+    ],
+    "our_rings": 8,
+    "llm_rings": 5,
+    "our_rigid": true,
+    "llm_rigid": true,
+    "our_name": "iron chlorinated porphyrin node",
+    "llm_name": "tetrapodal N4 iron chloride linker",
+    "our_smiles": "[H]c1c([H])c2c([*])c3c([H])c([H])c4c([*])c5c([H])c([H])c6c([*])c7c([H])c([H])c8c([*])c1n2[Fe](Cl)(n87)(n34)n65",
+    "llm_smiles": "[*]c1nc2ccc(cc2n1)N3N=C(c4ccc([*])cc4)C(=N3)c5ccc([*])cc5[*].[Fe]Cl",
+    "our_fgs": [
+      "chlorine"
+    ],
+    "llm_fgs": [
+      "iron coordination center (Fe)",
+      "chloride ligand/counterion (Cl-)",
+      "fused aromatic/heteroaromatic rings",
+      "azole-like N-rich chelating unit (tetraazabutadiene/diimine-type within fused system)",
+      "polyaromatic linker core",
+      "four connection points (dummy atoms) for MOF linkage"
+    ]
+  },
+  {
+    "bb_id": "N102",
+    "discrepancies": [
+      "FORMULA: ours=C6H4Be4O16, LLM=Be4C6H4O20",
+      "MW: ours=368.1, LLM=387.4",
+      "RINGS: ours=3, LLM=0"
+    ],
+    "our_formula": "C6H4Be4O16",
+    "llm_formula": "Be4C6H4O20",
+    "our_mw": 368.13,
+    "llm_mw": 387.401,
+    "our_atoms": 30,
+    "llm_atoms": 30,
+    "our_cp": 6,
+    "llm_cp": 6,
+    "our_metals": [
+      "Be"
+    ],
+    "llm_metals": [
+      "Be"
+    ],
+    "our_rings": 3,
+    "llm_rings": 0,
+    "our_rigid": true,
+    "llm_rigid": true,
+    "our_name": "beryllium oxo-carboxylate node",
+    "llm_name": "Beryllium oxo cluster with six carboxylates",
+    "our_smiles": "[H]O1[Be]2(OC(=O)[*])oc([*])o[Be]1(OC(=O)[*])O([H])[Be]1(OC(=O)[*])oc([*])o[Be](OC(=O)[*])(O1[H])O2[H]",
+    "llm_smiles": "O[Be]1(O)(O)(O)[Be](O)(O)(O)O[Be](O)(O)(O)[Be](O)(O)(O)O.C(=O)([*])O.C(=O)([*])O.C(=O)([*])O.C(=O)([*])O.C(=O)([*])O.C(=O)([*])O",
+    "our_fgs": [],
+    "llm_fgs": [
+      "beryllium-oxo/hydroxo cluster (Be–O network)",
+      "carboxylate/carboxylic acid-like C(=O)O (resonance-delocalized bonds marked 'A')",
+      "hydroxyl groups (O–H)"
+    ]
+  },
+  {
+    "bb_id": "N10",
+    "discrepancies": [],
+    "our_formula": "C6H3",
+    "llm_formula": "C6H3",
+    "our_mw": 75.09,
+    "llm_mw": 75.089,
+    "our_atoms": 9,
+    "llm_atoms": 9,
+    "our_cp": 3,
+    "llm_cp": 3,
+    "our_metals": [],
+    "llm_metals": [],
+    "our_rings": 1,
+    "llm_rings": 1,
+    "our_rigid": true,
+    "llm_rigid": true,
+    "our_name": "tridentate benzene node",
+    "llm_name": "1,3,5-trisubstituted phenyl linker",
+    "our_smiles": "[H]c1c([*])c([H])c([*])c([H])c1[*]",
+    "llm_smiles": "[*]c1c([*])ccc([*])c1",
+    "our_fgs": [
+      "benzene_ring"
+    ],
+    "llm_fgs": [
+      "aromatic ring (benzene/phenyl)",
+      "three connection points (substitution sites)"
+    ]
+  },
+  {
+    "bb_id": "N428",
+    "discrepancies": [
+      "FORMULA: ours=C6La4Mo12O40P, LLM=C6La4Mo10O48P",
+      "MW: ours=2450.0, LLM=2524.8",
+      "RINGS: ours=31, LLM=0"
+    ],
+    "our_formula": "C6La4Mo12O40P",
+    "llm_formula": "C6La4Mo10O48P",
+    "our_mw": 2450.02,
+    "llm_mw": 2524.832,
+    "our_atoms": 63,
+    "llm_atoms": 63,
+    "our_cp": 6,
+    "llm_cp": 6,
+    "our_metals": [
+      "La",
+      "Mo"
+    ],
+    "llm_metals": [
+      "La",
+      "Mo"
+    ],
+    "our_rings": 31,
+    "llm_rings": 0,
+    "our_rigid": true,
+    "llm_rigid": true,
+    "our_name": "lanthanum-molybdenum polyoxometalate node",
+    "llm_name": "La–Mo polyoxometalate carboxylate node",
+    "our_smiles": "O=C([*])O[La]123(oc([*])o1)O1[Mo]456O[Mo]789O[Mo]%10%11(O4)O4[Mo]%10%12(O[Mo]%10%13%14O[Mo]%15%16(O%12)O2[Mo]%152%12O[Mo]15%15O[Mo]15(O2)O2[Mo]1%17%18O[Mo]71(O[Mo]%10(O%17)(O%13[La]47(oc([*])o7)O81)O%14[La]1(OC(=O)[*])(oc([*])o1)(O%185)O%12%16)O9[La]21(oc([*])o1)O6%15)O%113.op(o)(o)o",
+    "llm_smiles": "[*]C(=O)[O-].[O-]C(=O)[*].[*]C(=O)[O-].[O-]C(=O)[*].[*]C(=O)[O-].[O-]C(=O)[*].[La].[La].[La].[La].[Mo].[Mo].[Mo].[Mo].[Mo].[Mo].[Mo].[Mo].[Mo].[Mo].OP(=O)(O)O",
+    "our_fgs": [
+      "phosphonate"
+    ],
+    "llm_fgs": [
+      "carboxylate (resonance-delocalized C–O)",
+      "metal-oxo / polyoxometalate-like Mo–O network",
+      "lanthanide-oxo coordination (La–O)",
+      "phosphate / phospho-oxo (P=O, P–O)",
+      "inorganic metal-oxide cluster node"
+    ]
+  },
+  {
+    "bb_id": "N200",
+    "discrepancies": [
+      "FORMULA: ours=C22H16FeN6S2, LLM=C22FeH16N6S2",
+      "RINGS: ours=4, LLM=6"
+    ],
+    "our_formula": "C22H16FeN6S2",
+    "llm_formula": "C22FeH16N6S2",
+    "our_mw": 484.377,
+    "llm_mw": 484.374,
+    "our_atoms": 47,
+    "llm_atoms": 47,
+    "our_cp": 4,
+    "llm_cp": 4,
+    "our_metals": [
+      "Fe"
+    ],
+    "llm_metals": [
+      "Fe"
+    ],
+    "our_rings": 4,
+    "llm_rings": 6,
+    "our_rigid": true,
+    "llm_rigid": true,
+    "our_name": "iron isothiocyanate node",
+    "llm_name": "Iron bis(thioquinazoline) tetratopic linker",
+    "our_smiles": "[H]c1c([*])c([H])c([H])n([Fe](N=C=S)(N=C=S)(n2c([H])c([H])c([*])c([H])c2[H])(n2c([H])c([H])c([*])c([H])c2[H])n2c([H])c([H])c([*])c([H])c2[H])c1[H]",
+    "llm_smiles": "[*]c1c[n]c2c(c1)N=C(S)c1ccc([*])n1-2.[*]c1c[n]c2c(c1)N=C(S)c1ccc([*])n1-2.[Fe]",
+    "our_fgs": [
+      "isothiocyanate",
+      "pyridine"
+    ],
+    "llm_fgs": [
+      "iron coordination center (Fe)",
+      "thioamide/thiourea-like C(=S) motif (thiocarbonyl)",
+      "imine (C=N)",
+      "pyridine-like aromatic nitrogens",
+      "fused aromatic heterocycles (quinazoline-like)",
+      "four aryl connection points (dummy atoms)"
+    ]
+  }
+]
