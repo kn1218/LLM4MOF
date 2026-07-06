@@ -1,0 +1,209 @@
+{
+  "bb_id": "N1",
+  "bb_type": "node",
+  "layer1_facts": {
+    "formula": "C16H6",
+    "molecular_weight": 198.224,
+    "atom_counts": {
+      "C": 16,
+      "H": 6
+    },
+    "total_atoms": 22,
+    "connection_points": {
+      "count": 4,
+      "points": [
+        {
+          "atom_index": 22,
+          "coordinates": [
+            -0.75,
+            -0.0001,
+            0.0
+          ],
+          "bonded_to_index": 0,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        },
+        {
+          "atom_index": 23,
+          "coordinates": [
+            2.685,
+            -1.9831,
+            0.0
+          ],
+          "bonded_to_index": 2,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        },
+        {
+          "atom_index": 24,
+          "coordinates": [
+            6.14,
+            4.0013,
+            0.0
+          ],
+          "bonded_to_index": 13,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        },
+        {
+          "atom_index": 25,
+          "coordinates": [
+            2.705,
+            5.9843,
+            0.0
+          ],
+          "bonded_to_index": 15,
+          "bonded_to_element": "C",
+          "bond_type": "S"
+        }
+      ],
+      "connection_chemistry": [
+        "C",
+        "C",
+        "C",
+        "C"
+      ],
+      "distance_matrix": [
+        [
+          0.0,
+          3.9663,
+          7.9676,
+          6.9101
+        ],
+        [
+          3.9663,
+          0.0,
+          6.9101,
+          7.9674
+        ],
+        [
+          7.9676,
+          6.9101,
+          0.0,
+          3.9663
+        ],
+        [
+          6.9101,
+          7.9674,
+          3.9663,
+          0.0
+        ]
+      ]
+    },
+    "bond_graph": {
+      "num_bonds": 25,
+      "bond_type_counts": {
+        "S": 6,
+        "D": 0,
+        "T": 0,
+        "A": 19
+      },
+      "num_rings": 4,
+      "ring_sizes": [
+        6,
+        6,
+        6,
+        12
+      ],
+      "is_connected": true
+    },
+    "metals": [],
+    "has_metal": false,
+    "is_rigid": true,
+    "degree_of_unsaturation": 14.0,
+    "num_rings": 4,
+    "is_planar": true,
+    "smiles": "[H]c1c([*])c2c([H])c([H])c3c([*])c([H])c([*])c4c([H])c([H])c(c1[*])c2c34",
+    "smiles_canonical": "[H]c1c([*])c2c([H])c([H])c3c([*])c([H])c([*])c4c([H])c([H])c(c1[*])c2c34",
+    "selfies": "[H][C][=C][Branch1][C][*][C][=C][Branch1][C][H][C][Branch1][C][H][=C][C][Branch1][C][*][=C][Branch1][C][H][C][Branch1][C][*][=C][C][Branch1][C][H][=C][Branch1][C][H][C][=Branch1][=Branch1][=C][Ring2][Ring1][=Branch1][*][C][Ring2][Ring1][Branch1][=C][Ring1][P][Ring1][#Branch2]",
+    "smiles_method": "explicit_bond_block",
+    "net_charge": 0,
+    "length_angstroms": null,
+    "topological_distance": null,
+    "nuclearity": 0,
+    "geometry_inferred": "square_planar",
+    "metal_coordination": null
+  },
+  "layer2_semantics": {
+    "source": "rule-based+llm",
+    "readable_name": "pyrene-based node",
+    "functional_groups": {
+      "backbone": [
+        "benzene_ring",
+        "naphthalene",
+        "pyrene"
+      ],
+      "substituents": [],
+      "rule_based": [
+        "benzene_ring",
+        "naphthalene",
+        "pyrene"
+      ],
+      "rule_based_counts": {
+        "benzene_ring": 4,
+        "naphthalene": 5,
+        "pyrene": 1
+      },
+      "llm_additions": []
+    },
+    "core_scaffold": [
+      "benzene_ring",
+      "naphthalene",
+      "pyrene"
+    ],
+    "abstract_features": {
+      "is_fluorinated": false,
+      "is_electron_deficient": false,
+      "is_electron_rich": false,
+      "is_symmetric": false,
+      "is_conjugated": true,
+      "is_metalated": false,
+      "has_hydrogen_bond_donor": false,
+      "has_hydrogen_bond_acceptor": false,
+      "is_charged": false,
+      "is_photoswitchable": false,
+      "has_open_metal_site": null
+    },
+    "design_hints": "This rigid and planar building block can enhance the stability of MOFs while providing a large surface area for gas adsorption. Its unique polycyclic structure may also facilitate π-π stacking interactions, which can improve the overall framework integrity and gas uptake properties.",
+    "sbu_type": "Organic_square_planar_4c",
+    "ligand_chemistry": [],
+    "oxidation_states": null,
+    "spin_state": null
+  },
+  "provenance": {
+    "pipeline_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-11T12:35:50.197036+00:00",
+    "source_file": "N1.xyz",
+    "source_file_sha256": "6776ac0029ff7ca10b8198a469ed86b454d4685a4766c71771f029c4581f2a5c",
+    "tool_versions": {
+      "rdkit": "2022.09.5",
+      "networkx": "3.6.1",
+      "python": "3.11.14",
+      "selfies": "2.1.1"
+    },
+    "dummy_atom_placeholder": "Lr",
+    "layer1_method": "deterministic",
+    "layer2_method": "smarts_rules+llm"
+  },
+  "validation_report": {
+    "status": "pass",
+    "checks": {
+      "formula_nonempty": true,
+      "mw_positive": true,
+      "atoms_positive": true,
+      "atom_count_consistent": true,
+      "has_connection_points": true,
+      "cp_count_consistent": true,
+      "has_bonds": true,
+      "graph_connected": true,
+      "smiles_generated": true,
+      "smiles_has_wildcard": true,
+      "dou_nonneg": true,
+      "node_nuclearity_nonneg": true,
+      "metals_consistent": true
+    },
+    "warnings": [],
+    "errors": []
+  }
+}

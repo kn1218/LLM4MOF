@@ -1,0 +1,200 @@
+{
+  "qmof_id": "qmof-0000295",
+  "record_type": "mof",
+  "layer1_facts": {
+    "formula": "CuC7H12N2O3",
+    "natoms": 50,
+    "density": 1.692525595,
+    "volume": 462.5456642,
+    "pld": 1.68702,
+    "lcd": 3.04929,
+    "topology": "",
+    "spacegroup": "C2",
+    "crystal_system": "monoclinic",
+    "mofid": "",
+    "mofkey": "",
+    "synthesized": true,
+    "doi": "https://doi.org/10.1016/j.poly.2006.03.012",
+    "smiles_nodes": [
+      "[Cu]"
+    ],
+    "smiles_linkers": [
+      "NCC(=O)[N]C(C(=O)[O-])C(C)C"
+    ],
+    "smiles_nodes_valid": [
+      true
+    ],
+    "smiles_linkers_valid": [
+      true
+    ],
+    "smiles_validation_warnings": [],
+    "bandgap_pbe": 0.91004,
+    "bandgap_hle17": 1.03566,
+    "bandgap_hse06_10hf": 2.004026,
+    "bandgap_hse06": 3.75139,
+    "metal_node": {
+      "metals": [
+        "Cu"
+      ],
+      "nuclearity": 1,
+      "connectivity": 5,
+      "geometry": "CN5_Generic",
+      "sbu_type": "Cu_CN_5_Geometry_Node",
+      "oxidation_states": {
+        "Cu": 2
+      },
+      "ligand_chemistry": [
+        "Carboxylate"
+      ],
+      "has_open_metal_sites": false,
+      "spin_state": "Doublet (d9)",
+      "net_charge": 0,
+      "coordinating_groups": [
+        "Carbonyl",
+        "Carboxylate",
+        "Oxygen"
+      ],
+      "linker_substituents": [
+        "Amine",
+        "Nitrogen"
+      ],
+      "linker_backbone": [],
+      "metal_terminal_ligands": []
+    }
+  },
+  "layer2_semantics": {
+    "source": "smarts_rules+llm",
+    "linker_enrichment": [
+      {
+        "smiles": "NCC(=O)[N]C(C(=O)[O-])C(C)C",
+        "smiles_valid": true,
+        "functional_groups": {
+          "backbone": [
+            "amine_any",
+            "carboxyl_any",
+            "carboxylate",
+            "primary_amine"
+          ],
+          "substituents": [
+            "methyl"
+          ],
+          "rule_based": [
+            "amine_any",
+            "carboxyl_any",
+            "carboxylate",
+            "methyl",
+            "primary_amine"
+          ],
+          "rule_based_counts": {
+            "amine_any": 1,
+            "carboxyl_any": 1,
+            "carboxylate": 1,
+            "methyl": 2,
+            "primary_amine": 1
+          }
+        },
+        "core_scaffold": [],
+        "heterocycles": []
+      }
+    ],
+    "functional_groups": {
+      "backbone": [
+        "amine_any",
+        "carboxyl_any",
+        "carboxylate",
+        "primary_amine"
+      ],
+      "substituents": [
+        "methyl"
+      ],
+      "rule_based": [
+        "amine_any",
+        "carboxyl_any",
+        "carboxylate",
+        "methyl",
+        "primary_amine"
+      ],
+      "rule_based_counts": {
+        "amine_any": 1,
+        "carboxyl_any": 1,
+        "carboxylate": 1,
+        "methyl": 2,
+        "primary_amine": 1
+      },
+      "llm_additions": []
+    },
+    "core_scaffold": [],
+    "abstract_features": {
+      "is_fluorinated": false,
+      "is_electron_deficient": false,
+      "is_electron_rich": false,
+      "is_symmetric": null,
+      "is_conjugated": false,
+      "is_metalated": true,
+      "has_hydrogen_bond_donor": false,
+      "has_hydrogen_bond_acceptor": true,
+      "is_charged": true,
+      "is_photoswitchable": false,
+      "has_open_metal_site": false
+    },
+    "coordinating_groups": [
+      "Carbonyl",
+      "Carboxylate",
+      "Oxygen"
+    ],
+    "inferred_properties": [
+      "carboxylate_based",
+      "charged",
+      "hba",
+      "metalated"
+    ],
+    "readable_name": "copper amide framework",
+    "design_hints": "This MOF features a pore size with a large largest cavity diameter (LCD) of 3.05 Å, making it suitable for gas adsorption applications. The bandgap of 3.75 eV indicates potential for photocatalytic applications, while the copper node provides unique catalytic properties. Its topology and functional groups suggest versatility in selective adsorption and separation processes."
+  },
+  "provenance": {
+    "pipeline_version": "2.0.0",
+    "schema_version": "2.0.0",
+    "generated_at": "2026-03-12T14:28:34.166668+00:00",
+    "source_csv": "qmof.csv",
+    "source_csv_row": 14613,
+    "source_json": "qmof-0000295_analysis.json",
+    "source_json_sha256": "a35e71caf626f1c219197011f3426a0ac3f8fab760a55ee46a5ad4fd8f39f7f1",
+    "tool_versions": {
+      "python": "3.11.14",
+      "rdkit": "2022.09.5",
+      "pandas": "3.0.1",
+      "networkx": "3.6.1"
+    },
+    "smarts_library": "pormake_bb_pipeline_v1.0",
+    "smarts_pattern_count": 105,
+    "layer1_method": "csv_extraction+source_json",
+    "layer2_method": "smarts_rules+llm",
+    "field_sources": {
+      "source_csv_sha256": "420083c16db58e8775f2060e201588a7e942d4a2adca43b0c9d981b5a4022c4f"
+    }
+  },
+  "validation_report": {
+    "status": "warning",
+    "checks": {
+      "formula_nonempty": true,
+      "bandgap_nonneg": true,
+      "density_positive": true,
+      "volume_positive": true,
+      "has_smiles_nodes": true,
+      "has_smiles_linkers": true,
+      "smiles_nodes_all_valid": true,
+      "smiles_linkers_all_valid": true,
+      "has_metal_node_data": true,
+      "metal_composition_consistent": true,
+      "topology_present": false,
+      "fg_detection_ran": true,
+      "source_json_available": true,
+      "provenance_complete": true
+    },
+    "warnings": [
+      "no topology information"
+    ],
+    "errors": [],
+    "issue_log": []
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "coremof_id": "0000[Co][nan]3[ASR]10",
+  "record_type": "mof",
+  "database": "CoRE-MOF",
+  "layer1_facts": {
+    "formula": null,
+    "topology": "unstable",
+    "density": 1.17907,
+    "volume": null,
+    "pld": 4.88428,
+    "lcd": 6.91079,
+    "surface_area_m2g": 576.497,
+    "void_fraction": 0.4476,
+    "natoms": 219,
+    "spacegroup_number": 148,
+    "crystal_system": "trigonal",
+    "catenation": 1,
+    "synthesized": true,
+    "doi": "10.1021/ja0c07257",
+    "mofid": "[Co].n1ccc(cc1)C1=C2C=CC(=C(c3ccncc3)C3=NC(=C(C4=CC=C(C(=C5N=C1C=C5)c1ccncc1)[N]4)c1ccncc1)C=C3)[N]2 MOFid-v1.ERROR.cat0;ja0c07257_si_011_ASR_pacman",
+    "refcode": "ja0c07257_si_011_ASR_pacman",
+    "smiles_nodes": [
+      "[Co]"
+    ],
+    "smiles_linkers": [
+      "n1ccc(cc1)C1=C2C=CC(=C(c3ccncc3)C3=NC(=C(C4=CC=C(C(=C5N=C1C=C5)c1ccncc1)[N]4)c1ccncc1)C=C3)[N]2"
+    ],
+    "smiles_nodes_valid": [
+      true
+    ],
+    "smiles_linkers_valid": [
+      true
+    ],
+    "metal_node": {
+      "metals": [
+        "Co"
+      ],
+      "nuclearity": 1,
+      "connectivity": null,
+      "geometry": null,
+      "sbu_type": "Co1_mononuclear",
+      "oxidation_states": {
+        "Co": 2
+      },
+      "has_open_metal_sites": false,
+      "coordinating_groups": [],
+      "ligand_chemistry": []
+    },
+    "stability": {
+      "thermal_stability_C": 470.0,
+      "water_stability": 0.8,
+      "solvent_stability": 0.8159822,
+      "oms_types": null
+    }
+  },
+  "layer2_semantics": {
+    "source": "smarts_rules+llm+llm_additions",
+    "readable_name": "cobalt-based heterocyclic framework",
+    "design_hints": "This MOF exhibits a high surface area of 576.5 m²/g and good thermal stability up to 470 °C, making it suitable for gas adsorption applications. Its moderate water and solvent stability scores indicate potential for use in humid environments or liquid-phase separations.",
+    "functional_groups": {
+      "backbone": [
+        "aromatic",
+        "heterocycle",
+        "imine",
+        "imine_any",
+        "nitrogen",
+        "pyridine",
+        "ring"
+      ],
+      "substituents": [
+        "vinyl"
+      ],
+      "rule_based": [
+        "aromatic",
+        "carbon_framework",
+        "heterocycle",
+        "imine",
+        "imine_any",
+        "nitrogen",
+        "pyridine",
+        "ring",
+        "vinyl"
+      ],
+      "rule_based_counts": {
+        "imine": 2,
+        "imine_any": 2,
+        "pyridine": 4,
+        "vinyl": 9
+      },
+      "llm_additions": [
+        "paddlewheel",
+        "interpenetrated",
+        "breathing",
+        "flexible"
+      ]
+    },
+    "abstract_features": {
+      "is_fluorinated": false,
+      "is_electron_deficient": false,
+      "is_electron_rich": false,
+      "is_symmetric": null,
+      "is_conjugated": true,
+      "is_metalated": true,
+      "has_hydrogen_bond_donor": false,
+      "has_hydrogen_bond_acceptor": true,
+      "is_charged": false,
+      "is_photoswitchable": false,
+      "has_open_metal_site": false
+    },
+    "inferred_properties": [
+      "conjugated",
+      "hba",
+      "metalated",
+      "pyridine_based"
+    ],
+    "linker_enrichment": [
+      {
+        "smiles": "n1ccc(cc1)C1=C2C=CC(=C(c3ccncc3)C3=NC(=C(C4=CC=C(C(=C5N=C1C=C5)c1ccncc1)[N]4)c1ccncc1)C=C3)[N]2",
+        "smiles_valid": true,
+        "functional_groups": {
+          "backbone": [
+            "imine",
+            "imine_any",
+            "pyridine"
+          ],
+          "substituents": [
+            "vinyl"
+          ],
+          "rule_based": [
+            "imine",
+            "imine_any",
+            "pyridine",
+            "vinyl"
+          ],
+          "rule_based_counts": {
+            "imine": 2,
+            "imine_any": 2,
+            "pyridine": 4,
+            "vinyl": 9
+          }
+        },
+        "core_scaffold": [],
+        "heterocycles": [
+          "pyridine"
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "pipeline_version": "2.0.0",
+    "schema_version": "2.0.0",
+    "generated_at": "2026-03-12T16:28:07.584754+00:00",
+    "source_database": "CoRE-MOF",
+    "source_file": "coremof_enriched_v1/0000[Co][nan]3[ASR]10_enriched.json",
+    "layer1_method": "v1_migration+csv",
+    "layer2_method": "smarts_rules+llm",
+    "smarts_pattern_count": 105,
+    "tool_versions": {
+      "python": "3.11.14",
+      "rdkit": "2022.09.5",
+      "pandas": "3.0.1"
+    }
+  },
+  "validation_report": {
+    "status": "pass",
+    "checks": [
+      {
+        "name": "has_id",
+        "status": "pass",
+        "detail": "coremof_id=present"
+      },
+      {
+        "name": "has_smiles_nodes",
+        "status": "pass",
+        "detail": "count=1"
+      },
+      {
+        "name": "has_smiles_linkers",
+        "status": "pass",
+        "detail": "count=1"
+      },
+      {
+        "name": "smiles_nodes_valid",
+        "status": "pass",
+        "detail": "valid=1/1"
+      },
+      {
+        "name": "smiles_linkers_valid",
+        "status": "pass",
+        "detail": "valid=1/1"
+      },
+      {
+        "name": "has_metals",
+        "status": "pass",
+        "detail": "metals=['Co']"
+      },
+      {
+        "name": "has_topology",
+        "status": "pass",
+        "detail": "topology=unstable"
+      },
+      {
+        "name": "density_positive",
+        "status": "pass",
+        "detail": "density=1.17907"
+      },
+      {
+        "name": "pld_positive",
+        "status": "pass",
+        "detail": "pld=4.88428"
+      },
+      {
+        "name": "lcd_positive",
+        "status": "pass",
+        "detail": "lcd=6.91079"
+      },
+      {
+        "name": "fg_detection_ran",
+        "status": "pass",
+        "detail": "rule_based_count=4"
+      },
+      {
+        "name": "has_doi",
+        "status": "pass",
+        "detail": "doi=present"
+      }
+    ],
+    "warnings": 0,
+    "errors": 0,
+    "issue_log": []
+  }
+}

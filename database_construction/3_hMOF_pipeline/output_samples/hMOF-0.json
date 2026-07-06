@@ -1,0 +1,157 @@
+{
+  "hmof_id": "hMOF-0",
+  "record_type": "mof",
+  "database": "hMOF",
+  "layer1_facts": {
+    "name": "hMOF-0",
+    "formula": null,
+    "topology": "pcu",
+    "density": 0.615428555884993,
+    "pld": 10.75,
+    "lcd": 11.75,
+    "surface_area_m2g": 3676.3,
+    "void_fraction": 0.795539,
+    "synthesized": false,
+    "mofid": "[O-]C(=O)c1ccc(cc1)C(=O)[O-].[Zn][O]([Zn])([Zn])[Zn] MOFid-v1.pcu.cat0",
+    "mofkey": "Zn.KKEYFWRCBNTPAC.MOFkey-v1.pcu",
+    "smiles_nodes": [
+      "[Zn][O]([Zn])([Zn])[Zn]"
+    ],
+    "smiles_linkers": [
+      "[O-]C(=O)c1ccc(cc1)C(=O)[O-]"
+    ],
+    "smiles_nodes_valid": [
+      true
+    ],
+    "smiles_linkers_valid": [
+      true
+    ],
+    "metal_node": {
+      "metals": [
+        "Zn"
+      ],
+      "nuclearity": null,
+      "connectivity": null,
+      "geometry": null,
+      "sbu_type": null,
+      "oxidation_states": null,
+      "has_open_metal_sites": null,
+      "coordinating_groups": [],
+      "ligand_chemistry": []
+    },
+    "gas_adsorption": {
+      "h2_uptake_2bar_77K": 10.4232,
+      "h2_uptake_100bar_77K": 54.1326,
+      "ch4_uptake_35bar_298K": 146.915,
+      "co2_uptake_2_5bar_298K": 4.33307,
+      "xe_loading_1bar_273K": 0.33967,
+      "kr_loading_1bar_273K": 0.416632,
+      "xekr_selectivity_1bar": 3.26110332379654
+    }
+  },
+  "layer2_semantics": {
+    "source": "smarts_rules+llm",
+    "readable_name": "zinc pcu benzene dicarboxylate framework",
+    "design_hints": "This MOF exhibits a high surface area of 3676.3 m²/g and a significant H₂ uptake of 54.13 at 100 bar and 77K, indicating potential for hydrogen storage applications. Additionally, its CH₄ uptake of 146.9 at 35 bar and 298K suggests suitability for natural gas storage and separation processes.",
+    "functional_groups": {
+      "backbone": [
+        "benzene_ring",
+        "carboxyl_any",
+        "carboxylate"
+      ],
+      "substituents": [],
+      "rule_based": [
+        "benzene_ring",
+        "carboxyl_any",
+        "carboxylate"
+      ],
+      "rule_based_counts": {
+        "benzene_ring": 1,
+        "carboxyl_any": 2,
+        "carboxylate": 2
+      },
+      "llm_additions": []
+    },
+    "abstract_features": {
+      "is_fluorinated": false,
+      "is_electron_deficient": false,
+      "is_electron_rich": false,
+      "is_symmetric": null,
+      "is_conjugated": true,
+      "is_metalated": false,
+      "has_hydrogen_bond_donor": false,
+      "has_hydrogen_bond_acceptor": true,
+      "is_charged": true,
+      "is_photoswitchable": false,
+      "has_open_metal_site": null
+    },
+    "inferred_properties": [
+      "carboxylate_based",
+      "charged",
+      "conjugated",
+      "hba"
+    ],
+    "linker_enrichment": [
+      {
+        "smiles": "[O-]C(=O)c1ccc(cc1)C(=O)[O-]",
+        "smiles_valid": true,
+        "functional_groups": {
+          "backbone": [
+            "benzene_ring",
+            "carboxyl_any",
+            "carboxylate"
+          ],
+          "substituents": [],
+          "rule_based": [
+            "benzene_ring",
+            "carboxyl_any",
+            "carboxylate"
+          ],
+          "rule_based_counts": {
+            "benzene_ring": 1,
+            "carboxyl_any": 2,
+            "carboxylate": 2
+          }
+        },
+        "core_scaffold": [
+          "benzene_ring"
+        ],
+        "heterocycles": []
+      }
+    ]
+  },
+  "provenance": {
+    "pipeline_version": "2.0.0",
+    "schema_version": "2.0.0",
+    "generated_at": "2026-03-12T16:29:14.574849+00:00",
+    "source_database": "hMOF",
+    "source_file": "hmof_enriched_v1/hMOF-0_enriched.json",
+    "layer1_method": "v1_migration",
+    "layer2_method": "smarts_rules+llm",
+    "smarts_pattern_count": 105,
+    "tool_versions": {
+      "python": "3.11.14",
+      "rdkit": "2022.09.5"
+    }
+  },
+  "validation_report": {
+    "status": "pass",
+    "checks": {
+      "has_id": true,
+      "has_smiles_nodes": true,
+      "has_smiles_linkers": true,
+      "smiles_nodes_valid": true,
+      "smiles_linkers_valid": true,
+      "has_metals": true,
+      "has_topology": true,
+      "density_positive": true,
+      "pld_positive": true,
+      "lcd_positive": true,
+      "fg_detection_ran": true,
+      "has_gas_data": true
+    },
+    "warnings": 0,
+    "errors": 0,
+    "issue_log": []
+  }
+}
