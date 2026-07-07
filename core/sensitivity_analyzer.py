@@ -135,7 +135,7 @@ class SensitivityAnalyzer:
             print(f"CRITICAL ERROR LOADING DATA: {e}")
             raise
 
-        # Load approved vocabulary from ontology for tag validation
+        # Load approved vocabulary from vocabulary for tag validation
         self.approved_vocab = get_approved_vocab()
     
 

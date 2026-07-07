@@ -7,7 +7,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent  # PORMAKE/
 BBS_DIR = PROJECT_ROOT / "_source_data" / "bbs"
 OLD_BB_DICT_PATH = PROJECT_ROOT / "_source_data" / "pormake_bb_dictionary_v4.json"
 OLD_META_DIR = PROJECT_ROOT / "_legacy" / "BuildingBlock_meta_data_v7_20260305"
-ONTOLOGY_PATH = PROJECT_ROOT / "_legacy" / "combined_hierarchical_ontology_20260310.json"
+VOCABULARY_PATH = PROJECT_ROOT / "_legacy" / "combined_hierarchical_vocabulary_20260310.json"
 OUTPUT_DIR = PROJECT_ROOT / "bb_metadata_v8"
 
 # ── Schema Version ────────────────────────────────────────────────────

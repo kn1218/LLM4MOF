@@ -1,5 +1,5 @@
 """
-ontology_dictionary.py  –  SMARTS-grounded ontological dictionary for edge classification.
+vocabulary_dictionary.py  –  SMARTS-grounded vocabulary dictionary for edge classification.
 
 Hierarchical mapping:  Class → Subclass → SMARTS string.
 

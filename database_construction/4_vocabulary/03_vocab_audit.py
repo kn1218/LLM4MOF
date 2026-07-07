@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Phase 1: Vocabulary Frequency Audit & Ontology Construction
+Phase 1: Vocabulary Frequency Audit & Vocabulary Construction
 ============================================================
 Scans three data sources for functional-group vocabulary:
   1. BB dictionary v3.2  (pormake_bb_dictionary_v3.2.json)

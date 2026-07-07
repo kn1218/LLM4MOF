@@ -43,33 +43,33 @@ PORMAKE_COORDINATION_TAGS: frozenset = frozenset({
 
 
 # =============================================================================
-# ONTOLOGY LOADING (Singleton)
+# VOCABULARY LOADING (Singleton)
 # =============================================================================
 
 _alias_map: Optional[Dict[str, str]] = None
 _approved_vocab: Optional[Set[str]] = None
 
 
-def _load_ontology() -> None:
-    """Load unified ontology and build alias→canonical mapping (once)."""
+def _load_vocabulary() -> None:
+    """Load unified vocabulary and build alias→canonical mapping (once)."""
     global _alias_map, _approved_vocab
 
     # Import here to avoid circular dependency at module level
     import sys
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from config import UNIFIED_ONTOLOGY_PATH
+    from config import UNIFIED_VOCABULARY_PATH
 
     _alias_map = {}
     _approved_vocab = set()
 
-    if not os.path.exists(UNIFIED_ONTOLOGY_PATH):
-        print(f"[constraint_utils] WARNING: Ontology not found at {UNIFIED_ONTOLOGY_PATH}")
+    if not os.path.exists(UNIFIED_VOCABULARY_PATH):
+        print(f"[constraint_utils] WARNING: Vocabulary not found at {UNIFIED_VOCABULARY_PATH}")
         return
 
-    with open(UNIFIED_ONTOLOGY_PATH, 'r', encoding='utf-8') as f:
-        ontology = json.load(f)
+    with open(UNIFIED_VOCABULARY_PATH, 'r', encoding='utf-8') as f:
+        vocabulary = json.load(f)
 
-    for canonical_tag, info in ontology.get('canonical_tags', {}).items():
+    for canonical_tag, info in vocabulary.get('canonical_tags', {}).items():
         canonical_lower = canonical_tag.lower().strip().replace('-', '_').replace(' ', '_')
         _approved_vocab.add(canonical_lower)
 
@@ -81,13 +81,13 @@ def _load_ontology() -> None:
         # Also map the canonical tag itself (in case of case differences)
         _alias_map[canonical_lower] = canonical_lower
 
-    print(f"[constraint_utils] Ontology loaded: {len(_approved_vocab)} canonical tags, {len(_alias_map)} alias mappings")
+    print(f"[constraint_utils] Vocabulary loaded: {len(_approved_vocab)} canonical tags, {len(_alias_map)} alias mappings")
 
 
 def get_approved_vocab() -> Set[str]:
     """Return the set of approved canonical vocabulary tags."""
     if _approved_vocab is None:
-        _load_ontology()
+        _load_vocabulary()
     return _approved_vocab
 
 
@@ -101,7 +101,7 @@ def canon(s: str) -> str:
 
     Transformations:
     1. lowercase, strip whitespace, hyphens/spaces → underscores
-    2. Resolve synonyms via unified_ontology.json alias mapping
+    2. Resolve synonyms via unified_vocabulary.json alias mapping
 
     Examples:
         'Primary Amine' → 'primary_amine'
@@ -114,9 +114,9 @@ def canon(s: str) -> str:
 
     normalized = s.lower().strip().replace('-', '_').replace(' ', '_')
 
-    # Lazy-load ontology on first use
+    # Lazy-load vocabulary on first use
     if _alias_map is None:
-        _load_ontology()
+        _load_vocabulary()
 
     # Resolve alias if known, otherwise return normalized form
     return _alias_map.get(normalized, normalized)
@@ -413,10 +413,10 @@ def _test_constraint_utils():
     print("CONSTRAINT UTILS MODULE TEST")
     print("=" * 60 + "\n")
     
-    # Test canon() — now includes alias resolution via unified_ontology.json
+    # Test canon() — now includes alias resolution via unified_vocabulary.json
     print("Testing canon()...")
     assert canon("Primary Amine") == "primary_amine"
-    assert canon("N-rich") == "n_rich"  # no alias in ontology, stays normalized
+    assert canon("N-rich") == "n_rich"  # no alias in vocabulary, stays normalized
     assert canon("  Aromatic  ") == "aromatic"
     assert canon("carboxylic-acid") == "carboxyl"  # alias: carboxylic_acid → carboxyl
     assert canon("Aromatic_Ring") == "aromatic"  # alias resolved

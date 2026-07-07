@@ -1,7 +1,7 @@
 {
     "version": "1.2",
     "created": "2026-03-06T18:39:00+09:00",
-    "description": "Unified ontology mapping for LLM4MOF functional group vocabulary. Consolidates tags from BB dictionary v3.2, V7 edge metadata, QMOF global JSONs, and hMOF index into a single canonical vocabulary.",
+    "description": "Unified vocabulary mapping for LLM4MOF functional group vocabulary. Consolidates tags from BB dictionary v3.2, V7 edge metadata, QMOF global JSONs, and hMOF index into a single canonical vocabulary.",
     "notes": [
         "canonical_form is Title_Case to match Agent 2 APPROVED VOCABULARY convention",
         "All alias lookups should be case-insensitive (lowercase before lookup)",
