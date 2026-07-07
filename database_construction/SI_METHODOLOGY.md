@@ -728,8 +728,8 @@ python scripts/migration/build_vocab_mapping.py  # Produces unified_ontology.jso
 ### 10.5 Environment Setup
 
 ```bash
-conda create -n llm2auto python=3.11
-conda activate llm2auto
+conda create -n llm4mof python=3.11
+conda activate llm4mof
 pip install rdkit-pypi==2022.9.5   # or conda install -c conda-forge rdkit=2022.09.5
 pip install numpy"<2" networkx selfies openai google-generativeai
 export OPENAI_API_KEY="..."        # For QMOF + hMOF LLM enrichment
