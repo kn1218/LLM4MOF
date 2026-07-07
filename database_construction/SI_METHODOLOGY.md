@@ -33,7 +33,7 @@ hMOF JSONL cache ────────> hmof_pipeline_v2.py ─────�
 (MOFX-DB API)             (Layer 1 + Layer 2)          (hmof_enriched_v2/)     (51,163 flat records)
 
                                                                     ┌──────────────────────────────┐
-SMARTS patterns ─────────────────────────────────────────────────> │ unified_ontology.json        │
+SMARTS patterns ─────────────────────────────────────────────────> │ unified_vocabulary.json        │
 + cross-DB tag audit                                               │ (canonical vocabulary, v1.2) │
                                                                     └──────────────────────────────┘
 ```
@@ -209,7 +209,7 @@ Reads 867 individual JSON files and converts them into a single flat array (`por
 
 Adds generic/abstract parent tags to each record's functional group list:
 - e.g., `benzene_ring` -> also adds `aromatic`, `aryl`, `ring`
-- Ensures vocabulary consistency with the unified ontology
+- Ensures vocabulary consistency with the unified vocabulary
 
 ---
 
@@ -285,7 +285,7 @@ Reads 20,373 individual JSON files and produces `qmof_index_v2.json` -- a monoli
 
 ### 2.6 Post-Processing (`08_enrich_qmof_tags.py`)
 
-Adds generic/abstract parent tags for consistency with the unified ontology.
+Adds generic/abstract parent tags for consistency with the unified vocabulary.
 
 ---
 
@@ -377,14 +377,14 @@ Reads 1,002 individual JSONs and produces `coremof_index_v1.json` — a flat JSO
 
 ---
 
-## 5. Ontology Construction (Unified Vocabulary)
+## 5. Vocabulary Construction (Unified Vocabulary)
 
 
 ### 5.1 Purpose
 
-The unified ontology (`unified_ontology.json`, v1.2) provides a canonical vocabulary of functional group tags that is consistent across all three databases. This vocabulary is used by the LLM screening engine (Agent 2) to translate natural-language chemical reasoning into typed database constraints.
+The unified vocabulary (`unified_vocabulary.json`, v1.2) provides a canonical vocabulary of functional group tags that is consistent across all three databases. This vocabulary is used by the LLM screening engine (Agent 2) to translate natural-language chemical reasoning into typed database constraints.
 
-### 5.2 SMARTS Pattern Library (`01_ontology_dictionary.py` + `5_shared/smarts_library.py`)
+### 5.2 SMARTS Pattern Library (`01_vocabulary_dictionary.py` + `5_shared/smarts_library.py`)
 
 105 curated RDKit-compatible SMARTS patterns organized into 4 categories:
 
@@ -458,7 +458,7 @@ Everything else (carboxylate, benzene_ring, pyridine, imidazole, porphyrin, etc.
 
 ### 5.4 Generic Tag Propagation
 
-After SMARTS detection, a post-processing step (`12_enrich_generic_tags.py` for PORMAKE, `08_enrich_qmof_tags.py` for QMOF) adds generic/abstract parent tags derived from the specific detected tags. This ensures vocabulary consistency across databases and alignment with the unified ontology.
+After SMARTS detection, a post-processing step (`12_enrich_generic_tags.py` for PORMAKE, `08_enrich_qmof_tags.py` for QMOF) adds generic/abstract parent tags derived from the specific detected tags. This ensures vocabulary consistency across databases and alignment with the unified vocabulary.
 
 The mapping is defined in a hardcoded `TAG_HIERARCHY` dictionary (~152 entries). Representative mappings:
 
@@ -475,15 +475,15 @@ The mapping is defined in a hardcoded `TAG_HIERARCHY` dictionary (~152 entries).
 
 **Example:** If a building block has SMARTS-detected tags `["benzene_ring", "carboxylic_acid"]`, after generic tag propagation it becomes `["aromatic", "aryl", "benzene_ring", "carbonyl", "carboxylic_acid", "ring"]`.
 
-### 5.5 Bridge Dictionary (`02_qmof_ontology_parser.py`)
+### 5.5 Bridge Dictionary (`02_qmof_vocabulary_parser.py`)
 
-Maps lowercase SMARTS tag names to title-case canonical ontology keys (e.g., `benzene_ring` -> `Benzene`, `carboxylic_acid` -> `Carboxylate`). Also reads the hierarchical edge ontology to build degenerate (multiple-inheritance) mappings where each tag maps to all its topological/compositional ancestors.
+Maps lowercase SMARTS tag names to title-case canonical vocabulary keys (e.g., `benzene_ring` -> `Benzene`, `carboxylic_acid` -> `Carboxylate`). Also reads the hierarchical edge vocabulary to build degenerate (multiple-inheritance) mappings where each tag maps to all its topological/compositional ancestors.
 
 ### 5.6 Cross-Database Tag Audit (`03_vocab_audit.py`)
 
 Scans three metadata sources (PORMAKE, QMOF, hMOF) for functional-group tags, builds frequency distributions, and generates cross-reference reports with synonym detection. Uses a `canon()` normalization function (lowercase, strip whitespace, hyphens/spaces to underscores) for consistent comparison.
 
-### 5.7 Ontology Assembly (`04_build_vocab_mapping.py`)
+### 5.7 Vocabulary Assembly (`04_build_vocab_mapping.py`)
 
 Consolidates tags from four input sources into a single canonical vocabulary:
 1. **PORMAKE BB dictionary v3.2** (869 building blocks)
@@ -491,7 +491,7 @@ Consolidates tags from four input sources into a single canonical vocabulary:
 3. **QMOF global JSONs** (20,372 MOF analyses)
 4. **hMOF index** (51,163 MOF records)
 
-Output: `unified_ontology.json` (v1.2) containing:
+Output: `unified_vocabulary.json` (v1.2) containing:
 - 107 canonical tags in Title_Case
 - ~300+ alias mappings (case-insensitive lookup)
 - Per-tag metadata: category (backbone/scaffold/substituent/heterocycle/etc.), `agent2_approved` flag
@@ -499,13 +499,13 @@ Output: `unified_ontology.json` (v1.2) containing:
 
 ### 5.8 Runtime Integration
 
-At runtime, `constraint_utils.py` in the LLM4MOF screening engine loads `unified_ontology.json` to provide:
+At runtime, `constraint_utils.py` in the LLM4MOF screening engine loads `unified_vocabulary.json` to provide:
 
-1. **Alias resolution:** When Agent 2 outputs a constraint like `"Aromatic_Ring"`, the ontology maps it to the canonical form `"Aromatic"`, which in turn matches the `"aromatic"` tag in the database records
+1. **Alias resolution:** When Agent 2 outputs a constraint like `"Aromatic_Ring"`, the vocabulary maps it to the canonical form `"Aromatic"`, which in turn matches the `"aromatic"` tag in the database records
 2. **Vocabulary validation:** Ensures Agent 2 only uses tags that exist in the database, preventing hallucinated constraints
 3. **Case-insensitive lookup:** All tags are normalized to lowercase before matching against the database
 
-The canonical vocabulary convention is Title_Case (e.g., `Aromatic`, `Benzene`, `Pyridine`), while the database stores lowercase tags (e.g., `aromatic`, `benzene_ring`, `pyridine`). The ontology's alias system bridges this gap transparently.
+The canonical vocabulary convention is Title_Case (e.g., `Aromatic`, `Benzene`, `Pyridine`), while the database stores lowercase tags (e.g., `aromatic`, `benzene_ring`, `pyridine`). The vocabulary's alias system bridges this gap transparently.
 
 ---
 
@@ -556,15 +556,15 @@ These fields are generated during enrichment but are never read by the screening
 | `formula` | Deterministic | Minimal use (element extraction only) |
 | `spin_state` | Deterministic (QMOF) | Loaded but not used in filtering or display |
 
-### 6.4 Ontology at Runtime
+### 6.4 Vocabulary at Runtime
 
-The unified ontology (`unified_ontology.json`) is actively loaded by `constraint_utils.py` at runtime. It serves as the canonical vocabulary that Agent 2 uses to express functional group constraints. The ontology provides:
+The unified vocabulary (`unified_vocabulary.json`) is actively loaded by `constraint_utils.py` at runtime. It serves as the canonical vocabulary that Agent 2 uses to express functional group constraints. The vocabulary provides:
 
 - **Alias resolution:** Maps variant tag names (e.g., `aromatic_ring`, `Aromatic`) to canonical forms (e.g., `Aromatic`)
 - **Vocabulary validation:** Ensures Agent 2 only uses approved tags that exist in the database
 - **Case-insensitive lookup:** All tags are normalized to lowercase before matching
 
-This means the SMARTS-based functional group tags in the JSON records must align with the ontology's canonical vocabulary for the screening to work correctly. The `enrich_generic_tags` post-processing step (scripts 12/08 in the PORMAKE/QMOF pipelines) ensures this alignment by adding parent/abstract tags that match the ontology's hierarchy.
+This means the SMARTS-based functional group tags in the JSON records must align with the vocabulary's canonical vocabulary for the screening to work correctly. The `enrich_generic_tags` post-processing step (scripts 12/08 in the PORMAKE/QMOF pipelines) ensures this alignment by adding parent/abstract tags that match the vocabulary's hierarchy.
 
 ---
 
@@ -717,12 +717,12 @@ python hmof_pipeline_v2.py              # Produces 51,163 JSONs in hmof_enriched
 python <path_to>/build_hmof_index.py
 ```
 
-### 10.4 Ontology
+### 10.4 Vocabulary
 
 ```bash
 # Run from the main project directory
 python scripts/vocab_audit.py                    # Cross-database tag audit
-python scripts/migration/build_vocab_mapping.py  # Produces unified_ontology.json
+python scripts/migration/build_vocab_mapping.py  # Produces unified_vocabulary.json
 ```
 
 ### 10.5 Environment Setup
@@ -781,12 +781,12 @@ SI_data_provenance/
 |   +-- 02_build_hmof_index.py    Aggregate JSONs -> flat index
 |   +-- output_samples/           hMOF-0.json
 |
-+-- 4_ontology/
-|   +-- 01_ontology_dictionary.py 120+ SMARTS patterns (original source)
-|   +-- 02_qmof_ontology_parser.py SMARTS -> ontology bridge dictionary
++-- 4_vocabulary/
+|   +-- 01_vocabulary_dictionary.py 120+ SMARTS patterns (original source)
+|   +-- 02_qmof_vocabulary_parser.py SMARTS -> vocabulary bridge dictionary
 |   +-- 03_vocab_audit.py         Cross-database tag frequency audit
-|   +-- 04_build_vocab_mapping.py unified_ontology.json builder
-|   +-- unified_ontology_v1.2.json Output: canonical vocabulary (107 tags)
+|   +-- 04_build_vocab_mapping.py unified_vocabulary.json builder
+|   +-- unified_vocabulary_v1.2.json Output: canonical vocabulary (107 tags)
 |
 +-- 5_shared/
     +-- smarts_library.py         Canonical 105 SMARTS patterns (used by all pipelines)

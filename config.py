@@ -77,7 +77,7 @@ TOPO_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_topo_dictionary_v3.json")
 TOPO_DICTIONARY_V3_PATH = TOPO_DICTIONARY_PATH
 
 # Canonical Vocabulary (source of truth for functional group synonyms)
-UNIFIED_ONTOLOGY_PATH = os.path.join(DATA_DIR, "unified_ontology.json")
+UNIFIED_VOCABULARY_PATH = os.path.join(DATA_DIR, "unified_vocabulary.json")
 
 # QMOF Databases for Band Gap
 QMOF_CSV_PATH = os.path.join(DATA_DIR, "qmof.csv")

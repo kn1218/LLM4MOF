@@ -1,14 +1,14 @@
 """
-Phase 0D: Build vocabulary mapping between new SMARTS-detected tags and old ontology.
+Phase 0D: Build vocabulary mapping between new SMARTS-detected tags and old vocabulary.
 
 Reads a sample of new enriched JSONs from all three databases (PORMAKE, QMOF, hMOF),
 collects all unique functional group tags, then maps them against the existing
-unified_ontology.json to find:
+unified_vocabulary.json to find:
   1. Tags that already have mappings (covered)
-  2. Tags that are new and need aliases added to the ontology
-  3. Old ontology tags that don't appear in new data (potentially obsolete)
+  2. Tags that are new and need aliases added to the vocabulary
+  3. Old vocabulary tags that don't appear in new data (potentially obsolete)
 
-Output: A proposed ontology patch file at data/ontology_v2_patch.json
+Output: A proposed vocabulary patch file at data/vocabulary_v2_patch.json
 """
 
 import json
@@ -20,18 +20,18 @@ from collections import Counter
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
-ONTOLOGY_PATH = os.path.join(DATA_DIR, "unified_ontology.json")
+VOCABULARY_PATH = os.path.join(DATA_DIR, "unified_vocabulary.json")
 PORMAKE_BB_DIR = os.path.join(DATA_DIR, "pormake", "pormake_buildingblock_jsons")
 QMOF_ENRICHED_DIR = os.path.join(DATA_DIR, "qmof", "qmof_enriched_v2")
 HMOF_ENRICHED_DIR = os.path.join(DATA_DIR, "hMOF", "hmof_enriched_v2")
 OLD_BB_DICT_PATH = os.path.join(DATA_DIR, "pormake_bb_dictionary_v4.json")
 OLD_QMOF_INDEX_PATH = os.path.join(DATA_DIR, "qmof_index.json")
 
-OUTPUT_PATH = os.path.join(DATA_DIR, "ontology_v2_patch.json")
+OUTPUT_PATH = os.path.join(DATA_DIR, "vocabulary_v2_patch.json")
 
 
-def load_ontology(path: str) -> dict:
-    """Load ontology and build alias→canonical mapping."""
+def load_vocabulary(path: str) -> dict:
+    """Load vocabulary and build alias→canonical mapping."""
     with open(path, "r", encoding="utf-8") as f:
         onto = json.load(f)
 
@@ -116,10 +116,10 @@ def collect_old_tags_from_qmof_index(path: str) -> Counter:
 
 def propose_mapping(new_tag: str) -> str | None:
     """
-    Propose a canonical ontology tag for a new SMARTS-detected tag.
+    Propose a canonical vocabulary tag for a new SMARTS-detected tag.
     Returns the proposed canonical form or None if no obvious mapping.
     """
-    # Known direct mappings between SMARTS snake_case and ontology
+    # Known direct mappings between SMARTS snake_case and vocabulary
     KNOWN_MAPPINGS = {
         # Scaffolds / Rings
         "benzene_ring": "benzene",
@@ -219,9 +219,9 @@ def main():
     print("PHASE 0D: VOCABULARY MAPPING ANALYSIS")
     print("=" * 70)
 
-    # ── Load existing ontology ───────────────────────────────────────────
-    print("\n1. Loading existing ontology...")
-    ontology, alias_map, canonical_tags = load_ontology(ONTOLOGY_PATH)
+    # ── Load existing vocabulary ───────────────────────────────────────────
+    print("\n1. Loading existing vocabulary...")
+    vocabulary, alias_map, canonical_tags = load_vocabulary(VOCABULARY_PATH)
     print(f"   Canonical tags: {len(canonical_tags)}")
     print(f"   Alias mappings: {len(alias_map)}")
 
@@ -262,9 +262,9 @@ def main():
     print(f"   ALL OLD TAGS: {len(all_old_tags)} unique")
 
     # ── Classify new tags ────────────────────────────────────────────────
-    print("\n4. Classifying new tags against ontology...")
+    print("\n4. Classifying new tags against vocabulary...")
 
-    covered = {}      # tag → canonical (already has alias in ontology)
+    covered = {}      # tag → canonical (already has alias in vocabulary)
     needs_alias = {}   # tag → proposed_canonical (mapping known, alias missing)
     unmapped = []      # tag with no known mapping
 
@@ -280,12 +280,12 @@ def main():
             else:
                 unmapped.append(tag)
 
-    print(f"\n   [OK] COVERED (already in ontology): {len(covered)} tags")
+    print(f"\n   [OK] COVERED (already in vocabulary): {len(covered)} tags")
     for tag, canon in sorted(covered.items()):
         count = all_new_tags[tag]
         print(f"      {tag:30s} → {canon:25s} ({count:,} occurrences)")
 
-    print(f"\n   [WARN] NEEDS ALIAS (mapping known, not in ontology): {len(needs_alias)} tags")
+    print(f"\n   [WARN] NEEDS ALIAS (mapping known, not in vocabulary): {len(needs_alias)} tags")
     for tag, canon in sorted(needs_alias.items()):
         count = all_new_tags[tag]
         print(f"      {tag:30s} → {canon:25s} ({count:,} occurrences)")
@@ -324,11 +324,11 @@ def main():
     else:
         print("   All old tags have equivalents in new data.")
 
-    # ── Generate ontology patch ──────────────────────────────────────────
-    print("\n6. Generating ontology patch...")
+    # ── Generate vocabulary patch ──────────────────────────────────────────
+    print("\n6. Generating vocabulary patch...")
 
     patch = {
-        "description": "Ontology v2 patch: adds SMARTS-detected tag aliases from enriched v2 data",
+        "description": "Vocabulary v2 patch: adds SMARTS-detected tag aliases from enriched v2 data",
         "generated_by": "scripts/migration/build_vocab_mapping.py",
         "new_aliases": {},
         "new_canonical_tags": {},
@@ -370,7 +370,7 @@ def main():
     print("SUMMARY")
     print("=" * 70)
     print(f"  New SMARTS tags found:        {len(all_new_tags)}")
-    print(f"  Already covered by ontology:  {len(covered)}")
+    print(f"  Already covered by vocabulary:  {len(covered)}")
     print(f"  Need alias added:             {len(needs_alias)}")
     print(f"  Completely new (unmapped):     {len(unmapped)}")
     print(f"  Old tags missing from new:    {len(old_only)}")

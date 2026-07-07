@@ -20,7 +20,7 @@ Git LFS** for immediate use after cloning (`git lfs pull`).
 | `data/pormake_bb_dictionary_v7.json` | 1.6 MB | PORMAKE building-block dictionary (nodes + edges) |
 | `data/pormake_topo_dictionary_v3.json` | 0.5 MB | PORMAKE topology dictionary |
 | `data/total_characteristics_h2_{100bar,5bar}_77K[_gperL,_mol_kg].csv` | ~7 MB (6 files) | PORMAKE-assembled H₂ markschemes (2 pressures × 3 units) |
-| `data/unified_ontology.json` | 0.03 MB | Canonical functional-group vocabulary |
+| `data/unified_vocabulary.json` | 0.03 MB | Canonical functional-group vocabulary |
 
 Approximate database scale: PORMAKE building-block design space ~14k single-node assemblies,
 hMOF ~51k structures, QMOF ~20k structures.
@@ -39,7 +39,7 @@ d0ea1ad252b222f6168a2eb3f32f570f0bf7fc87a0a8a1f065cb7ba3de9c7417  data/total_cha
 5a7a7edf63ff2af9fbe636a19e2d8a0e24ec72327275350813547dda943b8f31  data/total_characteristics_h2_5bar_77K.csv
 e19609f25eb3827837412bdbe7c43a52a2667743b91e309ce9af2b6b24d0c18f  data/total_characteristics_h2_5bar_77K_gperL.csv
 419c5d1b41003dd94b802eceed5ee2280216d7d263dc4418a98b2dc5a38dd2db  data/total_characteristics_h2_5bar_77K_mol_kg.csv
-b59176f132a1ef2073b1c23123de1d83f0289b91eae831d0bfbc9377fc6d076b  data/unified_ontology.json
+d923e38f9b9800c61b89a0b0fd49bd53f0711fe3e5146ddaed91efec02d65854  data/unified_vocabulary.json
 4469eff79bafb243a7921de8ea60ea8b0a8f9f781628910f3d28e131d1b6c9ab  core/mof2zeo/ckpt/epoch=487-step=1039440.ckpt
 ```
 

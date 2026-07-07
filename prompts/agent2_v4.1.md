@@ -54,7 +54,7 @@
 
 ## APPROVED VOCABULARY (MANDATORY UPDATE V4)
 
-**CRITICAL:** All entries **MUST** come from these lists. Free-text alternatives will cause search failures. We now use a canonical ontology. 
+**CRITICAL:** All entries **MUST** come from these lists. Free-text alternatives will cause search failures. We now use a canonical vocabulary. 
 
 ### Node Ligand Chemistry (Binding Elements)
 

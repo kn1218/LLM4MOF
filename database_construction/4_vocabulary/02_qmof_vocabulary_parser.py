@@ -1,12 +1,12 @@
 """
-qmof_ontology_parser.py  –  Dynamically builds a degenerate (multiple-inheritance) mapping
-from the QMOF-compatible Edge Ontology (V5).
+qmof_vocabulary_parser.py  –  Dynamically builds a degenerate (multiple-inheritance) mapping
+from the QMOF-compatible Edge Vocabulary (V5).
 
 It reads `0edge_hierarchy_v5.md` to map each specific functional group back to all
 its topological/compositional ancestor arrays.
 
-It also exports a SMARTS_TO_ONTOLOGY bridge dictionary to translate lowercase RDKit keys 
-into proper title-case Ontology keys.
+It also exports a SMARTS_TO_VOCABULARY bridge dictionary to translate lowercase RDKit keys 
+into proper title-case Vocabulary keys.
 """
 
 import os
@@ -15,8 +15,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 MD_PATH = BASE_DIR / "Raw data" / "pormake data rework" / "0edge_hierarchy_v5.md"
 
-def build_ontology_map(md_file: Path) -> dict:
-    ontology_map = {}
+def build_vocabulary_map(md_file: Path) -> dict:
+    vocabulary_map = {}
     
     with open(md_file, "r", encoding="utf-8") as f:
         lines = f.readlines()
@@ -46,25 +46,25 @@ def build_ontology_map(md_file: Path) -> dict:
         ancestors = {name for _, name in stack}
         
         # Degeneracy Merge: Union with existing ancestors if node already encountered
-        if node_name in ontology_map:
-            ontology_map[node_name].update(ancestors)
+        if node_name in vocabulary_map:
+            vocabulary_map[node_name].update(ancestors)
         else:
-            ontology_map[node_name] = ancestors
+            vocabulary_map[node_name] = ancestors
             
     # Convert sets to sorted lists for clean JSON export later
-    for k, v in ontology_map.items():
-        ontology_map[k] = sorted(list(v))
+    for k, v in vocabulary_map.items():
+        vocabulary_map[k] = sorted(list(v))
         
-    return ontology_map
+    return vocabulary_map
 
 
-ONTOLOGY_MAP = build_ontology_map(MD_PATH)
+VOCABULARY_MAP = build_vocabulary_map(MD_PATH)
 
 
 # ============================================================================
-# BRIDGE DICTIONARY: Translates lowercase SMARTS keys to V5 Ontology keys
+# BRIDGE DICTIONARY: Translates lowercase SMARTS keys to V5 Vocabulary keys
 # ============================================================================
-SMARTS_TO_ONTOLOGY = {
+SMARTS_TO_VOCABULARY = {
     # --- Carbon Rings ---
     "benzene": "Benzene",
     "biphenyl": "Biphenyl",

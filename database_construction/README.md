@@ -1,7 +1,7 @@
 # Database construction
 
 The pipelines that build and **LLM-enrich** the evaluation databases and the unified functional-group
-ontology that the framework screens against. The **final products** ship in [`../data/`](../data/); this folder
+vocabulary that the framework screens against. The **final products** ship in [`../data/`](../data/); this folder
 is the *provenance* — how those files were constructed — provided for transparency and reproducibility.
 
 ## Pipelines
@@ -11,7 +11,7 @@ is the *provenance* — how those files were constructed — provided for transp
 | `1_PORMAKE_pipeline/` | PORMAKE building-block metadata (XYZ → SMILES → SMARTS → LLM tags → BB dictionary) | `pormake_bb_dictionary_v7.json` |
 | `2_QMOF_pipeline/` | QMOF metal/linker enrichment + band-gap index | `qmof_index_v2.json`, `qmof.csv` |
 | `3_hMOF_pipeline/` | hMOF metal-node + LLM tag enrichment + index | `hMOF/hmof_index.json` |
-| `4_ontology/` | Unified functional-group vocabulary (consolidates the per-database tags) | `unified_ontology.json` |
+| `4_vocabulary/` | Unified functional-group vocabulary (consolidates the per-database tags) | `unified_vocabulary.json` |
 | `5_shared/` | Shared SMARTS library used across pipelines | — |
 | `6_CoRE-MOF_pipeline/` | CoRE-MOF enrichment — **additional framework tooling; not used in the paper** | (not shipped) |
 

@@ -74,7 +74,7 @@ class Matchmaker:
             print(f"CRITICAL ERROR LOADING MATCHMAKER DATA: {e}")
             raise
             
-        # Load approved vocabulary from ontology
+        # Load approved vocabulary from vocabulary
         self.approved_vocab = get_approved_vocab()
 
     def get_valid_topologies(self, available_cns: list, target_edge_cn: int = 2) -> tuple:
