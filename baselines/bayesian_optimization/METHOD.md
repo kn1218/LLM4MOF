@@ -3,11 +3,12 @@
 ## Overview
 
 This experiment implements a Bayesian Optimization (BO) baseline for iterative MOF discovery,
-following the LVGP-MOBBO framework of Iyer et al. (2023) adapted for single-objective optimization.
+following the LVGP-based Bayesian optimization of Comlek et al. (2023), building on the mixed-variable framework of Iyer et al. (2023), adapted for single-objective optimization.
 
-**Reference:**
-> Iyer, A., et al. "Data-centric mixed-variable Bayesian optimization for materials design."
-> *arXiv:2302.09184* (2023).
+**References:**
+> Comlek, Y., et al. "Rapid design of top-performing metal-organic frameworks with qualitative representations of building blocks." *npj Computational Materials* (2023).
+>
+> Iyer, A., et al. "Data-centric mixed-variable Bayesian optimization for materials design." *arXiv:2302.09184* (2023).
 
 ---
 
