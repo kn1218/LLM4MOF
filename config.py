@@ -1,5 +1,5 @@
 # =============================================================================
-# LLM4MOF Autonomous System - Configuration
+# LLM2POR Autonomous System - Configuration
 # =============================================================================
 
 import os
@@ -12,7 +12,8 @@ import os
 # To set: create a .env file in project root with:
 #   OPENAI_API_KEY=sk-proj-...
 #   GEMINI_API_KEY=AIza...
-#   LLM_PROVIDER=openai
+#   CLAUDE_API_KEY=sk-ant-...
+#   LLM_PROVIDER=openai        # openai | gemini | claude
 _DOTENV_LOADED = False
 try:
     from dotenv import load_dotenv
@@ -29,14 +30,46 @@ LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "openai")
 
 # OpenAI ChatGPT API
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
-OPENAI_MODEL = "gpt-5.2"
+# Env override lets the LLM-benchmark campaigns swap backends without editing config.
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5.2")
 
 # Google Gemini API
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GEMINI_MODEL = "gemini-3-flash-preview"  # Free tier - latest model
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3-flash-preview")
+
+# Anthropic Claude API — the cross-vendor arm of the LLM benchmark.
+# ANTHROPIC_API_KEY is the vendor's own variable name; accept either.
+CLAUDE_API_KEY = os.environ.get("CLAUDE_API_KEY", "") or os.environ.get("ANTHROPIC_API_KEY", "")
+CLAUDE_MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-5")
+
+# Second OpenAI key, so a pinned Agent 2 can run without touching the key the
+# discovery campaigns are using.
+OPENAI_API_KEY_2 = os.environ.get("OPENAI_API_KEY_2", "")
 
 # Active model name (based on provider selection)
-ACTIVE_MODEL = GEMINI_MODEL if LLM_PROVIDER == "gemini" else OPENAI_MODEL
+ACTIVE_MODEL = {"gemini": GEMINI_MODEL, "claude": CLAUDE_MODEL}.get(LLM_PROVIDER, OPENAI_MODEL)
+
+
+def agent_backend(n: int):
+    """(provider, model, api_key) for agent n.
+
+    Reads AGENT<n>_PROVIDER / AGENT<n>_MODEL / AGENT<n>_OPENAI_KEY and falls
+    back to the global provider, so nothing changes unless they are set. The
+    point is to hold Agent 2 on the published backend while Agent 1 varies:
+    only then does a benchmark arm move one variable.
+    """
+    provider = (os.environ.get(f"AGENT{n}_PROVIDER") or "").strip() or LLM_PROVIDER
+    default_model = {"gemini": GEMINI_MODEL,
+                     "claude": CLAUDE_MODEL}.get(provider, OPENAI_MODEL)
+    model = (os.environ.get(f"AGENT{n}_MODEL") or "").strip() or default_model
+    if provider == "openai":
+        slot = (os.environ.get(f"AGENT{n}_OPENAI_KEY") or "1").strip()
+        key = OPENAI_API_KEY_2 if slot == "2" else OPENAI_API_KEY
+    elif provider == "claude":
+        key = CLAUDE_API_KEY
+    else:
+        key = GEMINI_API_KEY
+    return provider, model, key
 
 # =============================================================================
 # PATH CONFIGURATION
@@ -77,23 +110,53 @@ TOPO_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_topo_dictionary_v3.json")
 TOPO_DICTIONARY_V3_PATH = TOPO_DICTIONARY_PATH
 
 # Canonical Vocabulary (source of truth for functional group synonyms)
-UNIFIED_VOCABULARY_PATH = os.path.join(DATA_DIR, "unified_vocabulary.json")
+UNIFIED_ONTOLOGY_PATH = os.path.join(DATA_DIR, "unified_ontology.json")
 
 # QMOF Databases for Band Gap
 QMOF_CSV_PATH = os.path.join(DATA_DIR, "qmof.csv")
+QMOF_TOPOLOGY_IDS_PATH = os.path.join(DATA_DIR, "qmof_ids_with_topology.txt")
 QMOF_INDEX_PATH = os.path.join(DATA_DIR, "qmof_index_v2.json")
+QMOF_JSONS_V3_DIR = os.path.join(DATA_DIR, "qmof_global_jsons_v3")
+QMOF_BB_FILTERED_PATH = os.path.join(
+    BASE_DIR,
+    "..",
+    "..",
+    "..",
+    "pormake_src",
+    "dictionary_expansion",
+    "qmofbandgap",
+    "Processed data",
+    "qmof-bb-filtered.json",
+)
 
 # hMOF Database for Gas Adsorption (H2, CH4, CO2, Xe/Kr)
 HMOF_INDEX_PATH = os.path.join(DATA_DIR, "hMOF", "hmof_index.json")
 
 # Prompt files
 PROMPTS_DIR = os.path.join(BASE_DIR, "prompts")
-# Agent 1: v3.0_production — axis-neutral / direction-symmetric universal prompt with a
-#   SOFT decoration commit (require presence or <=2, never a high hard min_group_counts).
+# Agent 1 prompt: v2.2.9.3 (production, 2026-04-21).
+# Multi-family breadth rule + evidence-based exploration + descriptor annotations.
+# PV prompts (v3.0, v3.1) archived to _archive/paper2_pv/ — Paper 2 scope.
+# Agent 1 prompt history:
+#   v2.2.9.3: production prompt (paper canonical batch baseline)
+#   v2.2.9.4: + breadth preservation rules (geometry mins, cadence) — arbitrary numbers, removed
+#   v2.2.9.5: + conditional VF for tail-optimization — removed
+#   v2.2.9.6: v2.2.9.3 + STAG fix + Metal Retention only — tested, good but Metal Retention redundant
+#   v2.2.9_clean: annotations partially removed + STAG original ("completely abandon") — Z=0 8/110
+#   v2.2.9_clean_v2_stag: = clean + STAG fix ("retain+expand") — Z=0 1/110, best cross-app median
+# Key change from v2.2.9.3: STAGNATION TRAP "completely abandon" → "retain+expand"
+#   This single wording change reduces Z=0 from 7.3% to 0.9% across 11 applications.
+#   Descriptor annotations partially removed (no "volumetric adsorption site density" hints).
+#   v3.0_production (2026-06-06): axis-neutral / direction-symmetric UNIVERSAL prompt (research v2.3.0)
+#     + SOFT decoration commit (require PRESENCE or <=2, never a high hard min_group_counts).
+#     Validated in research/top1&0.1 (4-app axis-flip vol/grav/CO2/BG; XeKr soft-count mean 74 vs hard 32).
+#     Now the production prompt. Revert: set path back to "agent1_v2.2.9_clean_v2_stag.md" (file retained).
 AGENT1_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent1_v3.0_production.md")
-# Agent 2: v4.1 — adds the PORMAKE single-building-block decomposition rule, which prevents
-#   empty matches from composite AND-conditions (e.g. ["Biphenyl","Butadiyne"]) that match
-#   zero edge building blocks, by splitting them into separate OR branches.
+# Agent 2 prompt history:
+#   v4.0: original production
+#   v4.1: + PORMAKE single-building-block decomposition rule
+#     Prevents Z=0 from composite linker AND conditions (e.g., ["Biphenyl","Butadiyne"])
+#     that match zero PORMAKE edge BBs. Decomposes into separate OR branches.
 AGENT2_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent2_v4.1.md")
 
 # Output directory
@@ -182,7 +245,8 @@ UNIT_REGISTRY: dict[str, dict[str, str]] = {
     "outputs.pbe.bandgap": {"display": "eV", "type": "energy"},
     # hMOF gas uptakes — units are PER-FIELD per Wilmer source DOIs (verified 2026-05-26
     # from hmof_raw_cache.jsonl `adsorptionUnits` field). Pipeline performs NO unit
-    # conversion (the build pipeline is pass-through).
+    # conversion (01_hmof_pipeline_v2.py:148, 02_build_hmof_index.py:94 are pass-through).
+    # See memory project-hmof-unit-truth for full audit.
     "h2_uptake_100bar_77K": {"display": "g/L", "type": "volumetric_mass"},
     "h2_uptake_2bar_77K": {"display": "g/L", "type": "volumetric_mass"},
     "ch4_uptake_35bar_298K": {"display": "cm³(STP)/cm³", "type": "volumetric"},
@@ -281,7 +345,12 @@ def get_master_db_path() -> str:
 
 
 def get_agent1_prompt_path() -> str:
-    """Return the active Agent 1 prompt path (AGENT1_PROMPT_PATH)."""
+    """Return the Agent 1 prompt path.
+
+    v2.2.9.2 (2026-04-15): Production prompt. Database/application-agnostic
+    with concrete examples and incremental constraint discipline.
+    Prior versions in prompts/_archive/ for reproducibility.
+    """
     return AGENT1_PROMPT_PATH
 
 
@@ -313,6 +382,20 @@ def validate_api_keys():
             f"GEMINI_API_KEY not set.{dotenv_hint} "
             "Add it to .env file or set as environment variable."
         )
+    if LLM_PROVIDER == "claude" and not CLAUDE_API_KEY:
+        raise ValueError(
+            f"CLAUDE_API_KEY not set.{dotenv_hint} "
+            "Add it to .env file or set as environment variable."
+        )
+    # Whatever each agent actually resolves to must have a key, or the run dies
+    # on its first call instead of here.
+    for n in (1, 2):
+        provider, model, key = agent_backend(n)
+        if not key:
+            raise ValueError(
+                f"Agent {n} resolves to provider '{provider}' (model {model}) "
+                f"but its API key is empty.{dotenv_hint}"
+            )
 
 
 # =============================================================================
@@ -340,7 +423,7 @@ AGENT2_TEMPERATURE = 0.0   # Deterministic constraint extraction (validated via 
 # -----------------------------------------------------------------------------
 # UNIVERSAL-LEVER TOGGLES (productionized research levers; default ON, reversible)
 # -----------------------------------------------------------------------------
-# Validated across the evaluation tasks (database mode, 5 replicates each). Each is firewall-clean
+# Validated in research/top1&0.1 (markscheme, 5-rep). Each is firewall-clean
 # (signals only from the agent's paid-for sampled candidates; identity-only keys;
 # facts-only memory). Set False to fall back to legacy behavior bit-for-bit.
 #   - STRATIFIED_SAMPLING: round-robin the feedback samples across the METALS present
@@ -355,15 +438,32 @@ AGENT2_TEMPERATURE = 0.0   # Deterministic constraint extraction (validated via 
 def _env_flag(name: str, default: bool) -> bool:
     """Read a boolean toggle from the environment (override), else use the default.
     Accepts 0/1/true/false/yes/no/on/off (case-insensitive). Enables ops + test control
-    without editing this file (e.g. LLM4MOF_STRATIFIED_SAMPLING=0 to disable for a run)."""
+    without editing this file (e.g. LLM2POR_STRATIFIED_SAMPLING=0 to disable for a run)."""
     v = os.environ.get(name)
     if v is None:
         return default
     return v.strip().lower() not in ("0", "false", "no", "off", "")
 
 
-STRATIFIED_SAMPLING = _env_flag("LLM4MOF_STRATIFIED_SAMPLING", True)
-USE_MEMORY_LEDGER = _env_flag("LLM4MOF_USE_MEMORY_LEDGER", True)
+STRATIFIED_SAMPLING = _env_flag("LLM2POR_STRATIFIED_SAMPLING", True)
+# Metal balancing exists so the agent's OWN chosen chemistry is not represented only by its
+# most common metal. The unconstrained beam has no chosen chemistry, so balancing it turns the
+# baseline into a diversity search rather than the random draw the paper describes it as
+# ("random baseline", "random sampling from the full design space", "random search"). On the
+# 77 K / 5 bar task a balanced beam-4 medians 196.6 against 183.1 for a uniform draw, so the
+# distinction is not cosmetic. Default False = beam 4 is a uniform draw. Set to 1 to restore
+# the pre-2026-09-02 behaviour. See research/ncomms_revision/04_reports/R7_beam4_sampling_leak.md.
+# Default 1: reproduce the published figure, whose unconstrained beam was
+# metal balanced like the other three. Set 0 for a pool-uniform baseline.
+STRATIFY_RANDOM_BEAM = _env_flag("LLM2POR_STRATIFY_RANDOM_BEAM", True)
+
+# Default 0: visit metals in first-appearance order, as the published runs
+# did. Set 1 to shuffle. Shuffling matters only where a beam's pool holds
+# more metals than there are feedback slots - then the unshuffled order
+# takes the first n metals every time, which on a target-sorted table is
+# the same n metals in every iteration of every run.
+SHUFFLE_METAL_ORDER = _env_flag("LLM2POR_SHUFFLE_METAL_ORDER", False)
+USE_MEMORY_LEDGER = _env_flag("LLM2POR_USE_MEMORY_LEDGER", True)
 
 # Geometry-ranking margin for mof2zeo preranking (LIVE only). The ranking window is
 # the agent's geometry_filter expanded by a per-descriptor margin so mof2zeo is not
@@ -375,13 +475,23 @@ USE_MEMORY_LEDGER = _env_flag("LLM4MOF_USE_MEMORY_LEDGER", True)
 # the agent's narrow window. The faithful local strict-pass-yield test ranks off > mae >
 # train_std; we deploy "mae" (a small error-sized margin) rather than "off" because live
 # PORMAKE-assembled MOFs have higher prediction error than the in-distribution valid set, so
-# keeping a small cushion is safer. Override per-run with LLM4MOF_GEOM_MARGIN_MODE=train_std
+# keeping a small cushion is safer. Override per-run with LLM2POR_GEOM_MARGIN_MODE=train_std
 # (reversible, no code edit).
-GEOM_MARGIN_MODE = os.environ.get("LLM4MOF_GEOM_MARGIN_MODE", "mae").strip().lower()
+GEOM_MARGIN_MODE = os.environ.get("LLM2POR_GEOM_MARGIN_MODE", "mae").strip().lower()
 
 # Conventional single-node single-edge scope is now BAKED INTO THE DATA: the PORMAKE markscheme
 # DBs are pre-filtered to the core/mof2zeo/data whitelist (scripts/build_canonical_db.py) and the
 # matchmaker proposes only from it — so there is no runtime on/off flag for it.
+
+
+def shuffle_metal_order() -> bool:
+    """True if the metal round-robin visits metals in random order."""
+    return SHUFFLE_METAL_ORDER
+
+
+def stratify_random_beam() -> bool:
+    """Whether metal balancing also applies to the unconstrained (random) beam."""
+    return STRATIFY_RANDOM_BEAM
 
 
 def is_stratified_sampling() -> bool:
@@ -394,7 +504,7 @@ def is_memory_ledger_enabled() -> bool:
     return USE_MEMORY_LEDGER
 
 
-# Agent 0 (the optional consultant-interview front-end) is out of scope for this release.
+# Agent 0 archived — Paper 2 scope (see _archive/paper2_agent0/)
 
 # =============================================================================
 # LLM CLIENT SETTINGS
@@ -402,7 +512,10 @@ def is_memory_ledger_enabled() -> bool:
 
 # Maximum output tokens for LLM responses
 # Agent 1 outputs ~7 rich-text JSON fields; needs enough room for verbose models
-LLM_MAX_OUTPUT_TOKENS = 32000
+# Env override: older models cap completion tokens well below this (gpt-4o
+# allows 16,384 and rejects the request outright). The largest completion
+# observed across the benchmark is 4,286 tokens, so a lower cap does not bind.
+LLM_MAX_OUTPUT_TOKENS = int(os.environ.get("LLM_MAX_OUTPUT_TOKENS", "32000"))
 
 # Retry and timeout settings for Gemini REST API
 LLM_MAX_RETRIES = 2
@@ -449,7 +562,7 @@ def is_mof2zeo_available() -> bool:
 
 
 # =============================================================================
-# LIVE SIMULATION CONFIGURATION (live-simulation pipeline as feedback source)
+# LIVE SIMULATION CONFIGURATION (Han pipeline as feedback source)
 # =============================================================================
 # These settings control the live-simulation loop (run_live_experiment.py).
 # The markscheme path (run_experiment.py) is unaffected.
@@ -476,7 +589,7 @@ LIVE_SIM_MAX_COMBOS = 5000        # Max mof2zeo prediction candidates per beam (
 LAMMPS_TOPOLOGY_BLACKLIST: set = set()
 
 LIVE_SIM_RASPA_CYCLES = 5000       # Production: 5k cycles (reduced for speed; 5bar converges fast)
-LIVE_SIM_RASPA_INIT_CYCLES = 5000  # Production: 5k init cycles (production default)
+LIVE_SIM_RASPA_INIT_CYCLES = 5000  # Production: 5k init cycles (Han's default)
 LIVE_SIM_RASPA_TEMPERATURE = 77.0  # K (hydrogen storage standard)
 LIVE_SIM_RASPA_PRESSURE = 10000000.0  # Pa (~100 bar)
 
@@ -486,44 +599,162 @@ LIVE_SIM_XE_MOLFRAC = 0.20   # Xe mole fraction for xekr mixture (Kr = 1 - xe_mo
 
 # Per-adsorbate simulation defaults — used by run_mof_sim.py and live_runner.py.
 # Mirrors ADSORBATE_CONFIGS in core/simulation/gcmc/run_raspa.py; keep in sync.
+# Declarative adsorbate registry — adding a new adsorbate must never require a
+# new `if adsorbate == "..."` branch anywhere in the pipeline.
+#
+#   components          : [[name, molfrac], ...] for mixtures; None for single-component
+#   objective           : "uptake" | "selectivity" — drives result parsing and feedback
+#   selectivity_pair    : (numerator, denominator) component names when objective=selectivity
+#   rotation_probability: RASPA move probability; 0.0 for spherical/linear-as-sphere
+#   sanity_max_g_L      : physical upper bound for the loading gate; None disables it
+#   mw_g_mol            : float for single-component, {name: mw} for mixtures
 LIVE_SIM_ADSORBATE_CONFIGS: dict = {
     "h2": {
         "forcefield": "UFF_H2",
         "molecule": "hydrogen",
+        "components": None,
+        "objective": "uptake",
+        "selectivity_pair": None,
         "temperature": 77.0,
         "pressure": 10000000.0,   # 100 bar
         "charge_method": "None",
+        "rotation_probability": 0.0,
+        "sanity_max_g_L": 71.0,   # liquid H2 at 20 K
         "mw_g_mol": 2.016,
         "xe_molfrac": None,
     },
     "ch4": {
         "forcefield": "UFF",
         "molecule": "CH4",
+        "components": None,
+        "objective": "uptake",
+        "selectivity_pair": None,
         "temperature": 298.0,
         "pressure": 250000.0,     # 2.5 bar
         "charge_method": "None",
+        "rotation_probability": 0.0,
+        "sanity_max_g_L": None,
         "mw_g_mol": 16.043,
         "xe_molfrac": None,
     },
     "co2": {
         "forcefield": "UFF",
         "molecule": "CO2",
+        "components": None,
+        "objective": "uptake",
+        "selectivity_pair": None,
         "temperature": 298.0,
         "pressure": 250000.0,     # 2.5 bar
         "charge_method": "Ewald",
+        "rotation_probability": 1.0,
+        "sanity_max_g_L": None,
         "mw_g_mol": 44.010,
         "xe_molfrac": None,
     },
     "xekr": {
         "forcefield": "UFF_XeKr",
         "molecule": None,         # 2-component mixture
+        "components": [["Xe", 0.20], ["Kr", 0.80]],
+        "objective": "selectivity",
+        "selectivity_pair": ("Xe", "Kr"),
         "temperature": 273.0,
         "pressure": 100000.0,     # 1 bar
         "charge_method": "None",
-        "mw_g_mol": None,         # xe_mw=131.29, kr_mw=83.798 handled separately
+        "rotation_probability": 0.0,
+        "sanity_max_g_L": None,
+        "mw_g_mol": {"Xe": 131.29, "Kr": 83.798},
         "xe_molfrac": 0.20,       # Xe 20% / Kr 80%
     },
+    # SF6 capture. Single-component uptake (objective = "uptake"), reported in
+    # mol/kg so the value is directly comparable to the experimental literature,
+    # which tabulates SF6 capacity as mmol/g at 298 K, 1 bar (e.g. MARJAQ 8.27,
+    # Mg-MOF-74 6.42, UiO-67 4.02, Al(fum) 3.79, GNU-3a 2.63, UiO-66-Br2 0.93).
+    # Run this adsorbate with --pormake-unit molkg.
+    #
+    # Chargeless by design: SF6 is Oh-symmetric, so dipole AND quadrupole vanish
+    # and the leading electrostatic moment is the hexadecapole. Against the
+    # chargeless framework used for every other adsorbate here, the Coulomb term
+    # contributes nothing, so Ewald would cost time and change no number.
+    # There is no high-throughput hypothetical-MOF database for SF6, which is the
+    # point: this domain cannot be answered from memorised database values.
+    "sf6": {
+        "forcefield": "DellisSamios_SF6",
+        "molecule": "SF6",
+        "components": None,
+        "objective": "uptake",
+        "selectivity_pair": None,
+        "temperature": 298.0,
+        "pressure": 100000.0,     # 1 bar
+        "charge_method": "None",
+        "rotation_probability": 1.0,   # 7-site rigid octahedron
+        "sanity_max_g_L": 1880.0,      # liquid SF6 density; adsorbed phase cannot exceed it
+        "mw_g_mol": 146.05,
+        "xe_molfrac": None,
+    },
+    # Olefin/paraffin separation. TraPPE-UA is chargeless, so Ewald is a no-op
+    # here — charge_method stays "None" by design, matching the MOF screening
+    # literature protocol (TraPPE-UA + UFF framework, Lorentz-Berthelot, 298 K,
+    # 1 bar, 50:50).
+    #
+    # DIRECTION: we optimise ETHANE-selectivity, S = C2H6/C2H4, not the reverse.
+    # In a chargeless united-atom model ethane is strictly the stronger adsorbate
+    # (sum eps/kB = 196 K vs 170 K for ethylene), so S(C2H4/C2H6) would sit below
+    # 1 for essentially every framework and the search would fight the model's own
+    # physics. Ethylene-selectivity in real MOFs comes largely from pi-complexation
+    # at open metal sites, an orbital interaction no classical force field captures.
+    # Ethane-selectivity, by contrast, is governed by dispersion and pore shape —
+    # exactly what this force field describes — and is the industrially prized
+    # regime (ethane-selective adsorbents yield polymer-grade ethylene in one step).
+    "c2": {
+        "forcefield": "TraPPE_C2",
+        "molecule": None,         # 2-component mixture
+        "components": [["C2H6", 0.50], ["C2H4", 0.50]],
+        "objective": "selectivity",
+        "selectivity_pair": ("C2H6", "C2H4"),
+        "temperature": 298.0,
+        "pressure": 100000.0,     # 1 bar
+        "charge_method": "None",
+        "rotation_probability": 1.0,   # 2-site linear molecules
+        "sanity_max_g_L": None,
+        "mw_g_mol": {"C2H4": 28.054, "C2H6": 30.070},
+        "xe_molfrac": None,
+    },
 }
+
+
+def _assert_selectivity_labels_match_components() -> None:
+    """A selectivity task's LABEL must name the same ratio the code COMPUTES.
+
+    The reported value is built from the components ORDER:
+        (name_a, _), (name_b, _) = components[0], components[1]
+        selectivity = (mol_kg_a / mol_kg_b) / (frac_a / frac_b)
+    `selectivity_pair` never enters that arithmetic - it only supplies the text
+    the agent reads. So if the two disagree, the agent is told it is maximising
+    one ratio while being rewarded for its inverse, and nothing anywhere fails.
+    """
+    for name, cfg in LIVE_SIM_ADSORBATE_CONFIGS.items():
+        if cfg.get("objective") != "selectivity":
+            continue
+        comps = [c[0] for c in (cfg.get("components") or [])]
+        pair = list(cfg.get("selectivity_pair") or [])
+        if len(comps) != 2 or len(pair) != 2:
+            raise ValueError(
+                f"adsorbate '{name}': a selectivity task needs exactly two "
+                f"components and a two-name selectivity_pair "
+                f"(got components={comps}, selectivity_pair={pair})"
+            )
+        if comps != pair:
+            raise ValueError(
+                f"adsorbate '{name}': selectivity_pair {tuple(pair)} does not "
+                f"match the components order {tuple(comps)}. The number that is "
+                f"computed and fed back is {comps[0]}/{comps[1]}; the label would "
+                f"claim {pair[0]}/{pair[1]}. Fix one of them - and decide which "
+                f"by asking which ratio the force field can actually express, "
+                f"not which one is more interesting."
+            )
+
+
+_assert_selectivity_labels_match_components()
 
 LIVE_SIM_SKIP_LAMMPS = False       # LAMMPS enabled on HPC; local smoke tests override
 LIVE_SIM_LAMMPS_TIMEOUT = 900      # 15 min cap per MOF
@@ -535,17 +766,17 @@ LIVE_SIM_CACHE_DIR = os.path.join(BASE_DIR, "experiments")
 
 LIVE_SIM_MAX_ITERATIONS = 10       # 10 iterations for production run
 
-# HPC Configuration (PBS/Torque cluster — adapt these to your own environment)
-HPC_HOST = "my-hpc"                 # SSH host alias (define it in ~/.ssh/config)
-HPC_BASE_DIR = "~/llm4mof"          # Base directory on HPC
-HPC_NODE_PROPERTY = "ac"            # optional PBS node property (cluster-specific)
-HPC_SUBMIT_SCRIPT = "submit_iteration.sh"  # submit script on HPC (packed variant: submit_iteration_packed.sh)
-HPC_SUBMIT_CMD = "qsub"             # batch submit command (set to your scheduler's)
-HPC_STATUS_CMD = "qstat"            # job-status command (set to your scheduler's)
+# HPC Configuration (defaults; override per site)
+HPC_HOST = "hpc"                      # SSH hostname (must be in ~/.ssh/config)
+HPC_BASE_DIR = "~/llm2por"          # Base directory on HPC
+HPC_NODE_PROPERTY = "ac"            # PBS node property for qsub
+HPC_SUBMIT_SCRIPT = "submit_iteration.sh"  # Submit script name on HPC
 HPC_POLL_INTERVAL = 300             # 5 minutes between SSH polls
 HPC_POLL_MAX_HOURS = 24             # Give up polling after this many hours
-HPC_SSH_RETRIES = 10                # Retry SSH on connection failure
-HPC_SSH_RETRY_DELAYS = [30, 60, 120, 120, 120, 120, 120, 120, 120]  # Backoff (seconds)
+HPC_SSH_RETRIES = 3                 # Cluster rule: at most 3, and only on rc=255
+                                    # (connection failure). Submission is NOT
+                                    # idempotent - retrying a timeout double-submits.
+HPC_SSH_RETRY_DELAYS = [30, 60, 120]  # Backoff (seconds)
 
 
 # =============================================================================

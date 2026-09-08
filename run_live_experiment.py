@@ -1,18 +1,19 @@
 # =============================================================================
-# LLM4MOF Autonomous System v3 - Live Simulation Entry Point
+# LLM2POR Autonomous System v3 - Live Simulation Entry Point
 # =============================================================================
 # run_live_experiment.py
 # Mirrors run_experiment.py but replaces the markscheme/sensitivity-analyzer
 # path with real PORMAKE → LAMMPS → RASPA3 simulations.
 #
 # Usage:
-#   conda activate <your-env>
+#   conda activate llm2auto
 #   python run_live_experiment.py
 #   python run_live_experiment.py --resume <runid>
 #   python run_live_experiment.py --smoke   (1/beam, 200 cycles, quick validation)
 # =============================================================================
 
 import os
+import posixpath
 import sys
 import datetime
 import json
@@ -54,7 +55,7 @@ from core.hpc.collect_results import collect_results
 def print_banner(smoke: bool = False) -> None:
     mode_label = "SMOKE TEST" if smoke else "LIVE SIMULATION"
     print("\n" + "=" * 60)
-    print(f"   LLM4MOF AUTONOMOUS MOF DESIGNER v3 — {mode_label}")
+    print(f"   LLM2POR AUTONOMOUS MOF DESIGNER v3 — {mode_label}")
     print(f"   Model: {ACTIVE_MODEL}")
     print(f"   Beams: {config.LIVE_SIM_N_BEAMS} × "
           f"{config.LIVE_SIM_N_PER_BEAM} successes/beam")
@@ -67,7 +68,7 @@ def print_banner(smoke: bool = False) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="LLM4MOF Live Simulation Experiment"
+        description="LLM2POR Live Simulation Experiment"
     )
     parser.add_argument(
         "--resume", type=str, default=None,
@@ -99,7 +100,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--adsorbate", type=str, default="h2",
-        choices=["h2", "ch4", "co2", "xekr"],
+        choices=sorted(config.LIVE_SIM_ADSORBATE_CONFIGS.keys()),
         help="Adsorbate type (default: h2). Sets T/P/forcefield/ChargeMethod from LIVE_SIM_ADSORBATE_CONFIGS.",
     )
     parser.add_argument(
@@ -125,21 +126,26 @@ def parse_args() -> argparse.Namespace:
              "Used to avoid leaking 'gravimetric'/'mol/kg' in the inquiry.",
     )
     parser.add_argument(
-        "--packed", action="store_true",
-        help="Use the packed submit variant (multiple jobs per submission).",
-    )
-    parser.add_argument(
         "--server", type=str, default=None,
         help="Override HPC server hostname (default: config.HPC_HOST).",
     )
     parser.add_argument(
         "--node-prop", type=str, default=None, dest="node_prop",
-        help="Override PBS node property (default: config.HPC_NODE_PROPERTY).",
+        help="Override PBS node property (default: config.HPC_NODE_PROPERTY). "
+             "Cluster-specific PBS node property.",
     )
     parser.add_argument(
-        "--job-prefix", type=str, default="llm4mof", dest="job_prefix",
+        "--exp-suffix", type=str, default=None, dest="exp_suffix",
+        help="Suffix appended to the experiment directory name "
+             "(exp_<ts>_live_<suffix>). Two things need this: it records WHICH "
+             "adsorbate/task a run was, and it prevents two concurrently launched "
+             "runs from colliding - the timestamp is only minute-resolution, so "
+             "parallel chains started in the same minute would share one directory.",
+    )
+    parser.add_argument(
+        "--job-prefix", type=str, default="llm2por", dest="job_prefix",
         help="PBS job name prefix for queue isolation when running parallel experiments. "
-             "Default 'llm4mof' preserves existing behavior. E.g., --job-prefix xekr.",
+             "Default 'llm2por' preserves existing behavior. E.g., --job-prefix xekr.",
     )
     parser.set_defaults(zeo=True)
     return parser.parse_args()
@@ -149,12 +155,23 @@ def parse_args() -> argparse.Namespace:
 # HPC SSH helpers
 # ---------------------------------------------------------------------------
 
-def _ssh_run(cmd: str, check: bool = True, timeout: int = 120) -> subprocess.CompletedProcess:
+def _ssh_run(cmd: str, check: bool = True, timeout: int = 120,
+             idempotent: bool = True) -> subprocess.CompletedProcess:
     """
     Run a command on HPC via SSH with retry logic.
 
     Uses config.HPC_HOST and retries on connection failure with
     exponential backoff (config.HPC_SSH_RETRY_DELAYS).
+
+    idempotent=False marks a command that MUST NOT be re-run blindly — job
+    submission above all. A timeout means the command may already have
+    executed: on 2026-08-26 a submission that had in fact queued 190 jobs
+    returned late, the retry re-submitted all of them, and duplicate jobs
+    raced on the same output directories. Cluster rule: retry only on
+    rc=255 (connection failure), never on a timeout, because submission and
+    execution are not idempotent. On timeout such a command is therefore NOT
+    retried; control returns to the caller so the poller — which reads real
+    DONE markers and the real queue — adjudicates what actually happened.
     """
     # Prepend PBS bin to PATH for non-interactive SSH sessions
     full_cmd = f"export PATH=/usr/local/pbs/bin:$PATH; {cmd}"
@@ -175,6 +192,15 @@ def _ssh_run(cmd: str, check: bool = True, timeout: int = 120) -> subprocess.Com
             print(f"   [SSH] Connection error (attempt {attempt + 1}/"
                   f"{config.HPC_SSH_RETRIES}): {result.stderr.strip()[:100]}")
         except subprocess.TimeoutExpired:
+            if not idempotent:
+                print(f"   [SSH SUBMIT TIMEOUT] command did not return within {timeout}s "
+                      f"and is NOT retried (re-running it would duplicate jobs). "
+                      f"It may well have succeeded — the queue and DONE markers decide.",
+                      flush=True)
+                return subprocess.CompletedProcess(
+                    ssh_cmd, returncode=0,
+                    stdout="[SSH SUBMIT TIMEOUT] no output captured; proceeding to poll",
+                    stderr="")
             print(f"   [SSH] Timeout (attempt {attempt + 1}/{config.HPC_SSH_RETRIES})")
 
         if attempt < config.HPC_SSH_RETRIES - 1:
@@ -236,6 +262,14 @@ _compute_geometry_match_score = compute_geometry_match_score
 
 _PACMAN_BUFFER_SIZE = 15      # candidates per beam through local GPU charge stage
 _PACMAN_TIMEOUT_S = 300       # per-structure timeout (seconds)
+# PACMAN is the rate-limiting step for a charged campaign: measured 56.7 s median
+# per structure on CPU (torch.cuda.is_available() is False here despite the
+# "local GPU" naming), and a charged iteration charges 60 structures. Serial that
+# is ~54 min per iteration, ~9 h per replicate, which would dominate the GCMC it
+# feeds. Workers are capped well below the core count because each one still uses
+# a couple of BLAS threads. Set to 1 to fall back to the serial path.
+_PACMAN_WORKERS = max(1, min(6, (os.cpu_count() or 4) // 3))
+from _pacman_worker import charge_one as _pacman_charge_one
 
 
 def run_local_charge_stage(
@@ -270,9 +304,19 @@ def run_local_charge_stage(
 
     try:
         from PACMANCharge import pmcharge
-    except ImportError:
-        print("[CHARGE] PACMAN-charge not installed locally; skipping charge stage")
-        return z_stage2_jobs, af_total_stage2_jobs
+    except ImportError as exc:
+        # Reached only when charge_method != "None", i.e. this adsorbate's
+        # physics DEPENDS on framework charges. Continuing without them hands
+        # RASPA a zero-charge framework while still asking for Ewald: the run
+        # completes, the numbers look reasonable, and the electrostatics the
+        # experiment is about are simply absent. For N2/CH4 that is the entire
+        # discrimination mechanism. Silently proceeding is never correct here.
+        raise RuntimeError(
+            "PACMAN-charge is not importable, but this adsorbate needs framework "
+            "charges (charge_method != 'None'). Refusing to run: the simulation "
+            "would silently drop all electrostatics. Install it into the env that "
+            "runs run_live_experiment.py:  pip install PACMAN-charge"
+        ) from exc
 
     def _run_pacman(local_cif: str) -> str | None:
         """Run PACMAN on *local_cif* with timeout; return path to _pacman.cif or None."""
@@ -305,8 +349,75 @@ def run_local_charge_stage(
             return None
         return pacman_out
 
+
+    def _charge_jobs_parallel(jobs: list) -> list:
+        """Same contract as _charge_jobs, with the PACMAN calls in a process pool."""
+        from concurrent.futures import ProcessPoolExecutor
+
+        staged = []
+        for job in jobs:
+            hpc_cif = job.get("cif_path")
+            if not hpc_cif:
+                print(f"   [CHARGE] No cif_path for {job.get('filename')}; skipping")
+                continue
+            local_cif = os.path.join(charge_tmp, os.path.basename(hpc_cif))
+            try:
+                _scp_download(hpc_cif, local_cif)
+            except Exception as exc:
+                print(f"   [CHARGE] SCP download failed for {os.path.basename(hpc_cif)}: {exc}")
+                continue
+            staged.append((job, local_cif, posixpath.dirname(hpc_cif)))
+
+        if not staged:
+            return []
+
+        t0 = time.time()
+        results = {}
+        with ProcessPoolExecutor(max_workers=_PACMAN_WORKERS) as ex:
+            futs = {ex.submit(_pacman_charge_one, lc, _PACMAN_TIMEOUT_S): i
+                    for i, (_, lc, _d) in enumerate(staged)}
+            for fut in futs:
+                pass
+            for fut, i in futs.items():
+                try:
+                    results[i] = fut.result()
+                except Exception as exc:                      # worker died
+                    results[i] = {"ok": False, "out": None, "elapsed": 0.0,
+                                  "error": f"worker failed: {str(exc)[:120]}"}
+        wall = time.time() - t0
+
+        charged = []
+        for i, (job, local_cif, hpc_dir) in enumerate(staged):
+            r = results.get(i, {"ok": False, "error": "no result"})
+            name = job.get("filename")
+            if not r.get("ok"):
+                print(f"   [CHARGE] {name}: skipped ({r.get('error')})")
+                continue
+            print(f"   [CHARGE] {name}: ok ({r.get('elapsed', 0.0):.1f}s)")
+            hpc_pacman_cif = posixpath.join(hpc_dir, os.path.basename(r["out"]))
+            try:
+                _scp_upload(r["out"], hpc_pacman_cif)
+            except Exception as exc:
+                print(f"   [CHARGE] SCP upload failed for {name}: {exc}")
+                continue
+            updated = dict(job)
+            updated["cif_path"] = hpc_pacman_cif
+            charged.append(updated)
+
+        print(f"   [CHARGE] pool: {len(charged)}/{len(staged)} in {wall:.0f}s wall "
+              f"({_PACMAN_WORKERS} workers)")
+        return charged
+
     def _charge_jobs(jobs: list) -> list:
-        """Run PACMAN on each job; return list of successfully charged jobs (cif_path updated)."""
+        """Run PACMAN on each job; return list of successfully charged jobs (cif_path updated).
+
+        Three phases so the expensive one can be parallel: download every CIF,
+        charge them in a process pool, upload the successes. Order of the
+        returned list follows the input, not completion, so a rerun produces the
+        same beam composition.
+        """
+        if _PACMAN_WORKERS > 1:
+            return _charge_jobs_parallel(jobs)
         charged = []
         for job in jobs:
             hpc_cif = job.get("cif_path")
@@ -336,8 +447,14 @@ def run_local_charge_stage(
 
             print(f"ok ({elapsed:.1f}s)")
 
-            # Upload _pacman.cif back to HPC (same directory as original CIF)
-            hpc_pacman_cif = os.path.join(hpc_cif_dir, os.path.basename(pacman_cif))
+            # Upload _pacman.cif back to HPC (same directory as original CIF).
+            # posixpath, NOT os.path: this path is consumed on Linux, and
+            # os.path.join on Windows produced ".../optimized_cifs\name_pacman.cif".
+            # A backslash is a legal filename character on Linux, so the file was
+            # created with the backslash IN ITS NAME and Path(...).stem on the HPC
+            # then yielded "optimized_cifs\name_pacman" as the RASPA framework
+            # name. It happened to work; it is not something to leave in place.
+            hpc_pacman_cif = posixpath.join(hpc_cif_dir, os.path.basename(pacman_cif))
             try:
                 _scp_upload(pacman_cif, hpc_pacman_cif)
             except Exception as exc:
@@ -475,7 +592,7 @@ def _hpc_poll(
     results_remote_dir: str,
     n_jobs: int,
     beam_filenames: dict,
-    job_prefix: str = "llm4mof",
+    job_prefix: str = "llm2por",
 ) -> int:
     """
     Poll HPC via SSH until all .DONE files appear or per-beam sufficiency is met.
@@ -493,8 +610,25 @@ def _hpc_poll(
     max_polls = int(config.HPC_POLL_MAX_HOURS * 3600 / config.HPC_POLL_INTERVAL)
     n_done = 0
     _stale_count = 0           # consecutive polls where queue_empty=True and n_done unchanged
-    _STALE_THRESHOLD = 3       # trigger resubmit after this many stale polls
-    _MAX_RESUBMIT = 2          # max resubmit attempts per polling session
+    # RESUBMIT DISABLED, 2026-09-04.
+    #
+    # The cluster admins traced the anode failures to concentrated job
+    # start/stop/REQUEUE activity confusing pbs_mom's state tracking until
+    # Torque 4.2.10 segfaults. This block was our requeue source: on a stale
+    # poll it re-fired a batch of qsub scripts through qas in one go - a burst
+    # of state changes at exactly the moment the queue was already unhealthy,
+    # which is the worst possible time to add any.
+    #
+    # What we lose is small. A beam needs LIVE_SIM_N_PER_BEAM results and the
+    # two-stage design over-provisions well past that, so lost jobs are normally
+    # absorbed. If an iteration really cannot fill a beam it aborts and the
+    # replicate does an extra iteration, because only iterations that produced
+    # RASPA results count against the budget.
+    #
+    # Set to a positive number ONLY if the admins confirm the requeue mechanism
+    # is no longer a hazard.
+    _STALE_THRESHOLD = 3       # polls with an empty queue and no progress before giving up
+    _MAX_RESUBMIT = 0          # 0 = never resubmit
     _resubmit_count = 0
 
     for poll in range(1, max_polls + 1):
@@ -504,6 +638,11 @@ def _hpc_poll(
             f"ls {results_remote_dir}/*.DONE 2>/dev/null | xargs -I{{}} basename {{}} .DONE",
             check=False,
         )
+        # A failed SSH and "no jobs finished yet" both arrive here as empty stdout.
+        # Say which one it was, or a dead connection looks like zero progress forever.
+        if done_result.returncode != 0:
+            print(f"   [HPC Poll WARNING] DONE-check SSH failed rc={done_result.returncode}: "
+                  f"{(done_result.stderr or '').strip()[:160]}", flush=True)
         done_set = set(done_result.stdout.strip().split("\n")) if done_result.stdout.strip() else set()
         prev_n_done = n_done
         n_done = len(done_set)
@@ -517,13 +656,17 @@ def _hpc_poll(
 
         queue_empty = False
         q_result = _ssh_run(
-            f"{config.HPC_STATUS_CMD} 2>/dev/null | grep {job_prefix} | wc -l",
+            f"(myqstat 2>/dev/null; myqinfo 2>/dev/null) | grep {job_prefix} | wc -l",
             check=False,
         )
         try:
             queue_empty = int(q_result.stdout.strip()) == 0
         except ValueError:
+            # Same trap: an unparseable (usually empty) reply is an SSH failure,
+            # not a busy queue. Treat it as busy but SAY so.
             queue_empty = False
+            print(f"   [HPC Poll WARNING] queue-check SSH gave no number "
+                  f"(rc={q_result.returncode}): {(q_result.stderr or '').strip()[:160]}", flush=True)
 
         # Stale detection: queue empty and no new DONE files
         if queue_empty and n_done == prev_n_done:
@@ -563,9 +706,9 @@ def _hpc_poll(
                     scripts_str = " ".join(scripts)
                     _resubmit_count += 1
                     print(f"[HPC] Stale detected: resubmitting {len(scripts)} qsub scripts "
-                          f"for {len(missing)} missing jobs "
+                          f"for {len(missing)} missing jobs via qas "
                           f"(attempt {_resubmit_count}/{_MAX_RESUBMIT})...", flush=True)
-                    _ssh_run(f"cd {hpc_iter_dir} && {config.HPC_SUBMIT_CMD} {scripts_str}", check=False)
+                    _ssh_run(f"cd {hpc_iter_dir} && qas {scripts_str}", check=False, idempotent=False)
                     _stale_count = 0
                     continue
 
@@ -633,7 +776,7 @@ def _hpc_simulate_two_stage(
     hpc_remote_scripts: str,
     zeo_flag: str,
     ads_flag: str = "",
-    job_prefix: str = "llm4mof",
+    job_prefix: str = "llm2por",
 ) -> "LiveResults":
     """
     Two-stage HPC pipeline (--zeo mode):
@@ -690,7 +833,7 @@ def _hpc_simulate_two_stage(
     r1_submit = _ssh_run(
         f"cd {hpc_iter_dir} && JOB_PREFIX={job_prefix} bash {hpc_remote_scripts}/{config.HPC_SUBMIT_SCRIPT} "
         f"batch_manifest_r1.json results_r1 {config.HPC_NODE_PROPERTY}{zeo_flag}{ads_flag}",
-        timeout=600,
+        timeout=1200, idempotent=False,
     )
     print(f"[HPC] R1 submit: {(r1_submit.stdout or '').strip()[-200:]}")
     if r1_submit.returncode != 0:
@@ -890,7 +1033,7 @@ def _hpc_simulate_two_stage(
     r2_submit = _ssh_run(
         f"cd {hpc_iter_dir} && JOB_PREFIX={job_prefix} bash {hpc_remote_scripts}/{config.HPC_SUBMIT_SCRIPT} "
         f"batch_manifest.json results {config.HPC_NODE_PROPERTY}{zeo_flag}{ads_flag}",
-        timeout=600,
+        timeout=1200, idempotent=False,
     )
     print(f"[HPC] R2 submit: {(r2_submit.stdout or '').strip()[-200:]}")
     if r2_submit.returncode != 0:
@@ -933,7 +1076,7 @@ def _hpc_simulate_single(
     hpc_remote_scripts: str = None,
     zeo_flag: str = "",
     ads_flag: str = "",
-    job_prefix: str = "llm4mof",
+    job_prefix: str = "llm2por",
 ) -> "LiveResults":
     """Single-stage HPC pipeline (standard flow). Used internally by _hpc_simulate()."""
     from collections import defaultdict
@@ -967,7 +1110,7 @@ def _hpc_simulate_single(
     submit_result = _ssh_run(
         f"cd {hpc_iter_dir} && JOB_PREFIX={job_prefix} bash {hpc_remote_scripts}/{config.HPC_SUBMIT_SCRIPT} "
         f"batch_manifest.json results {config.HPC_NODE_PROPERTY}{zeo_flag}{ads_flag}",
-        timeout=600,
+        timeout=1200, idempotent=False,
     )
     print(f"[HPC] Submit output: {(submit_result.stdout or '').strip()[-200:]}")
     if submit_result.returncode != 0:
@@ -1012,7 +1155,7 @@ def _hpc_simulate(
     sim_cache,
     use_zeo: bool = False,
     geometry_filter: dict = None,
-    job_prefix: str = "llm4mof",
+    job_prefix: str = "llm2por",
 ) -> "LiveResults":
     """
     Run one iteration's simulations on HPC via SSH polling.
@@ -1042,7 +1185,7 @@ def _hpc_simulate(
     hpc_scripts_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hpc")
     hpc_remote_scripts = f"{hpc_base}/hpc"
     _ssh_run(f"mkdir -p {hpc_remote_scripts}")
-    for script in ["run_mof_sim.py", "submit_iteration.sh", "submit_iteration_packed.sh", "aggregate_results.py"]:
+    for script in ["run_mof_sim.py", "submit_iteration.sh", "aggregate_results.py"]:
         script_path = os.path.join(hpc_scripts_dir, script)
         if os.path.exists(script_path):
             _scp_upload(script_path, f"{hpc_remote_scripts}/{script}")
@@ -1087,10 +1230,15 @@ def _hpc_simulate(
                 raise RuntimeError("Zeo++ binary not available on HPC or locally")
 
     _ads = getattr(config, "LIVE_SIM_ADSORBATE", "h2")
-    _xe_molfrac = getattr(config, "LIVE_SIM_XE_MOLFRAC", 0.20)
+    _ads_cfg = config.LIVE_SIM_ADSORBATE_CONFIGS.get(_ads, {})
     _temp = config.LIVE_SIM_RASPA_TEMPERATURE
     _pres_bar = config.LIVE_SIM_RASPA_PRESSURE / 1e5
-    ads_flag = f" --adsorbate {_ads} --xe-molfrac {_xe_molfrac} --temperature {_temp} --pressure {_pres_bar}"
+    ads_flag = f" --adsorbate {_ads} --temperature {_temp} --pressure {_pres_bar}"
+    # Mole-fraction override only applies to mixtures that declare one
+    # (Xe/Kr); others keep the fractions from LIVE_SIM_ADSORBATE_CONFIGS.
+    if _ads_cfg.get("xe_molfrac") is not None:
+        _molfrac0 = getattr(config, "LIVE_SIM_XE_MOLFRAC", _ads_cfg["xe_molfrac"])
+        ads_flag += f" --molfrac0 {_molfrac0}"
 
     # Dispatch: two-stage (all beams R1=stage1, R2=RASPA) when --zeo is enabled
     use_two_stage = use_zeo
@@ -1133,10 +1281,6 @@ def run_live_experiment() -> None:
     # Mark live sim mode so feedback_generator uses nlargest (not random sample)
     config._LIVE_SIM_ACTIVE = True
 
-    # --- packed submit override (multiple jobs per submission) ---
-    if args.packed:
-        config.HPC_SUBMIT_SCRIPT = "submit_iteration_packed.sh"
-        print("[System] HPC submit mode: packed (multiple jobs per submission)")
 
     # --- Smoke test overrides ---
     if args.smoke:
@@ -1164,8 +1308,10 @@ def run_live_experiment() -> None:
         print(f"[System] Adsorbate: {args.adsorbate.upper()} "
               f"(T={ads_cfg['temperature']}K, P={ads_cfg['pressure']/1e5:.2f} bar, "
               f"ChargeMethod={ads_cfg['charge_method']})")
-        if args.adsorbate == "xekr":
-            print(f"[System] Xe/Kr mole fractions: Xe={args.xe_molfrac:.2f}, Kr={1-args.xe_molfrac:.2f}")
+        _comps = ads_cfg.get("components")
+        if _comps:
+            print("[System] mole fractions: "
+                  + ", ".join(f"{n}={f:.2f}" for n, f in _comps))
 
     if args.server:
         config.HPC_HOST = args.server
@@ -1223,16 +1369,26 @@ def run_live_experiment() -> None:
     # Live mode supports H2 via RASPA3 GCMC. RASPA3 natively outputs mol/kg;
     # feedback_live_adapter converts to the active unit based on config flags.
     config.ACTIVE_METRIC_COLUMN = "target"
-    _ads_display = {
-        "h2": "H2 Uptake", "ch4": "CH4 Uptake", "co2": "CO2 Uptake", "xekr": "Xe/Kr Selectivity",
-    }
+    # Metric display name is DERIVED from the adsorbate config, not hardcoded:
+    # a new adsorbate must never need an entry added here. The derivation
+    # reproduces the published labels exactly — h2/ch4/co2 -> "<KEY> Uptake",
+    # xekr -> "Xe/Kr Selectivity" — so existing campaigns stay comparable.
+    # (Do not derive the uptake name from ads_cfg["molecule"]: h2's molecule is
+    # "hydrogen", which would silently rename the published H2 label.)
+    _ads_cfg_disp = config.LIVE_SIM_ADSORBATE_CONFIGS.get(args.adsorbate, {})
+    if _ads_cfg_disp.get("objective") == "selectivity":
+        _pair_disp = _ads_cfg_disp.get("selectivity_pair")
+        _ads_display_name = (f"{_pair_disp[0]}/{_pair_disp[1]} Selectivity"
+                             if _pair_disp else f"{args.adsorbate.upper()} Selectivity")
+    else:
+        _ads_display_name = f"{args.adsorbate.upper()} Uptake"
     inquiry_lower = user_inquiry.lower()
 
     # Build metric label from actual adsorbate T/P (already applied to config above)
     _temp_k = int(config.LIVE_SIM_RASPA_TEMPERATURE)
     _pres_bar_display = config.LIVE_SIM_RASPA_PRESSURE / 1e5
     _pres_label = f"{int(_pres_bar_display)}bar" if _pres_bar_display == int(_pres_bar_display) else f"{_pres_bar_display:.1f}bar"
-    active_metric_name = f"{_ads_display.get(args.adsorbate, 'Uptake')} ({_pres_label} {_temp_k}K)"
+    active_metric_name = f"{_ads_display_name} ({_pres_label} {_temp_k}K)"
 
     # H2 only: activate 5bar PorMake CSV (word-boundary match avoids "35 bar", "2.5 bar" false positives)
     if args.adsorbate == "h2":
@@ -1272,7 +1428,7 @@ def run_live_experiment() -> None:
     # match markscheme behaviour. Without this guard, get_active_unit() returns
     # the PorMake unit (g/L or cm³(STP)/cm³) and is blindly appended, producing
     # the nonsensical label "Xe/Kr Selectivity (...) (cm³(STP)/cm³)".
-    if args.adsorbate == "xekr":
+    if config.LIVE_SIM_ADSORBATE_CONFIGS.get(args.adsorbate, {}).get("objective") == "selectivity":
         if "(dimensionless)" not in active_metric_name:
             active_metric_name = f"{active_metric_name} (dimensionless)"
     else:
@@ -1317,10 +1473,18 @@ def run_live_experiment() -> None:
     else:
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
         mode_label = "smoke" if args.smoke else "live"
+        suffix = f"_{args.exp_suffix}" if args.exp_suffix else ""
         experiment_dir = os.path.join(
-            EXPERIMENTS_DIR, f"exp_{timestamp}_{mode_label}"
+            EXPERIMENTS_DIR, f"exp_{timestamp}_{mode_label}{suffix}"
         )
-        os.makedirs(experiment_dir, exist_ok=True)
+        # The timestamp is minute-resolution: two runs launched in the same minute
+        # would otherwise silently share a directory and interleave their results.
+        if os.path.isdir(experiment_dir):
+            print(f"[ERROR] Experiment directory already exists: {experiment_dir}")
+            print( "        Pass a distinct --exp-suffix (or wait a minute) so "
+                   "concurrent runs do not overwrite each other.")
+            sys.exit(1)
+        os.makedirs(experiment_dir)
         print(f"[System] Experiment directory: {experiment_dir}")
 
     # Save raw input for reproducibility
