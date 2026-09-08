@@ -2,7 +2,7 @@
 Live Simulation Runner — generator-style MOF simulation with refill-on-failure.
 
 Orchestrates the full pipeline per beam:
-  matchmaker → SIM_SAFE filter → mof2zeo prefilter → ranked pool
+  matchmaker → HAN_SAFE filter → mof2zeo prefilter → ranked pool
   → PORMAKE build → LAMMPS optimize → RASPA3 GCMC → parse results
 
 Each beam targets N successful simulations.  On failure, the next
@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
-from core.sim_safe_topologies import SIM_SAFE_TOPOS, filter_matchmaker_result
+from core.han_safe_topologies import HAN_SAFE_TOPOS, filter_matchmaker_result
 from core.filter_candidate import (
     MOFComponent, PredictedGeometry, RankedMOF, GeometryPredictor, MOFRanker,
     ComponentGenerator,
@@ -106,9 +106,9 @@ _MOF2ZEO_EXPAND_SIGMA: float = 0.5   # expand by 0.5 × train_std on each side
 
 # Per-descriptor PREDICTION error (MAE) of the retrained 260614 mof2zeo model,
 # measured on the held-out valid set 2026-06-15
-# (held-out MAE evaluation of the mof2zeo model:
+# (research/top1&0.1/02_experiments/phase2_variants/sandbox/eval_G3_new_model_mae.py:
 #  di MAE 0.80 / df 0.81 / dif 0.89 / sa 60 / vf 0.011 / density 0.018; p90 ~2x).
-# These match the _MAE_SLACK in filter_candidate.py (within ~7%), so the prediction
+# These match Han's _MAE_SLACK in filter_candidate.py (within ~7%), so the prediction
 # filter and this ranking expansion share one error-based margin. This is the principled
 # replacement for _MOF2ZEO_TRAIN_STD (data spread), which was ~4x too loose (di ±3.2Å)
 # and let mof2zeo ignore the agent's narrow geometry window. See config.GEOM_MARGIN_MODE.
@@ -120,6 +120,43 @@ _MOF2ZEO_PRED_ERR: Dict[str, float] = {
     "vf":      0.0098,
     "density": 0.0152,
 }
+
+
+def resolve_mixture(ads_cfg: Dict[str, Any]) -> Optional[List[list]]:
+    """Return [[name, mole_fraction], ...] for a binary mixture, else None.
+
+    Only adsorbates that declare `xe_molfrac` honour the legacy
+    config.LIVE_SIM_XE_MOLFRAC override, so newer mixtures (e.g. C2H4/C2H6)
+    keep the mole fractions declared in their config entry.
+    """
+    components = ads_cfg.get("components")
+    if not components:
+        return None
+    pairs = [[name, frac] for name, frac in components]
+    override = getattr(config, "LIVE_SIM_XE_MOLFRAC", None)
+    if override is not None and len(pairs) == 2 and ads_cfg.get("xe_molfrac") is not None:
+        pairs[0][1] = override
+        pairs[1][1] = 1.0 - override
+    return pairs
+
+
+def primary_metric(ads_cfg: Dict[str, Any], uptake: Dict[str, Any]) -> Any:
+    """Objective-appropriate scalar used for progress logging."""
+    if not uptake:
+        return "?"
+    if ads_cfg.get("objective") == "selectivity":
+        return uptake.get("selectivity", uptake.get("selectivity_xe_kr", "?"))
+    return uptake.get("loading_mol_kg", "?")
+
+
+def metric_label(ads_cfg: Dict[str, Any], adsorbate: str) -> str:
+    """Human-readable unit label matching primary_metric()."""
+    if ads_cfg.get("objective") == "selectivity":
+        pair = ads_cfg.get("selectivity_pair")
+        if pair:
+            return f"{pair[0]}/{pair[1]} selectivity"
+        return f"{adsorbate.upper()} selectivity"
+    return f"{adsorbate.upper()} mol/kg"
 
 
 def _has_geometry_constraints(geometry_filter: Dict[str, Any]) -> bool:
@@ -222,7 +259,11 @@ def compute_geometry_match_score(real_geom: dict, geometry_filter: dict) -> floa
     # (min_key, max_key, geom_key, weight)
     specs = [
         ("target_Di_min",      "target_Di_max",      "di",      1.0),
-        ("target_Df_min",      "target_Df_max",      "df",      2.0),  # most important for H2@5bar
+        # Weights are protocol-level and deliberately adsorbate-independent: the
+        # H2 and Xe/Kr campaigns both ran with these values, so cross-domain
+        # comparison requires leaving them alone. df was originally weighted up
+        # while tuning on H2@5bar, but it is not an H2-only setting.
+        ("target_Df_min",      "target_Df_max",      "df",      2.0),
         ("target_sa_min",      "target_sa_max",      "sa",      1.5),
         ("target_vf_min",      "target_vf_max",      "vf",      1.0),
         ("target_density_min", "target_density_max", "density", 1.0),
@@ -434,6 +475,7 @@ def _simulate_one_mof(
             _ads_cfg = _ads_cfgs.get(_ads, _ads_cfgs.get("h2", {}))
             _ff_dir = os.path.join(FORCEFIELD_BASE_DIR, _ads_cfg.get("forcefield", "UFF_H2"))
             _xe_molfrac = getattr(config, "LIVE_SIM_XE_MOLFRAC", _ads_cfg.get("xe_molfrac") or 0.20)
+            _mixture = resolve_mixture(_ads_cfg)
 
             raspa_out = os.path.join(work_dir, "raspa_output")
             mof_dict = {"filename": filename}
@@ -472,15 +514,18 @@ def _simulate_one_mof(
                 )
             mof_output_dir = os.path.join(raspa_out, filename)
             cif_for_density = stage2_cif_path if stage2_cif_path and os.path.isfile(stage2_cif_path) else None
-            if _ads == "xekr":
-                parsed = parse_output_mixture(mof_output_dir, xe_molfrac=_xe_molfrac, cif_path=cif_for_density)
-                if not parsed or parsed.get("xe_loading_mol_kg") is None:
+            if _mixture:
+                parsed = parse_output_mixture(mof_output_dir, cif_path=cif_for_density,
+                                              components=_mixture,
+                                              mw_g_mol=_ads_cfg.get("mw_g_mol"))
+                if not parsed or not parsed.get("component_loadings_mol_kg"):
+                    _names = "/".join(name for name, _ in _mixture)
                     return SimResult(
                         topology=component.topology, node=component.node,
                         edge=component.edge, filename=filename,
                         status="raspa_fail", predicted_geometry=pred_dict,
                         match_score=match_score, real_geometry=real_geometry,
-                        error_msg="RASPA3 Xe/Kr output parsing failed",
+                        error_msg=f"RASPA3 {_names} output parsing failed",
                         wall_seconds=time.time() - t0,
                     )
             else:
@@ -501,7 +546,8 @@ def _simulate_one_mof(
                 mw = _ads_cfg.get("mw_g_mol") or 2.016
                 parsed["loading_g_L"] = round(mol_kg * density_for_gl * mw, 6)
                 # Physical sanity gate (H2 only)
-                if _ads == "h2" and parsed["loading_g_L"] > config.RASPA_MAX_LOADING_G_L:
+                _sanity_max = _ads_cfg.get("sanity_max_g_L")
+                if _sanity_max and parsed["loading_g_L"] > _sanity_max:
                     return SimResult(
                         topology=component.topology, node=component.node,
                         edge=component.edge, filename=filename,
@@ -509,7 +555,7 @@ def _simulate_one_mof(
                         match_score=match_score, real_uptake=parsed,
                         real_geometry=real_geometry,
                         error_msg=(f"loading_g_L={parsed['loading_g_L']:.1f} exceeds physical "
-                                   f"limit ({config.RASPA_MAX_LOADING_G_L} g/L, liquid H2 at 20K)"),
+                                   f"limit ({_sanity_max} g/L)"),
                         wall_seconds=time.time() - t0,
                     )
             return SimResult(
@@ -680,6 +726,7 @@ def _simulate_one_mof(
         _ads_cfg = _ads_cfgs.get(_ads, _ads_cfgs.get("h2", {}))
         _ff_dir = os.path.join(FORCEFIELD_BASE_DIR, _ads_cfg.get("forcefield", "UFF_H2"))
         _xe_molfrac = getattr(config, "LIVE_SIM_XE_MOLFRAC", _ads_cfg.get("xe_molfrac") or 0.20)
+        _mixture = resolve_mixture(_ads_cfg)
 
         raspa_out = os.path.join(work_dir, "raspa_output")
         mof_dict = {"filename": filename}
@@ -724,10 +771,12 @@ def _simulate_one_mof(
 
         # Parse output
         mof_output_dir = os.path.join(raspa_out, filename)
-        if _ads == "xekr":
+        if _mixture:
             cif_for_density = cif_path if os.path.isfile(cif_path) else None
-            parsed = parse_output_mixture(mof_output_dir, xe_molfrac=_xe_molfrac, cif_path=cif_for_density)
-            if not parsed or parsed.get("xe_loading_mol_kg") is None:
+            parsed = parse_output_mixture(mof_output_dir, cif_path=cif_for_density,
+                                          components=_mixture,
+                                          mw_g_mol=_ads_cfg.get("mw_g_mol"))
+            if not parsed or not parsed.get("component_loadings_mol_kg"):
                 return SimResult(
                     topology=component.topology, node=component.node,
                     edge=component.edge, filename=filename,
@@ -755,7 +804,8 @@ def _simulate_one_mof(
             density_for_gl = zeo_density if zeo_density > 0 else pred_density
             parsed["loading_g_L"] = round(mol_kg * density_for_gl * mw, 6)
             # Physical sanity gate (H2 only)
-            if _ads == "h2" and parsed["loading_g_L"] > config.RASPA_MAX_LOADING_G_L:
+            _sanity_max = _ads_cfg.get("sanity_max_g_L")
+            if _sanity_max and parsed["loading_g_L"] > _sanity_max:
                 return SimResult(
                     topology=component.topology, node=component.node,
                     edge=component.edge, filename=filename,
@@ -763,7 +813,7 @@ def _simulate_one_mof(
                     match_score=match_score, real_uptake=parsed,
                     real_geometry=real_geometry,
                     error_msg=(f"loading_g_L={parsed['loading_g_L']:.1f} exceeds physical "
-                               f"limit ({config.RASPA_MAX_LOADING_G_L} g/L, liquid H2 at 20K)"),
+                               f"limit ({_sanity_max} g/L)"),
                     wall_seconds=time.time() - t0,
                 )
 
@@ -827,13 +877,13 @@ def _build_random_pool(
     n_candidates: int,
 ) -> List[MOFComponent]:
     """
-    Build a random pool from SIM_SAFE_TOPOS × all nodes × all edges.
+    Build a random pool from HAN_SAFE_TOPOS × all nodes × all edges.
     Used for Beam 4 (global baseline).
     """
     from core.filter_candidate import ComponentGenerator
 
     gen = ComponentGenerator()
-    safe_topos = list(SIM_SAFE_TOPOS)
+    safe_topos = list(HAN_SAFE_TOPOS)
 
     components = []
     attempts = 0
@@ -888,6 +938,8 @@ def run_live_iteration(
     live_results = LiveResults()
 
     _ads = getattr(config, "LIVE_SIM_ADSORBATE", "h2")
+    _ads_cfgs = getattr(config, "LIVE_SIM_ADSORBATE_CONFIGS", {})
+    _ads_cfg = _ads_cfgs.get(_ads, _ads_cfgs.get("h2", {}))
 
     predictor = GeometryPredictor()
     ranker = MOFRanker()
@@ -955,11 +1007,11 @@ def run_live_iteration(
                 live_results.aborted_beams.append(beam_id)
                 continue
 
-            # Apply SIM_SAFE filter
+            # Apply HAN_SAFE filter
             mm_result = filter_matchmaker_result(mm_result)
 
             if not mm_result.get("topology"):
-                print(f"[Beam {beam_id}] No simulation-safe topologies after filter")
+                print(f"[Beam {beam_id}] No HAN-safe topologies after filter")
                 live_results.beams[beam_id] = BeamResult(
                     beam_id=beam_id, beam_label=beam_label,
                     pool_size=0, target_n=n_per_beam,
@@ -1157,7 +1209,7 @@ def run_live_iteration(
                     beam_result.successes.append(result)
                     live_results.n_real_simulations += 1
                     print(f"   [OK] {comp.filename}: "
-                          f"{_ads.upper()}={result.real_uptake.get('xe_loading_mol_kg' if _ads == 'xekr' else 'loading_mol_kg', '?')} mol/kg "
+                          f"{metric_label(_ads_cfg, _ads)}={primary_metric(_ads_cfg, result.real_uptake)} "
                           f"({result.wall_seconds:.0f}s)")
                 else:
                     beam_result.failures.append(result)
@@ -1230,7 +1282,7 @@ def run_live_iteration(
                     beam_result.successes.append(result)
                     live_results.n_real_simulations += 1
                     print(f"   [OK] {comp.filename}: "
-                          f"{_ads.upper()}={result.real_uptake.get('xe_loading_mol_kg' if _ads == 'xekr' else 'loading_mol_kg', '?')} mol/kg "
+                          f"{metric_label(_ads_cfg, _ads)}={primary_metric(_ads_cfg, result.real_uptake)} "
                           f"({result.wall_seconds:.0f}s)")
                 else:
                     beam_result.failures.append(result)
@@ -1279,7 +1331,7 @@ def run_live_iteration(
                     beam_result.successes.append(result)
                     live_results.n_real_simulations += 1
                     print(f"   [OK] {comp.filename}: "
-                          f"{_ads.upper()}={result.real_uptake.get('xe_loading_mol_kg' if _ads == 'xekr' else 'loading_mol_kg', '?')} mol/kg "
+                          f"{metric_label(_ads_cfg, _ads)}={primary_metric(_ads_cfg, result.real_uptake)} "
                           f"({result.wall_seconds:.0f}s)")
                 else:
                     beam_result.failures.append(result)
@@ -1386,7 +1438,7 @@ def prepare_beam_pools(
             mm_result = filter_matchmaker_result(mm_result)
 
             if not mm_result.get("topology"):
-                print(f"[Prepare] Beam {beam_id} no simulation-safe topologies")
+                print(f"[Prepare] Beam {beam_id} no HAN-safe topologies")
                 beam_pools[beam_id] = []
                 continue
 

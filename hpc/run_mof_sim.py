@@ -53,8 +53,13 @@ _ABS_LOADING_AVG_MOLKG_RE = re.compile(
 
 
 def _parse_mixture_inline(raspa_dir: str, xe_molfrac: float = 0.20,
-                          cif_path: str = None) -> dict:
-    """Inline XeKr mixture parser — used when raspa_utils cannot be imported."""
+                          cif_path: str = None, components: list = None,
+                          mw_g_mol: dict = None) -> dict:
+    """Inline binary-mixture parser — used when raspa_utils cannot be imported.
+
+    Mirrors raspa_utils.parse_output_mixture: generic in the component names,
+    with Xe/Kr legacy keys preserved for previously published campaigns.
+    """
     output_subdir = os.path.join(raspa_dir, "output")
     search_dir = output_subdir if os.path.isdir(output_subdir) else raspa_dir
 
@@ -70,7 +75,8 @@ def _parse_mixture_inline(raspa_dir: str, xe_molfrac: float = 0.20,
     with open(output_file) as f:
         lines = f.readlines()
 
-    kr_molfrac = 1.0 - xe_molfrac
+    if components is None:
+        components = [["Xe", xe_molfrac], ["Kr", 1.0 - xe_molfrac]]
     loadings = {}
     current_component = None
 
@@ -88,15 +94,30 @@ def _parse_mixture_inline(raspa_dir: str, xe_molfrac: float = 0.20,
                 if m:
                     loadings[current_component] = float(m.group(1))
 
-    xe_mol_kg = loadings.get("Xe")
-    kr_mol_kg = loadings.get("Kr")
-    if xe_mol_kg is None or kr_mol_kg is None:
+    (name_a, frac_a), (name_b, frac_b) = components[0], components[1]
+    mol_kg_a = loadings.get(name_a)
+    mol_kg_b = loadings.get(name_b)
+    if mol_kg_a is None or mol_kg_b is None:
         return None
 
-    result = {"xe_loading_mol_kg": xe_mol_kg, "kr_loading_mol_kg": kr_mol_kg}
-    if kr_mol_kg > 0 and kr_molfrac > 0 and xe_molfrac > 0:
-        result["selectivity_xe_kr"] = (xe_mol_kg / kr_mol_kg) / (xe_molfrac / kr_molfrac)
+    result = {"component_loadings_mol_kg": {name_a: mol_kg_a, name_b: mol_kg_b}}
+    if mol_kg_b > 0 and frac_b > 0 and frac_a > 0:
+        result["selectivity"] = (mol_kg_a / mol_kg_b) / (frac_a / frac_b)
+
+    # Legacy Xe/Kr aliases — keep published campaigns parsing unchanged.
+    if (name_a, name_b) == ("Xe", "Kr"):
+        result["xe_loading_mol_kg"] = mol_kg_a
+        result["kr_loading_mol_kg"] = mol_kg_b
+        if "selectivity" in result:
+            result["selectivity_xe_kr"] = result["selectivity"]
     return result
+
+
+def _known_adsorbates() -> list:
+    """Adsorbate names accepted on the CLI, driven by the config registry."""
+    if LIVE_SIM_ADSORBATE_CONFIGS:
+        return sorted(LIVE_SIM_ADSORBATE_CONFIGS.keys())
+    return ["h2", "ch4", "co2", "xekr"]
 
 
 def parse_args():
@@ -105,10 +126,13 @@ def parse_args():
     parser.add_argument("--job-index", type=int, required=True, help="Job index (0-based)")
     parser.add_argument("--output-dir", default="results", help="Output directory")
     parser.add_argument("--forcefield-dir", default=None, help="Path to forcefield dir; auto-selected from --adsorbate if not set")
-    parser.add_argument("--adsorbate", default="h2", choices=["h2", "ch4", "co2", "xekr"],
+    parser.add_argument("--adsorbate", default="h2", choices=_known_adsorbates(),
                         help="Adsorbate type (default: h2)")
-    parser.add_argument("--xe-molfrac", type=float, default=0.20,
-                        help="Xe mole fraction for xekr (default: 0.20)")
+    parser.add_argument("--molfrac0", "--xe-molfrac", dest="xe_molfrac",
+                        type=float, default=None,
+                        help="Override the first component's mole fraction in a binary "
+                             "mixture (second absorbs the remainder). Default: use the "
+                             "fractions declared in LIVE_SIM_ADSORBATE_CONFIGS.")
     parser.add_argument("--temperature", type=float, default=None,
                         help="Override RASPA temperature in K (default: adsorbate config value)")
     parser.add_argument("--pressure", type=float, default=None,
@@ -251,14 +275,14 @@ def stage_lammps(cif_path: str, work_dir: str, cfg: dict) -> tuple:
             "\nthermo_style custom step pe press pxx pyy pzz lx ly lz xy xz yz\n"
             "thermo 1000\n"
             "min_style cg\n"
-            "\nvariable llm4mof_i loop 2\n"
-            "label llm4mof_loop\n"
+            "\nvariable llm2por_i loop 2\n"
+            "label llm2por_loop\n"
             "\nminimize 1.0e-4 1.0e-6 1000 10000\n"
-            "\nfix llm4mof_relax all box/relax aniso 0.0 vmax 0.001\n"
+            "\nfix llm2por_relax all box/relax aniso 0.0 vmax 0.001\n"
             "minimize 1.0e-4 1.0e-6 1000 10000\n"
-            "unfix llm4mof_relax\n"
-            "\nnext llm4mof_i\n"
-            "jump SELF llm4mof_loop\n"
+            "unfix llm2por_relax\n"
+            "\nnext llm2por_i\n"
+            "jump SELF llm2por_loop\n"
             "\nminimize 1.0e-4 1.0e-6 1000 10000\n"
             "\nrun 0\n"
             f"\nwrite_data  {opt_data_path}\n"
@@ -311,28 +335,6 @@ def stage_lammps(cif_path: str, work_dir: str, cfg: dict) -> tuple:
         return False, None, f"lammps timeout ({timeout}s)", time.time() - t0
     except Exception as e:
         return False, None, str(e)[:200], time.time() - t0
-
-
-def _assign_framework_charges(cif_path: str) -> None:
-    """Assign DDEC6 partial atomic charges using PACMAN-charge (in-place, CO2 only)."""
-    try:
-        from PACMANCharge import pmcharge
-    except ImportError:
-        print("   [CHARGE] PACMAN-charge not installed; skipping charge assignment")
-        print("   [CHARGE] To install: pip install PACMAN-charge")
-        return
-    pacman_cif = cif_path.replace(".cif", "_pacman.cif")
-    try:
-        pmcharge.predict(cif_file=cif_path, charge_type="DDEC6", digits=6, atom_type=True, neutral=True, keep_connect=True)
-        if os.path.isfile(pacman_cif):
-            os.replace(pacman_cif, cif_path)
-            print(f"   [CHARGE] DDEC6 charges assigned: {os.path.basename(cif_path)}")
-        else:
-            print(f"   [CHARGE] PACMAN output not found; using original CIF")
-    except Exception as e:
-        print(f"   [CHARGE] PACMAN-charge failed ({e}); using original CIF")
-        if os.path.isfile(pacman_cif):
-            os.remove(pacman_cif)
 
 
 def get_unit_cells(cif_path: str, cutoff: float = 12.8) -> tuple:
@@ -476,23 +478,33 @@ def _resolve_ads_cfg(adsorbate: str) -> dict:
     }
 
 
-def stage_raspa(cif_path: str, work_dir: str, cfg: dict, forcefield_dir: str,
-                adsorbate: str = "h2", xe_molfrac: float = 0.20) -> tuple:
-    """RASPA3 GCMC simulation. Returns (success, uptake_dict, error_msg, seconds)."""
-    t0 = time.time()
-    filename = Path(cif_path).stem
-    timeout = cfg.get("raspa_timeout", 600)
-    cutoff = 12.8
+def resolve_components(ads_cfg: dict, molfrac0: float = None) -> list:
+    """Return [[name, mole_fraction], ...] for a mixture, or None if single-component.
 
-    ads_cfg = _resolve_ads_cfg(adsorbate)
-    temperature = cfg.get("temperature") or ads_cfg["temperature"]
-    pressure = cfg.get("pressure") or ads_cfg["pressure"]
+    `molfrac0` optionally overrides the first component's mole fraction (the
+    second absorbs the remainder), which is how the legacy --xe-molfrac flag
+    keeps working for Xe/Kr without special-casing the adsorbate name.
+    """
+    components = ads_cfg.get("components")
+    if not components:
+        return None
+    pairs = [[name, frac] for name, frac in components]
+    if molfrac0 is not None and len(pairs) == 2:
+        pairs[0][1] = molfrac0
+        pairs[1][1] = 1.0 - molfrac0
+    return pairs
+
+
+def build_sim_json(adsorbate: str, ads_cfg: dict, forcefield_dir: str, filename: str,
+                   unit_cells: tuple, temperature: float, pressure: float,
+                   cfg: dict, xe_molfrac: float = None, cutoff: float = 12.8) -> dict:
+    """Build the RASPA3 simulation.json payload. Pure function, no I/O.
+
+    Split out of stage_raspa() so the generated input can be snapshot-tested
+    across refactors: published H2 results must never shift silently.
+    """
+    na, nb, nc = unit_cells
     charge_method = ads_cfg["charge_method"]
-
-    raspa_dir = os.path.join(work_dir, "raspa")
-    os.makedirs(raspa_dir, exist_ok=True)
-    shutil.copy(cif_path, raspa_dir)
-    na, nb, nc = get_unit_cells(cif_path)
 
     system = {
         "Type": "Framework",
@@ -502,18 +514,31 @@ def stage_raspa(cif_path: str, work_dir: str, cfg: dict, forcefield_dir: str,
         "ExternalPressure": pressure,
         "ChargeMethod": charge_method,
     }
-    if adsorbate == "co2":
+    if charge_method != "None":
         system["CutOffCoulomb"] = cutoff
-        # NOTE: DDEC6 charges are pre-assigned by run_local_charge_stage() on local GPU
-        # before R2 dispatch. _assign_framework_charges() is intentionally NOT called here.
+        # RASPA3 defaults UseChargesFrom to "PseudoAtoms", which OVERWRITES every
+        # framework atom's charge with the force-field value - zero for UFF. The
+        # CIF's _atom_site_charge column is parsed and then thrown away. Without
+        # this line the DDEC6 charges we compute, upload and pay for have no
+        # effect: the run completes, Ewald is active, and the host-guest terms
+        # (Coulombic Real/Fourier) are exactly 0. Verified 2026-09-01 on the
+        # charged-mixture smoke test, which produced plausible selectivities with no
+        # framework electrostatics at all.
+        system["UseChargesFrom"] = "CIF_File"
+        # DDEC6 charges are pre-assigned before this job ever runs, by
+        # run_live_experiment.run_local_charge_stage(), which charges the CIFs
+        # between R1 and R2 and uploads *_pacman.cif. This job must NOT charge
+        # anything itself: it would double-assign, and would require PACMAN on
+        # every compute node. If the Coulomb energy in the RASPA output is zero,
+        # the fault is in that upstream stage, not here.
 
-    rotation_prob = 0.0 if adsorbate in ("xekr", "h2", "ch4") else 1.0
+    rotation_prob = ads_cfg.get("rotation_probability", 1.0)
     swap_prob = 2.0 if pressure >= 3e6 else 1.0  # 30 bar = 3e6 Pa
 
-    if adsorbate == "xekr":
-        kr_molfrac = 1.0 - xe_molfrac
+    mixture = resolve_components(ads_cfg, molfrac0=xe_molfrac)
+    if mixture:
         components = []
-        for name, mf in [("Xe", xe_molfrac), ("Kr", kr_molfrac)]:
+        for name, mf in mixture:
             components.append({
                 "Name": name,
                 "MoleculeDefinition": os.path.join(forcefield_dir, f"{name}.json"),
@@ -542,7 +567,7 @@ def stage_raspa(cif_path: str, work_dir: str, cfg: dict, forcefield_dir: str,
             "CreateNumberOfMolecules": 0,
         }]
 
-    sim_json = {
+    return {
         "ForceField": forcefield_dir,
         "SimulationType": "MonteCarlo",
         "NumberOfCycles": cfg.get("raspa_cycles", 1000),
@@ -551,6 +576,29 @@ def stage_raspa(cif_path: str, work_dir: str, cfg: dict, forcefield_dir: str,
         "Systems": [system],
         "Components": components,
     }
+
+
+def stage_raspa(cif_path: str, work_dir: str, cfg: dict, forcefield_dir: str,
+                adsorbate: str = "h2", xe_molfrac: float = 0.20) -> tuple:
+    """RASPA3 GCMC simulation. Returns (success, uptake_dict, error_msg, seconds)."""
+    t0 = time.time()
+    filename = Path(cif_path).stem
+    timeout = cfg.get("raspa_timeout", 600)
+    cutoff = 12.8
+
+    ads_cfg = _resolve_ads_cfg(adsorbate)
+    temperature = cfg.get("temperature") or ads_cfg["temperature"]
+    pressure = cfg.get("pressure") or ads_cfg["pressure"]
+
+    raspa_dir = os.path.join(work_dir, "raspa")
+    os.makedirs(raspa_dir, exist_ok=True)
+    shutil.copy(cif_path, raspa_dir)
+    na, nb, nc = get_unit_cells(cif_path)
+
+    sim_json = build_sim_json(
+        adsorbate, ads_cfg, forcefield_dir, filename,
+        (na, nb, nc), temperature, pressure, cfg, xe_molfrac, cutoff,
+    )
 
     input_file = os.path.join(raspa_dir, "simulation.json")
     with open(input_file, "w", encoding="utf-8") as f:
@@ -578,11 +626,14 @@ def stage_raspa(cif_path: str, work_dir: str, cfg: dict, forcefield_dir: str,
         return False, None, f"raspa3 timeout ({timeout}s)", time.time() - t0
 
     # Parse output
-    if adsorbate == "xekr":
+    mixture = resolve_components(ads_cfg, molfrac0=xe_molfrac)
+    if mixture:
         _parser = _parse_mixture if _parse_mixture is not None else _parse_mixture_inline
-        uptake = _parser(raspa_dir, xe_molfrac=xe_molfrac, cif_path=cif_path)
-        if not uptake or uptake.get("xe_loading_mol_kg") is None:
-            return False, None, "No Xe/Kr loading in RASPA output", time.time() - t0
+        uptake = _parser(raspa_dir, cif_path=cif_path, components=mixture,
+                         mw_g_mol=ads_cfg.get("mw_g_mol"))
+        if not uptake or not uptake.get("component_loadings_mol_kg"):
+            names = "/".join(name for name, _ in mixture)
+            return False, None, f"No {names} loading in RASPA output", time.time() - t0
     else:
         uptake = parse_raspa_output(raspa_dir)
         if not uptake or not uptake.get("loading_mol_kg"):
@@ -684,7 +735,7 @@ def main():
         ff_name = ads_cfg["forcefield"]
         ff_dir = os.path.join(_proj_root, "core", "simulation", "gcmc", "forcefield", ff_name)
         if not os.path.exists(ff_dir):
-            ff_dir = os.path.join(os.path.expanduser("~"), "llm4mof", "forcefields", ff_name)
+            ff_dir = os.path.join(os.path.expanduser("~"), "llm2por", "forcefields", ff_name)
 
     ff_dir = os.path.abspath(ff_dir)
 
@@ -732,12 +783,15 @@ def main():
 
         if ok and uptake:
             result_data["status"] = "success"
-            if adsorbate == "xekr":
+            if uptake.get("component_loadings_mol_kg"):
                 result_data["real_uptake"] = uptake
-                xe = uptake.get("xe_loading_mol_kg", 0.0)
-                kr = uptake.get("kr_loading_mol_kg", 0.0)
-                sel = uptake.get("selectivity_xe_kr", float("nan"))
-                print(f"   [OK] {filename}: Xe={xe:.3f} mol/kg, Kr={kr:.3f} mol/kg, "
+                _loads = uptake["component_loadings_mol_kg"]
+                # Component order is preserved by the mixture parser (a, then b).
+                name_a, name_b = list(_loads.keys())[:2]
+                xe = _loads.get(name_a, 0.0)
+                kr = _loads.get(name_b, 0.0)
+                sel = uptake.get("selectivity", float("nan"))
+                print(f"   [OK] {filename}: {name_a}={xe:.3f} mol/kg, {name_b}={kr:.3f} mol/kg, "
                       f"S_Xe/Kr={sel:.2f} (stage2, zeo++ geometry)")
             else:
                 mol_kg = float(uptake.get("loading_mol_kg", 0.0) or 0.0)
@@ -843,12 +897,15 @@ def main():
 
     if ok and uptake:
         result_data["status"] = "success"
-        if adsorbate == "xekr":
+        if uptake.get("component_loadings_mol_kg"):
             result_data["real_uptake"] = uptake
-            xe = uptake.get("xe_loading_mol_kg", 0.0)
-            kr = uptake.get("kr_loading_mol_kg", 0.0)
-            sel = uptake.get("selectivity_xe_kr", float("nan"))
-            print(f"   [OK] {filename}: Xe={xe:.3f} mol/kg, Kr={kr:.3f} mol/kg, "
+            _loads = uptake["component_loadings_mol_kg"]
+            # Component order is preserved by the mixture parser (a, then b).
+            name_a, name_b = list(_loads.keys())[:2]
+            xe = _loads.get(name_a, 0.0)
+            kr = _loads.get(name_b, 0.0)
+            sel = uptake.get("selectivity", float("nan"))
+            print(f"   [OK] {filename}: {name_a}={xe:.3f} mol/kg, {name_b}={kr:.3f} mol/kg, "
                   f"S_Xe/Kr={sel:.2f}" + (" (zeo++ geometry)" if real_geom else ""))
         else:
             mol_kg = float(uptake.get("loading_mol_kg", 0.0) or 0.0)

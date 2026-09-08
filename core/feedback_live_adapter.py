@@ -29,11 +29,17 @@ Target column mapping by adsorbate:
     NOTE: framework charges not yet assigned (assign_framework_charges is a stub);
     results are approximate until DDEC/EQeq charges are implemented.
 
-  Xe/Kr mixture (273 K, 1 bar, 20% Xe / 80% Kr):
-    RASPA3 outputs (parse_output_mixture): xe_loading_mol_kg, kr_loading_mol_kg,
-      selectivity_xe_kr, xe_loading_g_L, kr_loading_g_L
-    target = selectivity_xe_kr  (dimensionless; bypasses unit-conversion logic)
-    diagnostic columns: xe_loading_mol_kg, kr_loading_mol_kg
+  Binary mixtures — objective == "selectivity"
+  (Xe/Kr at 273 K, 1 bar, 20:80; C2H4/C2H6 at 298 K, 1 bar, 50:50):
+    RASPA3 outputs (parse_output_mixture): component_loadings_mol_kg,
+      selectivity, component_loadings_g_L
+    target = selectivity  (dimensionless; bypasses unit-conversion logic)
+    diagnostic columns: component_a, component_b,
+      loading_a_mol_kg, loading_b_mol_kg
+
+Dispatch is driven by the `objective` field of the adsorbate's entry in
+config.LIVE_SIM_ADSORBATE_CONFIGS — never by the adsorbate name — so a new
+mixture needs no change here.
 """
 
 import pandas as pd
@@ -42,6 +48,17 @@ from typing import Dict
 import config
 from core.live_runner import LiveResults, SimResult
 
+
+
+def _active_ads_cfg() -> dict:
+    """Config entry for the adsorbate this run is simulating."""
+    ads = getattr(config, "LIVE_SIM_ADSORBATE", "h2")
+    cfgs = getattr(config, "LIVE_SIM_ADSORBATE_CONFIGS", {})
+    return cfgs.get(ads, cfgs.get("h2", {}))
+
+
+def _is_selectivity() -> bool:
+    return _active_ads_cfg().get("objective") == "selectivity"
 
 def _mol_kg_to_volumetric(loading_mol_kg: float, density_g_cm3: float) -> float:
     """Convert gravimetric uptake (mol/kg) to volumetric (cm³(STP)/cm³).
@@ -87,7 +104,8 @@ def _sim_results_to_dataframe(results: list[SimResult]) -> pd.DataFrame:
         return pd.DataFrame()
 
     active_unit = config.get_active_unit()
-    is_xekr = getattr(config, "LIVE_SIM_ADSORBATE", "h2") == "xekr"
+    ads_cfg = _active_ads_cfg()
+    is_selectivity = _is_selectivity()
     rows = []
     n_density_missing = 0
     for r in results:
@@ -98,8 +116,11 @@ def _sim_results_to_dataframe(results: list[SimResult]) -> pd.DataFrame:
         # Use zeo++ computed geometry if available, fall back to PORMAKE prediction
         pred = r.real_geometry or r.predicted_geometry or {}
 
-        if is_xekr:
-            target = float(uptake.get("selectivity_xe_kr", 0.0))
+        if is_selectivity:
+            target = float(uptake.get("selectivity",
+                                             uptake.get("selectivity_xe_kr", 0.0)) or 0.0)
+            comp_loads = uptake.get("component_loadings_mol_kg") or {}
+            pair = ads_cfg.get("selectivity_pair") or ("Xe", "Kr")
             row = {
                 "filename": r.filename,
                 "target": target,
@@ -110,9 +131,11 @@ def _sim_results_to_dataframe(results: list[SimResult]) -> pd.DataFrame:
                 "density": pred.get("density", 0.0),
                 "dif": pred.get("dif", 0.0),
                 "cv": pred.get("cv", 0.0),
-                # Diagnostic columns
-                "xe_loading_mol_kg": float(uptake.get("xe_loading_mol_kg", 0.0)),
-                "kr_loading_mol_kg": float(uptake.get("kr_loading_mol_kg", 0.0)),
+                # Diagnostic columns (per-component loadings, objective-agnostic)
+                "component_a": pair[0],
+                "component_b": pair[1],
+                "loading_a_mol_kg": float(comp_loads.get(pair[0], 0.0)),
+                "loading_b_mol_kg": float(comp_loads.get(pair[1], 0.0)),
                 "match_score": r.match_score,
                 "geo_filter_passed": getattr(r, "geo_filter_passed", True),
                 "geo_filter_fail_reason": getattr(r, "geo_filter_fail_reason", ""),
@@ -203,14 +226,17 @@ def live_results_to_filter_sets(live_results: LiveResults) -> Dict[str, pd.DataF
 
 
     # Log summary with unit info
-    is_xekr = getattr(config, "LIVE_SIM_ADSORBATE", "h2") == "xekr"
-    unit = "selectivity" if is_xekr else config.get_active_unit()
+    is_selectivity = _is_selectivity()
+    unit = "selectivity" if is_selectivity else config.get_active_unit()
     for key, df in filter_sets.items():
         if isinstance(df, pd.DataFrame) and not df.empty:
             avg_target = df["target"].mean()
             extra = ""
-            if is_xekr and "xe_loading_mol_kg" in df.columns:
-                extra = f", avg Xe={df['xe_loading_mol_kg'].mean():.3f} mol/kg, avg Kr={df['kr_loading_mol_kg'].mean():.3f} mol/kg"
+            if is_selectivity and "loading_a_mol_kg" in df.columns:
+                _a = df["component_a"].iloc[0] if "component_a" in df.columns else "A"
+                _b = df["component_b"].iloc[0] if "component_b" in df.columns else "B"
+                extra = (f", avg {_a}={df['loading_a_mol_kg'].mean():.3f} mol/kg"
+                         f", avg {_b}={df['loading_b_mol_kg'].mean():.3f} mol/kg")
             elif "loading_mol_kg" in df.columns:
                 extra = f", avg mol/kg={df['loading_mol_kg'].mean():.2f}"
             print(f"[LiveAdapter] Set '{key}': {len(df)} entries, "

@@ -58,14 +58,14 @@ def find_raspa3():
     return None
 
 
-# Resolve the project root robustly. __file__ is .../core/simulation/gcmc/run_raspa.py,
-# so 4x dirname reaches the repo root. Using fewer levels lands on .../core/ and can make
-# `from core import __root_dir__` fail or pick up a stale `core` package from another
-# project on sys.path:
+# FIX 2026-04-09: Han's original used 3x dirname which lands on .../core/, not
+# the project root, which causes `from core import __root_dir__` to either fail
+# or import a stale `core` package from a sibling LLM2AUTO project elsewhere on
+# disk (whichever Python finds first via sys.path). 4x dirname is correct:
 #   __file__              = .../core/simulation/gcmc/run_raspa.py
 #   dirname x1            = .../core/simulation/gcmc/
 #   dirname x2            = .../core/simulation/
-#   dirname x3            = .../core/             (too shallow -- wrong)
+#   dirname x3            = .../core/             (Han's bug -- wrong)
 #   dirname x4            = .../                  (project root -- correct)
 _project_root = os.path.dirname(
     os.path.dirname(
@@ -89,37 +89,21 @@ DEFAULT_FORCEFIELD_DIR = os.path.join(
 )
 FORCEFIELD_BASE_DIR = os.path.join(__root_dir__, "simulation", "gcmc", "forcefield")
 
-# Per-adsorbate simulation defaults
-ADSORBATE_CONFIGS = {
-    "h2": {
-        "forcefield": "UFF_H2",
-        "molecule": "hydrogen",
-        "temperature": 77.0,
-        "pressure": 1e7,
-        "charge_method": "None",
-    },
-    "ch4": {
-        "forcefield": "UFF",
-        "molecule": "CH4",
-        "temperature": 298.0,
-        "pressure": 2.5e5,    # 2.5 bar
-        "charge_method": "None",
-    },
-    "co2": {
-        "forcefield": "UFF",
-        "molecule": "CO2",
-        "temperature": 298.0,
-        "pressure": 2.5e5,    # 2.5 bar
-        "charge_method": "Ewald",
-    },
-    "xekr": {
-        "forcefield": "UFF_XeKr",
-        "molecule": None,     # 2-component mixture
-        "temperature": 273.0,
-        "pressure": 1e5,      # 1 bar
-        "charge_method": "None",
-    },
-}
+# Per-adsorbate simulation defaults.
+# Single source of truth is config.LIVE_SIM_ADSORBATE_CONFIGS — this module must
+# never carry its own copy, or the local and HPC paths silently diverge.
+try:
+    sys.path.insert(0, __root_dir__ if os.path.basename(__root_dir__) != "core"
+                    else os.path.dirname(__root_dir__))
+    from config import LIVE_SIM_ADSORBATE_CONFIGS as ADSORBATE_CONFIGS
+except ImportError:  # standalone use without the project root on sys.path
+    ADSORBATE_CONFIGS = {
+        "h2": {
+            "forcefield": "UFF_H2", "molecule": "hydrogen", "components": None,
+            "temperature": 77.0, "pressure": 1e7, "charge_method": "None",
+            "rotation_probability": 0.0,
+        },
+    }
 
 
 def load_mof_data_from_json():
@@ -220,11 +204,25 @@ def _build_single_component(forcefield_path: str, molecule: str) -> dict:
     }
 
 
-def _build_xekr_components(forcefield_path: str, xe_molfrac: float = 0.20) -> list:
-    """Build 2-component Xe/Kr mixture component list for RASPA3 JSON (CBMC identity swap)."""
-    kr_molfrac = 1.0 - xe_molfrac
+def resolve_mixture(ads_cfg: dict, molfrac0: Optional[float] = None) -> Optional[list]:
+    """[[name, mole_fraction], ...] for a binary mixture, else None."""
+    components = ads_cfg.get("components")
+    if not components:
+        return None
+    pairs = [[name, frac] for name, frac in components]
+    if molfrac0 is not None and len(pairs) == 2 and ads_cfg.get("xe_molfrac") is not None:
+        pairs[0][1] = molfrac0
+        pairs[1][1] = 1.0 - molfrac0
+    return pairs
+
+
+def _build_mixture_components(forcefield_path: str, mixture: list) -> list:
+    """Build the RASPA3 component list for a binary mixture (CBMC identity swap).
+
+    `mixture` is [[name, mole_fraction], ...] from resolve_mixture().
+    """
     components = []
-    for name, molfrac in [("Xe", xe_molfrac), ("Kr", kr_molfrac)]:
+    for name, molfrac in mixture:
         components.append({
             "Name": name,
             "MoleculeDefinition": os.path.join(forcefield_path, f"{name}.json"),
@@ -264,8 +262,17 @@ def create_raspa_input(mof, mof_dir, output_dir, params):
     temperature = params.get("temperature") or cfg["temperature"]
     pressure = params.get("pressure") or cfg["pressure"]
 
-    # CO2: assign framework charges (DDEC stub — not yet implemented)
-    if adsorbate == "co2":
+    # Charged adsorbates: assign DDEC6 framework charges with PACMAN. This is
+    # the LOCAL path (core.live_runner without --hpc). An --hpc campaign does
+    # NOT come through here - it charges CIFs in
+    # run_live_experiment.run_local_charge_stage() between R1 and R2, and
+    # hpc/run_mof_sim.py deliberately leaves them alone. Keyed off
+    # charge_method rather than the gas name so a new charged adsorbate cannot
+    # silently skip it.
+    # (This was previously commented "DDEC stub - not yet implemented". That was
+    # stale: the call below is real. The stale note misled a reader into
+    # concluding the HPC campaign path charges its own CIFs, which it does not.)
+    if cfg["charge_method"] != "None":
         assign_framework_charges(cif_file)
 
     system = {
@@ -276,17 +283,25 @@ def create_raspa_input(mof, mof_dir, output_dir, params):
         "ExternalPressure": pressure,
         "ChargeMethod": cfg["charge_method"],
     }
-    if adsorbate == "co2":
+    if cfg["charge_method"] != "None":
         system["CutOffCoulomb"] = cutoff
+        # RASPA3 defaults UseChargesFrom to "PseudoAtoms", which OVERWRITES every
+        # framework atom's charge with the force-field value - zero for UFF. The
+        # CIF's _atom_site_charge column is parsed and then thrown away. Without
+        # this line the DDEC6 charges we compute, upload and pay for have no
+        # effect: the run completes, Ewald is active, and the host-guest terms
+        # (Coulombic Real/Fourier) are exactly 0. Verified 2026-09-01 on the
+        # charged-mixture smoke test, which produced plausible selectivities with no
+        # framework electrostatics at all.
+        system["UseChargesFrom"] = "CIF_File"
 
-    if adsorbate == "xekr":
-        components = _build_xekr_components(
-            forcefield_path, xe_molfrac=params.get("xe_molfrac", 0.20)
-        )
+    mixture = resolve_mixture(cfg, molfrac0=params.get("xe_molfrac"))
+    if mixture:
+        components = _build_mixture_components(forcefield_path, mixture)
     else:
         components = [_build_single_component(forcefield_path, cfg["molecule"])]
 
-    rotation_prob = 0.0 if adsorbate in ("xekr", "h2", "ch4") else 1.0
+    rotation_prob = cfg.get("rotation_probability", 1.0)
     swap_prob = 2.0 if pressure >= 3e6 else 1.0  # 30 bar = 3e6 Pa
     for comp in components:
         comp["RotationProbability"] = rotation_prob
@@ -338,7 +353,7 @@ def run_simulation_background(
         print(f"   [SKIP] {filename} - already completed")
         return True
 
-    # FIX 2026-04-09: the original used a bash-style "cd && raspa3 ..." shell
+    # FIX 2026-04-09: Han's original used a bash-style "cd && raspa3 ..." shell
     # string via subprocess.Popen(shell=True). On Windows that becomes
     # `cmd.exe /c "cd <path> && raspa3 simulation.json > log 2>&1 && ..."`
     # which fails with "The system cannot find the path specified" because of
@@ -595,10 +610,12 @@ def main():
         help="Adsorbate type: h2 | ch4 | co2 | xekr (default: h2)",
     )
     parser.add_argument(
-        "--xe-molfrac",
+        "--molfrac0", "--xe-molfrac",
+        dest="xe_molfrac",
         type=float,
-        default=0.20,
-        help="Xe mole fraction for xekr mixture (default: 0.20)",
+        default=None,
+        help="Override the first component's mole fraction in a binary mixture "
+             "(second absorbs the remainder). Default: use the config fractions.",
     )
     parser.add_argument(
         "--temperature", type=float, default=None,
@@ -641,8 +658,9 @@ def main():
     print(f"    Cutoff: {args.cutoff} Angstrom")
     print(f"    Forcefield: {args.forcefield_dir or cfg['forcefield']} (auto)")
     print(f"    Cycles: {args.cycles}")
-    if args.adsorbate == "xekr":
-        print(f"    Xe mole fraction: {args.xe_molfrac:.2f}  Kr: {1 - args.xe_molfrac:.2f}")
+    _mixture = resolve_mixture(cfg, molfrac0=args.xe_molfrac)
+    if _mixture:
+        print("    Mixture: " + ", ".join(f"{n}={f:.2f}" for n, f in _mixture))
 
     params = {
         "adsorbate": args.adsorbate,

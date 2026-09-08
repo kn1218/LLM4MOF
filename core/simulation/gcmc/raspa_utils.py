@@ -399,24 +399,41 @@ _ABS_LOADING_AVG_MOLKG_RE = re.compile(
 )
 
 
+DEFAULT_MIXTURE_MW_G_MOL = {
+    "Xe": 131.29,
+    "Kr": 83.798,
+    "C2H4": 28.054,
+    "C2H6": 30.070,
+}
+
+
 def parse_output_mixture(
     output_dir: str,
     xe_molfrac: float = 0.20,
     cif_path: Optional[str] = None,
+    components: Optional[list] = None,
+    mw_g_mol: Optional[dict] = None,
 ) -> Optional[dict]:
-    """Parse RASPA output for a 2-component Xe/Kr mixture and compute selectivity.
+    """Parse RASPA output for a 2-component mixture and compute selectivity.
 
     Args:
         output_dir: Directory containing RASPA output files.
-        xe_molfrac: Xe mole fraction in the gas phase (Kr = 1 - xe_molfrac).
+        xe_molfrac: Legacy Xe/Kr entry point. Ignored when `components` is given.
         cif_path: Optional CIF path for framework density.
+        components: [[name, mole_fraction], ...]. Defaults to Xe/Kr built from
+            `xe_molfrac` so existing Xe/Kr callers are unaffected.
+        mw_g_mol: {component_name: molar mass}. Falls back to
+            DEFAULT_MIXTURE_MW_G_MOL.
 
     Returns:
         Dictionary with:
-            xe_loading_mol_kg, kr_loading_mol_kg (gravimetric)
-            xe_loading_g_L, kr_loading_g_L (volumetric, if density available)
-            selectivity_xe_kr = (N_Xe/N_Kr) / (y_Xe/y_Kr)
-        or None if parsing fails.
+            component_loadings_mol_kg: {name: mol/kg}
+            component_loadings_g_L: {name: g/L} (if density available)
+            selectivity = (N_a/N_b) / (y_a/y_b) for the first two components
+        Xe/Kr mixtures additionally carry the legacy keys
+        xe_loading_mol_kg / kr_loading_mol_kg / selectivity_xe_kr so previously
+        published campaigns keep parsing identically.
+        Returns None if parsing fails.
     """
     output_subdir = os.path.join(output_dir, "output")
     search_dir = output_subdir if os.path.isdir(output_subdir) else output_dir
@@ -428,10 +445,11 @@ def parse_output_mixture(
     with open(output_file, "r") as f:
         lines = f.readlines()
 
-    # MW constants
-    xe_mw = 131.29   # g/mol
-    kr_mw = 83.798   # g/mol
-    kr_molfrac = 1.0 - xe_molfrac
+    if components is None:
+        components = [["Xe", xe_molfrac], ["Kr", 1.0 - xe_molfrac]]
+    mw_table = dict(DEFAULT_MIXTURE_MW_G_MOL)
+    if mw_g_mol:
+        mw_table.update(mw_g_mol)
 
     # Per-component loading accumulators (last step values, updated per component block)
     loadings: Dict[str, float] = {}
@@ -452,26 +470,38 @@ def parse_output_mixture(
                 if m:
                     loadings[current_component] = float(m.group(1))
 
-    xe_mol_kg = loadings.get("Xe")
-    kr_mol_kg = loadings.get("Kr")
+    (name_a, frac_a), (name_b, frac_b) = components[0], components[1]
+    mol_kg_a = loadings.get(name_a)
+    mol_kg_b = loadings.get(name_b)
 
-    if xe_mol_kg is None or kr_mol_kg is None:
+    if mol_kg_a is None or mol_kg_b is None:
         return None
 
     result: dict = {
-        "xe_loading_mol_kg": xe_mol_kg,
-        "kr_loading_mol_kg": kr_mol_kg,
+        "component_loadings_mol_kg": {name_a: mol_kg_a, name_b: mol_kg_b},
     }
 
-    # Selectivity: (N_Xe/N_Kr) / (y_Xe/y_Kr)
-    if kr_mol_kg > 0 and kr_molfrac > 0 and xe_molfrac > 0:
-        result["selectivity_xe_kr"] = (xe_mol_kg / kr_mol_kg) / (xe_molfrac / kr_molfrac)
+    # Selectivity: (N_a/N_b) / (y_a/y_b)
+    if mol_kg_b > 0 and frac_b > 0 and frac_a > 0:
+        result["selectivity"] = (mol_kg_a / mol_kg_b) / (frac_a / frac_b)
 
     # Volumetric loading if density is available
     density_g_cm3 = get_density_from_cif(cif_path) if cif_path else None
     if density_g_cm3 is not None:
-        result["xe_loading_g_L"] = xe_mol_kg * xe_mw * density_g_cm3
-        result["kr_loading_g_L"] = kr_mol_kg * kr_mw * density_g_cm3
+        result["component_loadings_g_L"] = {
+            name_a: mol_kg_a * mw_table.get(name_a, 0.0) * density_g_cm3,
+            name_b: mol_kg_b * mw_table.get(name_b, 0.0) * density_g_cm3,
+        }
         result["framework_density_g_cm3"] = density_g_cm3
+
+    # Legacy Xe/Kr aliases — keep published campaigns parsing unchanged.
+    if (name_a, name_b) == ("Xe", "Kr"):
+        result["xe_loading_mol_kg"] = mol_kg_a
+        result["kr_loading_mol_kg"] = mol_kg_b
+        if "selectivity" in result:
+            result["selectivity_xe_kr"] = result["selectivity"]
+        if density_g_cm3 is not None:
+            result["xe_loading_g_L"] = result["component_loadings_g_L"][name_a]
+            result["kr_loading_g_L"] = result["component_loadings_g_L"][name_b]
 
     return result
