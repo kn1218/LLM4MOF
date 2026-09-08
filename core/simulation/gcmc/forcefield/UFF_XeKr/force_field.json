@@ -330,8 +330,8 @@
     {"name": "Zn_", "type": "lennard-jones", "parameters": [62.4, 2.46]},
     {"name": "Zr",  "type": "lennard-jones", "parameters": [34.72, 2.78]},
     {"name": "Zr_", "type": "lennard-jones", "parameters": [34.72, 2.78]},
-    {"name": "Xe",  "type": "lennard-jones", "parameters": [229.8, 3.97], "source": "Boato et al."},
-    {"name": "Kr",  "type": "lennard-jones", "parameters": [165.2, 3.66], "source": "Boato et al."}
+    {"name": "Xe",  "type": "lennard-jones", "parameters": [229.8, 3.97], "source": "Lim et al."},
+    {"name": "Kr",  "type": "lennard-jones", "parameters": [165.2, 3.66], "source": "Lim et al."}
   ],
   "MixingRule": "Lorentz-Berthelot",
   "TruncationMethod": "truncated",
