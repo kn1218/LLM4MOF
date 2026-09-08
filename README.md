@@ -142,6 +142,21 @@ python run_live_experiment.py --hpc --pressure 5 \
 Other live-mode flags: `--smoke` (quick validation), `--no-zeo`, `--adsorbate`, `--temperature`,
 `--prepare` / `--collect` / `--resume` (step control), `--job-prefix`, `--node-prop`.
 
+### Discovery domains
+
+`--adsorbate` selects the simulation domain: `h2`, `ch4`, `co2`, `xekr`, `sf6`, `c2`.
+The `c2` task runs an equimolar C₂H₆/C₂H₄ binary mixture scored as ethane selectivity
+(TraPPE united-atom, chargeless by design); `sf6` uses the Dellis–Samios model
+(see `core/simulation/gcmc/forcefield/`). The paper's discovery campaigns used these
+exact inquiries, five replicates each:
+
+| Domain | Flags | Inquiry |
+|---|---|---|
+| H₂, 77 K / 5 bar | `--adsorbate h2 --temperature 77 --pressure 5` | "Design a MOF to maximize volumetric H2 storage at 77K and 5 bar." |
+| H₂, 160 K / 5 bar | `--adsorbate h2 --temperature 160 --pressure 5` | "Design a MOF to maximize volumetric H2 storage at 160K and 5 bar." |
+| C₂H₆/C₂H₄, 298 K / 1 bar | `--adsorbate c2 --temperature 298 --pressure 1` | "Design a MOF to maximize C2H6/C2H4 selectivity at 298K and 1 bar." |
+| SF₆, 298 K / 1 bar | `--adsorbate sf6 --temperature 298 --pressure 1` | "Design a MOF to maximize gravimetric SF6 uptake at 298K and 1 bar." |
+
 HPC settings (host, base dir, scheduler) are in the `LIVE SIMULATION CONFIGURATION` section of
 `config.py`. The cluster-side scripts live in `hpc/`; local orchestration lives in `core/hpc/`.
 
