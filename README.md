@@ -68,7 +68,13 @@ OPENAI_API_KEY=...
 
 - OpenAI: https://platform.openai.com/api-keys
 
-The active model is set in `config.py` (`OPENAI_MODEL`).
+`LLM_PROVIDER` selects the vendor (`openai`, `gemini` or `claude`) and
+`OPENAI_MODEL`, `GEMINI_MODEL` or `CLAUDE_MODEL` selects the model within it.
+Both read from the environment, with defaults in `config.py`, which is how the
+paper's backend comparison was run: the same loop, one variable changed.
+`AGENT1_PROVIDER` and `AGENT2_PROVIDER` override the vendor for one agent, so a
+backend can be varied for hypothesis generation while the constraint agent stays
+pinned.
 
 ### 3. Large data files (Git LFS)
 
