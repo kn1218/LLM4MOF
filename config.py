@@ -149,7 +149,7 @@ PROMPTS_DIR = os.path.join(BASE_DIR, "prompts")
 #   Descriptor annotations partially removed (no "volumetric adsorption site density" hints).
 #   v3.0_production (2026-06-06): axis-neutral / direction-symmetric UNIVERSAL prompt (research v2.3.0)
 #     + SOFT decoration commit (require PRESENCE or <=2, never a high hard min_group_counts).
-#     Validated in research/top1&0.1 (4-app axis-flip vol/grav/CO2/BG; XeKr soft-count mean 74 vs hard 32).
+#     Validated on four applications (axis-flip vol/grav/CO2/BG; XeKr soft-count mean 74 vs hard 32).
 #     Now the production prompt. Revert: set path back to "agent1_v2.2.9_clean_v2_stag.md" (file retained).
 AGENT1_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent1_v3.0_production.md")
 # Agent 2 prompt history:
@@ -423,7 +423,7 @@ AGENT2_TEMPERATURE = 0.0   # Deterministic constraint extraction (validated via 
 # -----------------------------------------------------------------------------
 # UNIVERSAL-LEVER TOGGLES (productionized research levers; default ON, reversible)
 # -----------------------------------------------------------------------------
-# Validated in research/top1&0.1 (markscheme, 5-rep). Each is firewall-clean
+# Validated in database mode over five replicates. Each is firewall-clean
 # (signals only from the agent's paid-for sampled candidates; identity-only keys;
 # facts-only memory). Set False to fall back to legacy behavior bit-for-bit.
 #   - STRATIFIED_SAMPLING: round-robin the feedback samples across the METALS present
@@ -447,14 +447,11 @@ def _env_flag(name: str, default: bool) -> bool:
 
 STRATIFIED_SAMPLING = _env_flag("LLM2POR_STRATIFIED_SAMPLING", True)
 # Metal balancing exists so the agent's OWN chosen chemistry is not represented only by its
-# most common metal. The unconstrained beam has no chosen chemistry, so balancing it turns the
-# baseline into a diversity search rather than the random draw the paper describes it as
-# ("random baseline", "random sampling from the full design space", "random search"). On the
-# 77 K / 5 bar task a balanced beam-4 medians 196.6 against 183.1 for a uniform draw, so the
-# distinction is not cosmetic. Default False = beam 4 is a uniform draw. Set to 1 to restore
-# the pre-2026-09-02 behaviour. See research/ncomms_revision/04_reports/R7_beam4_sampling_leak.md.
-# Default 1: reproduce the published figure, whose unconstrained beam was
-# metal balanced like the other three. Set 0 for a pool-uniform baseline.
+# most common metal. The baseline beam has no chosen chemistry, so balancing it makes the
+# baseline a diversity draw rather than a pool-uniform one, and the difference is not
+# cosmetic: on the 77 K / 5 bar task a balanced baseline medians 196.6 against 183.1 uniform.
+# Default 1: reproduce the published runs, whose baseline beam was metal balanced like the
+# other three. Set 0 for a pool-uniform baseline.
 STRATIFY_RANDOM_BEAM = _env_flag("LLM2POR_STRATIFY_RANDOM_BEAM", True)
 
 # Default 0: visit metals in first-appearance order, as the published runs

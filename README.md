@@ -26,7 +26,13 @@ performance:
 | Beam 1 | Full hypothesis | Full hypothesis (geometry + chemistry + metal) |
 | Beam 2 | Metal–linker chemistry | Chemistry only; geometry window removed |
 | Beam 3 | Metal only | Metal only; linker and geometry unconstrained |
-| Beam 4 | Random baseline | Unconstrained sampling from the full design space |
+| Beam 4 | Random baseline | No hypothesis constraints; the full design space |
+
+Within every beam, the baseline included, candidates are drawn round-robin across the distinct metals
+present rather than in proportion to their abundance, so a rare metal is not crowded out by a common one
+(`STRATIFIED_SAMPLING`, `STRATIFY_RANDOM_BEAM`; both default on, and the published runs used them). The
+baseline therefore samples the whole design space under no hypothesis constraint, but not uniformly. In
+discovery mode it is drawn uniformly over the generative space instead.
 
 Beams are presented to Agent 1 under anonymized labels (internally `Z` / `A` / `F` / baseline) with
 generic headers, so Agent 1 cannot infer which database is active or look up structures externally.

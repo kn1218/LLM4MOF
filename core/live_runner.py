@@ -106,9 +106,8 @@ _MOF2ZEO_EXPAND_SIGMA: float = 0.5   # expand by 0.5 × train_std on each side
 
 # Per-descriptor PREDICTION error (MAE) of the retrained 260614 mof2zeo model,
 # measured on the held-out valid set 2026-06-15
-# (research/top1&0.1/02_experiments/phase2_variants/sandbox/eval_G3_new_model_mae.py:
-#  di MAE 0.80 / df 0.81 / dif 0.89 / sa 60 / vf 0.011 / density 0.018; p90 ~2x).
-# These match Han's _MAE_SLACK in filter_candidate.py (within ~7%), so the prediction
+# (di MAE 0.80 / df 0.81 / dif 0.89 / sa 60 / vf 0.011 / density 0.018; p90 ~2x).
+# These match _MAE_SLACK in filter_candidate.py (within ~7%), so the prediction
 # filter and this ranking expansion share one error-based margin. This is the principled
 # replacement for _MOF2ZEO_TRAIN_STD (data spread), which was ~4x too loose (di ±3.2Å)
 # and let mof2zeo ignore the agent's narrow geometry window. See config.GEOM_MARGIN_MODE.
