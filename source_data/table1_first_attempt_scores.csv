@@ -1,0 +1,7 @@
+backend,cells attempted,final-iteration percentile (first attempt),n scored (first attempt),final-iteration percentile (including re-requested runs),n scored (including re-requested runs),first-attempt completion rate,cells whose first attempt did not complete,cells not run
+gpt-5.2,35,91.3,31,91.3,31,100.0%,0,0
+gpt-5.6-sol,34,91.3,28,90.8,29,96.8%,1,0
+claude-opus-5,35,91.2,33,91.2,33,100.0%,0,0
+claude-sonnet-5,35,86.7,33,86.7,33,100.0%,0,0
+claude-haiku-4.5,23,86.6,20,86.4,21,90.9%,12,0
+gpt-5.4-nano,35,79.5,24,79.5,24,100.0%,0,0

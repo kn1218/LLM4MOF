@@ -1,0 +1,1769 @@
+task,task_key,backend,replicate,iteration,beam1_median_value,unit,database_percentile
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,1,1,26.305629,g/L,87.3492
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,1,2,26.957319,g/L,89.5012
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,1,5,30.991074,g/L,98.0174
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,1,6,30.246066,g/L,97.1072
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,1,7,30.963409,g/L,97.9962
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,1,8,32.674253,g/L,99.365
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,1,9,34.995759,g/L,99.8942
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,1,10,36.209589,g/L,99.9859
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,1,23.797684,g/L,79.1011
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,2,28.978067,g/L,94.9129
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,3,30.912489,g/L,97.9539
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,4,31.474537,g/L,98.4971
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,5,28.238306,g/L,93.1348
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,6,31.943598,g/L,98.8993
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,7,30.818078,g/L,97.8762
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,8,30.138819,g/L,96.8884
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,9,30.696836,g/L,97.7422
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,2,10,28.157229,g/L,92.9161
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,3,1,23.797684,g/L,79.1011
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,3,2,26.957319,g/L,89.5012
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,3,3,30.09192,g/L,96.8461
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,3,5,37.011514,g/L,100.0
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,3,6,37.011514,g/L,100.0
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,3,7,37.011514,g/L,100.0
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,3,8,36.209589,g/L,99.9859
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,3,10,36.209589,g/L,99.9859
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,1,18.716216,g/L,60.3471
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,2,27.673444,g/L,91.5191
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,3,31.345916,g/L,98.3843
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,4,33.031608,g/L,99.5414
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,5,34.017155,g/L,99.7883
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,6,31.733286,g/L,98.6806
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,7,34.48701,g/L,99.8659
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,8,34.397861,g/L,99.8448
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,9,35.660113,g/L,99.9294
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,4,10,37.011514,g/L,100.0
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,1,17.961817,g/L,57.4896
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,2,30.94595,g/L,97.9821
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,3,28.106124,g/L,92.7256
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,4,26.903684,g/L,89.3318
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,5,30.94595,g/L,97.9821
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,6,30.94595,g/L,97.9821
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,7,28.434991,g/L,93.6711
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,9,21.198437,g/L,69.7523
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.2,5,10,23.210228,g/L,77.055
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,1,19.271721,g/L,62.478
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,2,30.109313,g/L,96.8532
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,3,29.216378,g/L,95.3997
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,4,25.920883,g/L,86.1709
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,5,28.717689,g/L,94.3837
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,6,27.120847,g/L,89.9951
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,7,29.712513,g/L,96.3311
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,8,28.135977,g/L,92.8456
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,1,9,31.48943,g/L,98.5183
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,1,20.818408,g/L,68.32
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,2,29.06149,g/L,95.0681
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,3,28.760906,g/L,94.4966
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,4,28.372874,g/L,93.5793
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,5,32.376462,g/L,99.2027
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,6,31.366072,g/L,98.3984
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,7,30.931643,g/L,97.975
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,8,33.066135,g/L,99.5555
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,9,29.965999,g/L,96.6838
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,2,10,29.625141,g/L,96.1899
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,1,20.435101,g/L,66.8736
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,2,29.80857,g/L,96.4863
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,3,31.415162,g/L,98.4689
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,4,31.854703,g/L,98.7935
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,5,31.684783,g/L,98.6453
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,6,32.028662,g/L,98.9416
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,7,27.693018,g/L,91.5403
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,8,27.469115,g/L,90.9476
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,9,31.054323,g/L,98.0597
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,3,10,29.660941,g/L,96.2182
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,1,12.074109,g/L,32.6042
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,2,27.323988,g/L,90.5383
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,3,31.170761,g/L,98.1726
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,4,30.293213,g/L,97.2201
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,5,30.172166,g/L,96.9308
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,6,30.779302,g/L,97.8198
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,7,30.451161,g/L,97.4247
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,8,31.067818,g/L,98.0738
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,9,31.170251,g/L,98.1726
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,4,10,28.439863,g/L,93.6781
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,1,18.59243,g/L,59.8885
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,2,28.787295,g/L,94.5742
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,3,26.705257,g/L,88.6333
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,4,29.369354,g/L,95.6608
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,5,32.065251,g/L,98.9769
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,6,29.502097,g/L,95.943
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,7,30.631764,g/L,97.6928
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,8,29.259482,g/L,95.4632
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,9,32.996428,g/L,99.5132
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-opus-5,5,10,29.597786,g/L,96.1264
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,1,1,9.894872,g/L,22.3312
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,1,2,31.588491,g/L,98.5959
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,1,4,31.944773,g/L,98.8993
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,1,6,27.854082,g/L,92.0977
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,1,7,28.832107,g/L,94.673
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,1,8,28.592212,g/L,94.038
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,1,9,33.039067,g/L,99.5555
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,1,10,30.074496,g/L,96.8249
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,2,1,9.894872,g/L,22.3312
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,2,3,23.5116,g/L,78.205
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,2,5,32.064839,g/L,98.9699
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,2,6,30.799021,g/L,97.848
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,2,7,32.064839,g/L,98.9699
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,2,8,30.799021,g/L,97.848
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,2,9,21.974374,g/L,72.4053
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,2,10,36.209589,g/L,99.9859
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,3,1,22.629338,g/L,74.7195
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,3,2,31.481801,g/L,98.5113
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,3,3,34.389784,g/L,99.8448
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,3,4,28.680654,g/L,94.299
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,3,6,28.045486,g/L,92.5915
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,3,9,32.064839,g/L,98.9699
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,4,2,30.063117,g/L,96.7967
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,4,4,34.078131,g/L,99.7954
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,4,6,32.064839,g/L,98.9699
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,4,7,27.877464,g/L,92.1541
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,4,8,31.513294,g/L,98.5395
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,4,10,31.922503,g/L,98.8923
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,5,1,20.119715,g/L,65.8012
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,5,3,32.064839,g/L,98.9699
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,5,4,32.064839,g/L,98.9699
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,5,5,32.064839,g/L,98.9699
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,5,6,32.064839,g/L,98.9699
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,5,8,37.011514,g/L,100.0
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,5,9,34.576917,g/L,99.873
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.6-sol,5,10,34.851476,g/L,99.8871
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,1,17.113467,g/L,54.0817
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,2,26.069251,g/L,86.6083
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,3,25.3789,g/L,84.1882
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,4,26.85828,g/L,89.1766
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,5,28.647117,g/L,94.2355
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,6,30.171993,g/L,96.9308
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,7,29.729317,g/L,96.3522
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,8,26.292796,g/L,87.321
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,9,30.45105,g/L,97.4247
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,1,10,27.988211,g/L,92.4716
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,1,9.631871,g/L,21.0541
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,2,26.100522,g/L,86.7071
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,3,27.256648,g/L,90.4184
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,4,27.735455,g/L,91.7166
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,5,28.504913,g/L,93.8122
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,6,28.261265,g/L,93.2266
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,7,29.900133,g/L,96.5709
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,8,27.749068,g/L,91.7731
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,9,29.55073,g/L,96.0206
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,2,10,28.155376,g/L,92.8949
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,1,19.378914,g/L,62.9225
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,2,29.794234,g/L,96.4722
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,3,32.005041,g/L,98.9205
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,4,32.005041,g/L,98.9205
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,5,31.475495,g/L,98.4971
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,6,31.475495,g/L,98.4971
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,7,31.335475,g/L,98.3772
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,8,28.85943,g/L,94.6941
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,9,32.164339,g/L,99.0757
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,3,10,28.109736,g/L,92.7468
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,1,12.512694,g/L,34.6645
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,2,29.738186,g/L,96.3804
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,3,28.669274,g/L,94.2708
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,4,29.307805,g/L,95.5761
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,5,28.369943,g/L,93.5723
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,6,29.907249,g/L,96.5709
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,7,28.808215,g/L,94.6095
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,8,31.02675,g/L,98.0456
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,9,31.236887,g/L,98.2643
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,4,10,28.003463,g/L,92.5069
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,1,11.086486,g/L,27.8558
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,2,27.539715,g/L,91.0887
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,3,30.270892,g/L,97.1777
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,4,30.61926,g/L,97.6928
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,5,26.079035,g/L,86.6436
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,6,34.017155,g/L,99.7883
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,7,29.239234,g/L,95.4209
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,8,25.797657,g/L,85.6911
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,9,29.266,g/L,95.4773
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-sonnet-5,5,10,26.337838,g/L,87.4409
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,1,3,19.376033,g/L,62.9083
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,1,4,26.443849,g/L,87.7725
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,1,5,28.700624,g/L,94.3414
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,1,6,28.700624,g/L,94.3414
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,1,7,28.700624,g/L,94.3414
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,1,8,29.097215,g/L,95.1739
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,1,9,29.079657,g/L,95.1316
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,1,10,29.097215,g/L,95.1739
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,2,1,26.07458,g/L,86.6154
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,2,6,27.525295,g/L,91.0605
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,3,5,14.821715,g/L,44.6765
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,3,6,21.904024,g/L,72.1372
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,3,9,12.933517,g/L,36.5554
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,3,10,15.880351,g/L,49.0792
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,5,5,10.46327,g/L,24.8853
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,gpt-5.4-nano,5,9,8.221108,g/L,14.577
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,2,2,30.998587,g/L,98.0315
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,2,5,30.502441,g/L,97.5164
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,2,8,30.134151,g/L,96.8884
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,2,9,29.425058,g/L,95.7948
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,2,10,29.026683,g/L,95.0399
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,3,2,26.945467,g/L,89.4941
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,3,3,28.310135,g/L,93.3818
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,3,4,31.715716,g/L,98.6594
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,3,5,31.327989,g/L,98.3631
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,3,6,32.981855,g/L,99.5061
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,3,7,37.011514,g/L,100.0
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,3,9,33.756977,g/L,99.746
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,3,10,30.502441,g/L,97.5164
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,4,3,31.025636,g/L,98.0456
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,4,4,26.685305,g/L,88.5698
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,4,5,28.106124,g/L,92.7256
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,4,6,30.724195,g/L,97.7704
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,4,7,28.512431,g/L,93.8545
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,4,8,28.428895,g/L,93.6711
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,4,9,28.26751,g/L,93.2548
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,4,10,28.673817,g/L,94.2779
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,2,21.400225,g/L,70.4297
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,3,20.774267,g/L,68.1648
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,4,23.683638,g/L,78.833
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,5,26.039381,g/L,86.5096
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,6,25.947215,g/L,86.2838
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,7,22.844254,g/L,75.665
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,8,27.707282,g/L,91.5826
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,9,29.785145,g/L,96.4581
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,5,10,23.324901,g/L,77.4219
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,1,3,27.366922,g/L,90.6653
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,1,5,26.96098,g/L,89.5082
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,1,6,32.981855,g/L,99.5061
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,1,7,26.59488,g/L,88.2946
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,1,8,29.72602,g/L,96.3452
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,claude-haiku-4.5,1,9,25.401001,g/L,84.28
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,2,48.820293,g/L,84.3911
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,3,48.930427,g/L,85.2827
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,4,48.40681,g/L,81.1182
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,5,50.367338,g/L,94.3355
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,6,50.167949,g/L,93.2445
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,7,50.536701,g/L,95.1642
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,8,49.58776,g/L,90.192
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,9,50.475623,g/L,94.9439
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,1,10,49.53438,g/L,89.8668
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,1,45.61438,g/L,54.2327
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,2,50.884136,g/L,96.339
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,3,51.266645,g/L,97.43
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,4,50.090395,g/L,92.8249
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,5,49.06051,g/L,86.3317
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,6,49.067387,g/L,86.3841
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,7,51.896736,g/L,98.5524
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,8,52.162893,g/L,98.9615
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,9,49.804689,g/L,91.5242
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,2,10,53.412415,g/L,99.8112
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,1,46.179765,g/L,59.572
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,2,48.623154,g/L,82.8386
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,3,50.88511,g/L,96.3495
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,4,52.005417,g/L,98.7307
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,5,52.794635,g/L,99.5489
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,6,53.501139,g/L,99.8322
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,7,52.833173,g/L,99.6014
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,8,52.518055,g/L,99.2657
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,9,52.833173,g/L,99.6014
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,3,10,52.157872,g/L,98.9615
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,4,1,47.607949,g/L,74.048
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,4,2,48.134373,g/L,78.9468
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,4,4,50.256097,g/L,93.811
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,4,5,51.896736,g/L,98.5524
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,4,6,53.891725,g/L,99.8846
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,4,7,54.004735,g/L,99.9056
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,4,8,51.002037,g/L,96.6957
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,4,9,53.091674,g/L,99.6748
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,1,47.773051,g/L,75.5271
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,2,49.19058,g/L,87.5066
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,3,50.236725,g/L,93.748
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,4,53.778715,g/L,99.8531
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,5,53.778715,g/L,99.8531
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,6,54.004735,g/L,99.9056
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,7,53.778715,g/L,99.8531
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,8,53.778715,g/L,99.8531
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,9,53.778715,g/L,99.8531
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.2,5,10,53.264934,g/L,99.7378
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,1,42.197117,g/L,28.0814
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,2,49.659168,g/L,90.7269
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,3,50.917892,g/L,96.423
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,4,51.838512,g/L,98.4999
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,5,48.867693,g/L,84.7792
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,6,48.671174,g/L,83.2477
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,7,48.555681,g/L,82.2616
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,8,50.812763,g/L,96.1187
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,9,51.202349,g/L,97.1572
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,3,10,50.012309,g/L,92.3948
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,1,47.488583,g/L,72.7893
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,2,51.098532,g/L,96.8845
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,3,50.105073,g/L,92.8984
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,4,50.797294,g/L,96.0558
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,5,50.457202,g/L,94.8809
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,6,50.868639,g/L,96.2971
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,7,51.019276,g/L,96.7376
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,8,51.414791,g/L,97.7657
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,9,51.89514,g/L,98.5524
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,5,10,48.822173,g/L,84.4225
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,1,45.398585,g/L,52.0927
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,2,50.820969,g/L,96.1292
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,3,50.339872,g/L,94.1886
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,4,50.89349,g/L,96.402
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,5,49.5945,g/L,90.2444
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,6,49.640768,g/L,90.6116
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,7,51.720002,g/L,98.2692
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,8,51.720002,g/L,98.2692
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,9,51.797272,g/L,98.437
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,4,10,48.804428,g/L,84.2967
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,1,43.323858,g/L,35.5502
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,2,49.956301,g/L,92.1641
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,3,50.410884,g/L,94.5767
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,4,51.301457,g/L,97.4929
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,5,51.518714,g/L,97.9755
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,6,50.837749,g/L,96.2027
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,7,50.783137,g/L,96.0034
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,8,49.256476,g/L,88.0311
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,9,51.06134,g/L,96.853
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,1,10,49.6101,g/L,90.3808
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,1,48.916286,g/L,85.1568
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,2,49.536208,g/L,89.8982
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,3,49.884558,g/L,91.8703
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,4,48.814928,g/L,84.3596
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,5,50.176936,g/L,93.276
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,6,50.501206,g/L,95.0278
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,7,51.578898,g/L,98.0489
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,8,51.041448,g/L,96.7796
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,9,50.858226,g/L,96.2656
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-opus-5,2,10,50.909261,g/L,96.423
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,1,1,45.874945,g/L,56.6768
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,1,2,49.432827,g/L,89.122
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,1,6,54.878511,g/L,99.9895
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,1,7,54.878511,g/L,99.9895
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,1,8,54.878511,g/L,99.9895
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,1,9,54.004735,g/L,99.9056
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,1,10,53.891725,g/L,99.8846
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,2,1,44.983514,g/L,48.8514
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,2,3,49.538644,g/L,89.8982
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,2,5,52.089039,g/L,98.8671
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,2,8,50.67694,g/L,95.5943
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,2,9,51.830874,g/L,98.479
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,2,10,51.253907,g/L,97.388
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,2,47.585692,g/L,73.8487
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,3,51.002037,g/L,96.6957
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,4,51.827823,g/L,98.4685
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,5,50.256097,g/L,93.811
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,6,54.878511,g/L,99.9895
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,7,53.891725,g/L,99.8846
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,8,53.778715,g/L,99.8531
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,9,52.914995,g/L,99.6224
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,3,10,52.051276,g/L,98.7727
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,4,3,54.004735,g/L,99.9056
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,4,5,53.891725,g/L,99.8846
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,4,6,54.328613,g/L,99.9476
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,4,7,54.328613,g/L,99.9476
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,4,8,53.778715,g/L,99.8531
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,4,9,54.004735,g/L,99.9056
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,4,10,51.859213,g/L,98.5209
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,5,5,52.026005,g/L,98.7622
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.6-sol,5,8,54.878511,g/L,99.9895
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,1,48.236347,g/L,79.7755
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,2,49.41742,g/L,89.0171
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,3,50.086333,g/L,92.7935
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,4,51.507035,g/L,97.944
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,5,51.512253,g/L,97.944
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,6,50.395311,g/L,94.5138
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,7,49.181064,g/L,87.4541
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,8,50.068767,g/L,92.699
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,9,48.809355,g/L,84.3176
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,2,10,49.868426,g/L,91.8179
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,1,41.714688,g/L,25.2177
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,2,49.82079,g/L,91.6186
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,3,49.446299,g/L,89.143
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,4,50.54801,g/L,95.2061
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,5,50.578957,g/L,95.2586
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,6,50.253568,g/L,93.811
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,7,49.671304,g/L,90.7689
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,8,49.71454,g/L,91.0102
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,9,50.728353,g/L,95.825
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,3,10,49.791667,g/L,91.4298
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,1,48.443944,g/L,81.3385
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,2,52.259042,g/L,99.0769
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,3,52.259042,g/L,99.0769
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,4,51.223342,g/L,97.2936
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,5,51.057618,g/L,96.8321
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,6,49.342182,g/L,88.4716
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,7,51.172102,g/L,97.0733
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,8,50.530361,g/L,95.1222
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,9,51.774343,g/L,98.4055
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,4,10,50.538456,g/L,95.1747
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,1,46.963423,g/L,67.7122
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,2,51.470039,g/L,97.881
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,3,51.126931,g/L,96.9474
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,4,52.089217,g/L,98.8671
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,5,51.470039,g/L,97.881
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,6,49.924296,g/L,92.0277
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,7,50.891259,g/L,96.381
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,8,49.318748,g/L,88.3877
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,9,50.44301,g/L,94.818
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,5,10,50.530361,g/L,95.1222
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,1,49.111375,g/L,86.7618
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,2,50.114234,g/L,92.9403
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,3,50.462973,g/L,94.9019
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,4,50.462973,g/L,94.9019
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,5,50.099575,g/L,92.8984
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,6,50.601273,g/L,95.3215
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,7,49.909268,g/L,91.9752
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,8,50.827923,g/L,96.1502
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,9,50.184668,g/L,93.3075
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-sonnet-5,1,10,49.984668,g/L,92.2899
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,1,4,49.946139,g/L,92.1116
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,1,5,50.242309,g/L,93.769
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,1,6,51.189358,g/L,97.0838
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,1,7,49.29526,g/L,88.2723
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,1,8,48.728236,g/L,83.6463
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,1,9,48.617961,g/L,82.7861
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,1,10,48.617961,g/L,82.7861
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,2,3,46.889392,g/L,67.0513
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,2,5,47.853157,g/L,76.2614
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,2,6,53.080391,g/L,99.6748
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,2,7,53.080391,g/L,99.6748
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,2,8,50.730506,g/L,95.846
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,2,9,50.088232,g/L,92.7935
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,2,10,51.505232,g/L,97.944
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,2,48.09419,g/L,78.4958
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,3,48.09419,g/L,78.4958
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,4,51.024964,g/L,96.7481
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,5,51.024964,g/L,96.7481
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,6,51.024964,g/L,96.7481
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,7,50.830209,g/L,96.1712
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,8,49.656973,g/L,90.706
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,9,50.768065,g/L,95.9824
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,3,10,50.768065,g/L,95.9824
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,4,8,45.428499,g/L,52.4074
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,5,1,49.560933,g/L,89.9822
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,5,2,44.471576,g/L,44.3407
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,5,3,46.339944,g/L,61.3343
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,5,8,49.156478,g/L,87.1499
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,5,9,49.693663,g/L,90.9158
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,gpt-5.4-nano,5,10,49.693663,g/L,90.9158
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,1,3,50.545514,g/L,95.1747
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,1,4,52.250218,g/L,99.0664
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,1,5,50.156773,g/L,93.1606
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,1,6,50.545514,g/L,95.1747
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,1,7,52.250218,g/L,99.0664
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,1,8,50.154854,g/L,93.1606
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,1,9,50.132457,g/L,93.0452
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,1,10,51.131767,g/L,96.9789
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,2,50.363611,g/L,94.325
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,3,50.303233,g/L,94.0417
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,4,51.451859,g/L,97.8601
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,5,51.138146,g/L,97.0104
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,6,51.788587,g/L,98.416
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,7,50.382109,g/L,94.4299
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,8,49.611104,g/L,90.3913
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,9,49.105806,g/L,86.7093
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,2,10,45.640742,g/L,54.5264
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,2,48.125422,g/L,78.8419
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,3,49.236073,g/L,87.9052
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,4,49.767351,g/L,91.2829
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,5,49.198815,g/L,87.58
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,6,50.200502,g/L,93.4543
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,7,51.618543,g/L,98.1013
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,8,48.807877,g/L,84.3071
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,9,49.78183,g/L,91.3668
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,4,10,50.324662,g/L,94.1152
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,2,50.028754,g/L,92.5312
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,3,46.766579,g/L,65.5827
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,4,49.619017,g/L,90.4647
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,5,49.25191,g/L,88.0101
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,6,48.732796,g/L,83.6882
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,7,51.17171,g/L,97.0523
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,8,50.370525,g/L,94.3564
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,9,49.4909,g/L,89.5521
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,3,10,50.344992,g/L,94.2096
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,2,46.115043,g/L,58.9846
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,3,50.545514,g/L,95.1747
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,4,53.075389,g/L,99.6643
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,5,51.266427,g/L,97.43
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,6,50.117284,g/L,92.9718
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,7,51.507035,g/L,97.944
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,8,51.330743,g/L,97.5768
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,9,51.573702,g/L,98.0489
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,claude-haiku-4.5,5,10,51.099144,g/L,96.8845
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,1,104.721838,g/L,47.4513
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,2,120.607372,g/L,70.0375
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,3,125.783376,g/L,77.1645
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,4,122.885987,g/L,73.2637
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,5,129.517127,g/L,82.1621
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,6,124.914446,g/L,76.0871
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,7,121.208966,g/L,70.8588
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,8,120.176127,g/L,69.4314
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,9,139.680891,g/L,92.0968
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,2,10,146.319189,g/L,96.023
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,1,90.949581,g/L,31.6694
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,2,125.741862,g/L,77.1058
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,3,135.712371,g/L,88.8961
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,4,131.954283,g/L,85.1038
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,5,124.956317,g/L,76.1341
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,6,145.132462,g/L,95.4364
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,7,140.872986,g/L,92.9435
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,8,144.877652,g/L,95.3269
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,9,138.06972,g/L,90.9843
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,1,10,133.230122,g/L,86.4813
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,1,85.867341,g/L,26.9142
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,2,128.863282,g/L,81.3566
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,3,137.232641,g/L,90.2471
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,4,135.184141,g/L,88.4307
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,5,142.377867,g/L,93.8937
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,6,147.399268,g/L,96.4316
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,7,149.90621,g/L,97.3487
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,8,152.287537,g/L,98.0447
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,3,9,140.598851,g/L,92.7518
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,1,123.825062,g/L,74.5698
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,2,150.781224,g/L,97.597
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,3,158.10665,g/L,99.126
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,4,159.971199,g/L,99.3313
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,5,176.063586,g/L,99.957
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,6,161.467849,g/L,99.476
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,7,145.204754,g/L,95.4677
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,8,126.330573,g/L,77.9153
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,9,151.302296,g/L,97.7573
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,4,10,156.774624,g/L,98.9324
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,1,110.715954,g/L,55.5099
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,2,122.120126,g/L,72.1668
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,3,114.474041,g/L,60.8615
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,4,139.175924,g/L,91.7429
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,5,145.377609,g/L,95.5635
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,6,147.152331,g/L,96.3261
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,7,148.813605,g/L,96.985
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,8,149.458145,g/L,97.204
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,9,150.339601,g/L,97.466
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.2,5,10,147.138016,g/L,96.3241
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,1,113.704959,g/L,59.7665
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,2,117.862082,g/L,66.0312
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,3,124.034063,g/L,74.8397
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,4,115.944208,g/L,63.0631
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,5,124.250222,g/L,75.1466
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,6,124.075935,g/L,74.9101
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,7,125.599068,g/L,76.9455
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,8,121.170315,g/L,70.8099
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,9,120.168612,g/L,69.4119
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,3,10,139.995467,g/L,92.3256
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,1,110.250353,g/L,54.8256
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,2,130.484474,g/L,83.3431
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,3,126.609718,g/L,78.367
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,4,128.434543,g/L,80.7465
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,5,128.347579,g/L,80.6233
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,6,114.494083,g/L,60.8781
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,7,121.271595,g/L,70.9741
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,8,125.250136,g/L,76.4782
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,9,126.022439,g/L,77.4832
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,5,10,130.139121,g/L,82.9149
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,1,101.557114,g/L,43.5105
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,2,120.793827,g/L,70.3171
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,3,125.93619,g/L,77.3698
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,4,133.505689,g/L,86.7374
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,5,120.545816,g/L,69.9613
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,6,116.321413,g/L,63.6536
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,7,141.14068,g/L,93.1155
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,8,151.517739,g/L,97.8316
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,9,147.916403,g/L,96.6174
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,4,10,152.002665,g/L,97.9802
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,1,100.442679,g/L,42.0264
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,3,117.328126,g/L,65.1494
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,4,121.614085,g/L,71.4786
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,5,120.773428,g/L,70.2995
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,6,137.077321,g/L,90.1357
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,7,153.028704,g/L,98.2207
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,8,143.932136,g/L,94.7873
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,9,145.537223,g/L,95.6319
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,2,10,145.035477,g/L,95.3914
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,1,106.994012,g/L,50.3989
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,2,136.090291,g/L,89.25
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,3,136.713716,g/L,89.8346
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,4,122.872388,g/L,73.2285
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,5,131.332648,g/L,84.397
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,6,136.714074,g/L,89.8365
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,7,139.284719,g/L,91.8016
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,8,144.31113,g/L,94.9984
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,9,129.873575,g/L,82.6294
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-opus-5,1,10,134.312348,g/L,87.5704
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,1,100.618756,g/L,42.2611
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,2,136.983199,g/L,90.0575
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,3,139.710953,g/L,92.1144
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,4,156.621452,g/L,98.9148
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,5,138.826992,g/L,91.5308
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,6,138.826992,g/L,91.5308
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,8,137.041176,g/L,90.1064
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,9,136.331144,g/L,89.465
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,1,10,133.696438,g/L,86.9506
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,1,114.01023,g/L,60.1889
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,3,136.742347,g/L,89.8737
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,4,134.105494,g/L,87.369
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,5,131.328353,g/L,84.3931
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,6,126.441873,g/L,78.0795
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,7,150.090518,g/L,97.3956
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,8,151.909617,g/L,97.9509
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,9,150.773709,g/L,97.5911
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,2,10,146.775842,g/L,96.197
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,1,109.452999,g/L,53.7228
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,2,132.70905,g/L,85.9065
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,3,154.386139,g/L,98.5296
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,4,139.258594,g/L,91.7938
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,5,149.051237,g/L,97.0749
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,6,142.550723,g/L,94.0032
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,7,138.251164,g/L,91.127
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,9,152.174805,g/L,98.0193
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,3,10,140.642154,g/L,92.7733
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,1,115.5373,g/L,62.4531
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,2,136.815712,g/L,89.9421
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,3,139.225669,g/L,91.7742
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,4,146.640922,g/L,96.1462
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,5,167.601179,g/L,99.8221
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,6,154.061901,g/L,98.469
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,7,153.408414,g/L,98.3126
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,8,157.740897,g/L,99.0595
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,9,161.222344,g/L,99.4506
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,4,10,160.875917,g/L,99.4193
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,1,116.664977,g/L,64.1366
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,2,141.541146,g/L,93.3462
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,3,128.404482,g/L,80.7015
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,4,148.23241,g/L,96.7543
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,5,127.17302,g/L,79.0924
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,6,138.089403,g/L,90.9921
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,7,135.551325,g/L,88.7553
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,8,138.029279,g/L,90.9628
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,9,127.821497,g/L,79.9155
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.6-sol,5,10,122.97152,g/L,73.3928
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,1,118.443277,g/L,66.9052
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,2,132.476429,g/L,85.6777
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,3,128.326822,g/L,80.5921
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,4,127.479364,g/L,79.456
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,5,128.990329,g/L,81.5286
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,6,151.306948,g/L,97.7612
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,7,146.603345,g/L,96.1325
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,8,131.085711,g/L,84.0842
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,9,126.294069,g/L,77.8527
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,3,10,127.551298,g/L,79.5675
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,1,107.680782,g/L,51.3276
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,2,122.600758,g/L,72.8394
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,3,130.9694,g/L,83.918
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,4,129.683183,g/L,82.3753
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,5,127.925282,g/L,80.0192
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,6,124.337545,g/L,75.262
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,7,127.876968,g/L,79.9625
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,8,135.426425,g/L,88.6536
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,9,128.019046,g/L,80.1678
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,4,10,135.325146,g/L,88.55
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,1,100.482046,g/L,42.0714
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,2,113.931139,g/L,60.0774
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,3,124.012233,g/L,74.8123
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,4,131.371656,g/L,84.4439
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,5,134.268687,g/L,87.5391
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,6,138.258322,g/L,91.129
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,7,125.783734,g/L,77.1645
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,8,112.417311,g/L,57.8562
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,9,116.24769,g/L,63.5519
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,5,10,134.887102,g/L,88.1355
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,1,116.535066,g/L,63.9469
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,2,122.734247,g/L,73.0193
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,3,132.36155,g/L,85.5447
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,4,134.821968,g/L,88.0768
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,5,127.043826,g/L,78.9438
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,6,148.925264,g/L,97.0241
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,7,145.032972,g/L,95.3914
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,8,140.728761,g/L,92.8242
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,9,118.228192,g/L,66.5748
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,1,10,131.103605,g/L,84.1057
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,1,101.748938,g/L,43.7314
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,2,122.257194,g/L,72.3506
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,3,127.666177,g/L,79.7112
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,4,120.792753,g/L,70.3152
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,5,128.655355,g/L,81.0701
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,6,117.235794,g/L,65.0086
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,7,140.355135,g/L,92.5798
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,8,119.072429,g/L,67.7949
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,9,130.316629,g/L,83.1437
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-sonnet-5,2,10,125.783376,g/L,77.1645
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,1,2,104.229755,g/L,46.8403
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,1,4,124.419141,g/L,75.3911
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,1,5,124.339334,g/L,75.264
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,1,6,136.212328,g/L,89.3555
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,1,7,155.158084,g/L,98.6587
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,1,8,137.892212,g/L,90.8249
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,1,10,147.181677,g/L,96.3397
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,2,2,92.548942,g/L,33.306
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,2,3,125.64595,g/L,77.0002
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,2,4,126.09473,g/L,77.5868
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,2,5,107.089924,g/L,50.5162
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,2,6,117.998434,g/L,66.2346
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,2,7,124.027621,g/L,74.8338
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,2,8,112.052632,g/L,57.3342
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,2,9,135.461856,g/L,88.679
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,1,103.025492,g/L,45.3015
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,2,110.856958,g/L,55.7015
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,3,110.086803,g/L,54.6007
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,4,123.929562,g/L,74.736
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,5,119.509399,g/L,68.4293
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,6,109.470893,g/L,53.7424
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,7,107.209813,g/L,50.6922
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,9,111.711573,g/L,56.8239
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,3,10,113.882467,g/L,60.007
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,1,109.551773,g/L,53.8499
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,3,124.604164,g/L,75.6335
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,4,117.51315,g/L,65.4681
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,5,132.746985,g/L,85.9377
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,6,130.41934,g/L,83.2473
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,7,128.486794,g/L,80.8228
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,8,130.286567,g/L,83.1143
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,9,136.841121,g/L,89.9617
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,4,10,125.296302,g/L,76.5456
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,1,110.391,g/L,55.0133
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,3,137.213315,g/L,90.2335
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,4,131.499777,g/L,84.5808
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,5,145.16145,g/L,95.4462
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,6,140.099967,g/L,92.3921
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,7,141.182909,g/L,93.137
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,8,138.076877,g/L,90.9862
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,9,143.28008,g/L,94.4216
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,gpt-5.4-nano,5,10,148.495093,g/L,96.8814
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,1,81.020228,g/L,22.5637
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,2,119.481484,g/L,68.3814
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,3,129.433384,g/L,82.0565
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,4,135.713802,g/L,88.8961
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,5,118.830145,g/L,67.4918
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,6,127.257121,g/L,79.2077
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,7,138.868506,g/L,91.5669
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,8,142.575416,g/L,94.013
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,1,9,128.038013,g/L,80.1912
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,4,2,116.52934,g/L,63.9391
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,4,3,120.389781,g/L,69.7579
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,4,4,123.642186,g/L,74.3117
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,4,6,135.162669,g/L,88.417
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,4,7,132.760585,g/L,85.9514
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,4,9,127.570981,g/L,79.6007
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,4,10,129.55542,g/L,82.213
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,3,1,117.381092,g/L,65.2452
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,3,2,97.175602,g/L,38.2626
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,3,3,124.800282,g/L,75.9131
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,3,5,122.654797,g/L,72.9255
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,3,6,123.669384,g/L,74.3645
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,3,7,139.616473,g/L,92.0519
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,3,8,136.775629,g/L,89.8952
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,3,10,107.420604,g/L,50.9894
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,1,83.650638,g/L,24.7615
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,2,133.838874,g/L,87.0757
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,3,143.316942,g/L,94.4451
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,4,130.21857,g/L,83.0303
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,5,140.166175,g/L,92.4507
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,6,139.503383,g/L,91.9678
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,7,127.05492,g/L,78.9516
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,8,137.57871,g/L,90.5424
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,2,9,140.313263,g/L,92.5602
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,1,117.398271,g/L,65.2863
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,2,126.110477,g/L,77.6122
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,3,109.702441,g/L,54.0513
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,4,122.649429,g/L,72.9137
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,5,128.437764,g/L,80.7504
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,6,123.066358,g/L,73.5238
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,7,145.150356,g/L,95.4423
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,8,144.02089,g/L,94.8283
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,9,132.414874,g/L,85.6093
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,claude-haiku-4.5,5,10,130.831975,g/L,83.7791
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,1,4.40605,mol/kg,43.3594
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,2,6.94661,mol/kg,75.8535
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,3,7.631255,mol/kg,82.0872
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,4,6.36436,mol/kg,69.4315
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,5,7.63927,mol/kg,82.1597
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,6,9.629705,mol/kg,94.1565
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,7,13.0228,mol/kg,99.698
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,8,8.511345,mol/kg,88.5954
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,9,9.548195,mol/kg,93.7741
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,1,10,7.448315,mol/kg,80.5067
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,1,6.3581,mol/kg,69.3806
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,2,6.74102,mol/kg,73.6553
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,3,8.66131,mol/kg,89.4857
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,4,9.435215,mol/kg,93.3016
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,5,9.295475,mol/kg,92.6878
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,6,13.1605,mol/kg,99.7314
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,7,13.1605,mol/kg,99.7314
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,8,13.1605,mol/kg,99.7314
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,9,12.7925,mol/kg,99.6078
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,2,10,12.2767,mol/kg,99.2882
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,1,5.11872,mol/kg,53.7679
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,2,8.11429,mol/kg,85.8913
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,3,8.751865,mol/kg,90.0033
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,4,9.74894,mol/kg,94.584
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,5,10.6802,mol/kg,97.1489
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,6,9.135,mol/kg,91.978
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,7,8.42906,mol/kg,88.0934
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,8,9.62714,mol/kg,94.1467
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,9,10.708295,mol/kg,97.1998
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,3,10,9.43162,mol/kg,93.2878
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,1,4.117295,mol/kg,39.0435
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,2,7.520475,mol/kg,81.1538
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,3,7.81002,mol/kg,83.5833
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,4,8.17748,mol/kg,86.409
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,5,9.852505,mol/kg,94.9389
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,6,8.788265,mol/kg,90.2092
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,7,10.9613,mol/kg,97.7057
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,8,10.54565,mol/kg,96.8292
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,9,10.26995,mol/kg,96.1625
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,4,10,11.58495,mol/kg,98.6038
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,1,3.528085,mol/kg,29.9841
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,2,6.249455,mol/kg,68.1922
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,3,6.92606,mol/kg,75.6476
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,4,7.89143,mol/kg,84.254
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,5,8.17594,mol/kg,86.3992
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,6,12.7445,mol/kg,99.5784
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,7,13.10485,mol/kg,99.7196
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,8,8.149535,mol/kg,86.1855
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,9,13.1852,mol/kg,99.7392
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.2,5,10,12.9052,mol/kg,99.6588
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,1,3.65841,mol/kg,32.0529
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,2,7.36788,mol/kg,79.8518
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,3,7.148745,mol/kg,77.885
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,4,7.30038,mol/kg,79.2635
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,6,5.84532,mol/kg,63.2802
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,7,6.132525,mol/kg,66.8667
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,8,7.225665,mol/kg,78.5634
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,9,8.229525,mol/kg,86.758
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,3,10,7.742685,mol/kg,83.048
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,2,2,6.87586,mol/kg,75.1299
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,2,3,6.67121,mol/kg,72.9121
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,2,4,7.59114,mol/kg,81.7499
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,2,5,6.66324,mol/kg,72.7964
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,2,6,6.826065,mol/kg,74.5926
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,2,8,7.24767,mol/kg,78.7595
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,2,9,7.828075,mol/kg,83.7049
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,2,10,7.387945,mol/kg,80.0067
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,1,5.39024,mol/kg,57.5348
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,2,6.707235,mol/kg,73.2847
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,3,6.97477,mol/kg,76.1692
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,4,7.00697,mol/kg,76.5065
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,5,6.55445,mol/kg,71.5493
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,6,6.36628,mol/kg,69.4551
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,7,7.070515,mol/kg,77.1143
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,8,9.607315,mol/kg,94.0506
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,9,11.8583,mol/kg,98.9058
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,4,10,8.380105,mol/kg,87.7561
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,1,4.324855,mol/kg,42.1495
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,2,7.232635,mol/kg,78.636
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,4,6.732285,mol/kg,73.5455
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,5,6.645745,mol/kg,72.5611
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,6,7.250275,mol/kg,78.7909
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,7,7.060125,mol/kg,77.0163
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,8,5.56546,mol/kg,59.8329
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,9,6.91032,mol/kg,75.477
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,5,10,10.27705,mol/kg,96.1782
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,1,3.40831,mol/kg,28.082
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,2,8.98145,mol/kg,91.1995
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,3,8.884225,mol/kg,90.6896
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,4,8.98656,mol/kg,91.2211
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,5,9.188465,mol/kg,92.2192
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,6,9.11959,mol/kg,91.8838
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,7,8.735315,mol/kg,89.9131
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,8,9.14002,mol/kg,91.9917
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,9,9.26402,mol/kg,92.5309
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-opus-5,1,10,10.132225,mol/kg,95.7468
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,1,5.058985,mol/kg,52.9521
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,2,9.28556,mol/kg,92.6407
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,3,11.4109,mol/kg,98.396
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,4,9.35942,mol/kg,92.931
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,5,9.222715,mol/kg,92.3466
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,7,9.242685,mol/kg,92.4447
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,8,8.4609,mol/kg,88.2797
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,9,9.346285,mol/kg,92.8839
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,1,10,11.26915,mol/kg,98.1862
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,2,1,5.54852,mol/kg,59.5937
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,2,2,5.95055,mol/kg,64.6116
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,2,3,8.883105,mol/kg,90.6838
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,2,4,8.9845,mol/kg,91.2132
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,2,5,9.71385,mol/kg,94.4742
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,2,6,11.564,mol/kg,98.5646
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,2,8,8.211215,mol/kg,86.6463
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,2,9,11.6703,mol/kg,98.7274
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,3,1,5.85127,mol/kg,63.341
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,3,2,9.923945,mol/kg,95.1625
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,3,3,10.9596,mol/kg,97.7057
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,3,4,10.91355,mol/kg,97.6352
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,3,6,9.46146,mol/kg,93.4035
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,3,8,7.991645,mol/kg,85.0246
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,3,9,8.450905,mol/kg,88.2189
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,3,10,8.667075,mol/kg,89.5268
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,1,5.27203,mol/kg,55.9386
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,2,7.10965,mol/kg,77.5006
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,3,10.3788,mol/kg,96.4253
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,4,6.4693,mol/kg,70.5963
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,5,5.57101,mol/kg,59.9133
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,6,8.368745,mol/kg,87.6797
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,7,11.8355,mol/kg,98.8882
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,8,12.091,mol/kg,99.1392
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,9,10.6084,mol/kg,96.9881
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,4,10,10.74515,mol/kg,97.2842
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,5,3,3.470315,mol/kg,29.0958
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,5,4,7.69923,mol/kg,82.6715
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,5,5,6.67112,mol/kg,72.9102
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,5,6,7.316505,mol/kg,79.4302
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,5,7,10.21865,mol/kg,95.9841
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,5,8,10.97625,mol/kg,97.7195
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,5,9,13.88055,mol/kg,99.8941
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.6-sol,5,10,14.24725,mol/kg,99.9333
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,1,3.36484,mol/kg,27.2859
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,2,5.39412,mol/kg,57.6053
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,3,7.259535,mol/kg,78.8733
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,4,5.311915,mol/kg,56.5014
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,5,4.650345,mol/kg,47.0557
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,6,6.725335,mol/kg,73.4651
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,7,3.462285,mol/kg,28.9762
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,8,7.08809,mol/kg,77.2869
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,9,5.88271,mol/kg,63.7214
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,3,10,7.710375,mol/kg,82.7911
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,1,4.86128,mol/kg,50.0402
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,2,6.63545,mol/kg,72.4749
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,3,8.913855,mol/kg,90.8446
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,4,6.053965,mol/kg,65.9372
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,5,7.68638,mol/kg,82.5754
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,6,9.229295,mol/kg,92.3623
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,7,8.42615,mol/kg,88.0856
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,8,8.899285,mol/kg,90.7622
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,9,8.50547,mol/kg,88.5621
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,4,10,9.938255,mol/kg,95.2056
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,1,5.516605,mol/kg,59.1741
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,2,6.93177,mol/kg,75.7221
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,3,7.646815,mol/kg,82.2441
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,4,8.92724,mol/kg,90.9191
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,5,9.66718,mol/kg,94.2781
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,6,10.43,mol/kg,96.5586
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,7,7.314625,mol/kg,79.4027
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,8,8.15749,mol/kg,86.2462
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,9,9.999065,mol/kg,95.3978
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,5,10,5.873305,mol/kg,63.6135
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,1,4.917665,mol/kg,50.8736
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,2,10.71925,mol/kg,97.2214
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,3,5.19141,mol/kg,54.766
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,4,6.305115,mol/kg,68.8237
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,5,8.72695,mol/kg,89.8837
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,6,5.76567,mol/kg,62.2625
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,7,8.99643,mol/kg,91.2779
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,8,8.45125,mol/kg,88.2228
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,9,8.12784,mol/kg,85.9972
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,1,10,12.19385,mol/kg,99.2294
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,1,5.67603,mol/kg,61.2056
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,2,5.40026,mol/kg,57.6956
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,3,3.30464,mol/kg,26.3074
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,4,4.476745,mol/kg,44.4222
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,5,5.301285,mol/kg,56.3621
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,6,5.848535,mol/kg,63.3155
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,7,5.13921,mol/kg,54.0306
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,8,10.8574,mol/kg,97.5391
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,9,10.44045,mol/kg,96.588
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-sonnet-5,2,10,8.262035,mol/kg,86.9855
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,1,5.72688,mol/kg,61.833
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,2,7.490505,mol/kg,80.8695
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,3,5.387185,mol/kg,57.5132
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,4,8.691595,mol/kg,89.6327
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,5,7.586055,mol/kg,81.7126
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,7,7.8,mol/kg,83.499
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,8,7.586055,mol/kg,81.7126
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,9,7.586055,mol/kg,81.7126
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,1,10,7.586055,mol/kg,81.7126
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,1,4.811765,mol/kg,49.3382
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,2,8.46676,mol/kg,88.317
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,3,7.87228,mol/kg,84.101
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,4,8.487455,mol/kg,88.4327
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,5,4.825275,mol/kg,49.5108
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,6,8.179905,mol/kg,86.4247
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,7,9.92329,mol/kg,95.1585
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,8,10.35685,mol/kg,96.3782
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,9,9.990425,mol/kg,95.3801
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,2,10,9.60375,mol/kg,94.0271
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,1,4.304065,mol/kg,41.8358
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,3,4.50445,mol/kg,44.8046
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,4,5.02564,mol/kg,52.4678
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,5,6.22467,mol/kg,67.9197
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,6,6.5607,mol/kg,71.6199
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,7,7.278095,mol/kg,79.0752
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,8,7.57883,mol/kg,81.6617
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,9,7.0969,mol/kg,77.3732
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,3,10,7.509775,mol/kg,81.0616
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,1,5.4527,mol/kg,58.3525
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,2,7.449235,mol/kg,80.5106
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,3,10.1316,mol/kg,95.7468
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,4,10.4992,mol/kg,96.7253
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,5,10.3559,mol/kg,96.3763
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,6,10.92125,mol/kg,97.643
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,7,10.92125,mol/kg,97.643
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,8,10.6545,mol/kg,97.0959
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,9,10.6545,mol/kg,97.0959
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,4,10,10.8872,mol/kg,97.5881
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,5,1,5.52334,mol/kg,59.2623
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,5,2,5.309625,mol/kg,56.4719
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,5,3,5.12908,mol/kg,53.9051
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,5,5,8.22542,mol/kg,86.7443
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,5,6,10.9555,mol/kg,97.7018
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,5,8,9.86497,mol/kg,94.9664
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,5,9,10.1474,mol/kg,95.7782
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,gpt-5.4-nano,5,10,10.8454,mol/kg,97.5097
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,1,3.69223,mol/kg,32.5745
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,2,4.163535,mol/kg,39.6965
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,3,3.476515,mol/kg,29.188
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,4,4.348085,mol/kg,42.5005
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,5,5.930045,mol/kg,64.3508
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,6,3.197085,mol/kg,24.6054
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,7,6.002065,mol/kg,65.3136
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,8,3.50649,mol/kg,29.639
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,9,3.791275,mol/kg,34.0589
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,1,10,7.032925,mol/kg,76.7555
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,1,7.363205,mol/kg,79.8223
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,2,7.630815,mol/kg,82.0833
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,3,8.19052,mol/kg,86.4757
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,4,12.05055,mol/kg,99.1058
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,5,11.1017,mol/kg,97.9352
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,6,12.4917,mol/kg,99.4255
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,7,12.4917,mol/kg,99.4255
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,8,10.25995,mol/kg,96.1272
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,9,9.239115,mol/kg,92.4133
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,3,10,12.3097,mol/kg,99.3196
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,1,7.857295,mol/kg,83.9794
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,2,7.150555,mol/kg,77.9105
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,3,10.25733,mol/kg,96.1155
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,4,9.58306,mol/kg,93.9428
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,5,9.75988,mol/kg,94.6232
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,6,7.2608,mol/kg,78.8909
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,7,8.562165,mol/kg,88.917
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,8,8.769305,mol/kg,90.1014
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,9,9.60835,mol/kg,94.0526
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,5,10,8.293775,mol/kg,87.1894
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,1,6.243675,mol/kg,68.1217
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,2,6.910155,mol/kg,75.475
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,3,7.082045,mol/kg,77.2398
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,4,6.80961,mol/kg,74.3965
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,5,7.29516,mol/kg,79.2243
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,6,6.40052,mol/kg,69.8119
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,7,5.90914,mol/kg,64.0508
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,8,7.52801,mol/kg,81.2205
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,9,6.868355,mol/kg,75.0534
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,claude-haiku-4.5,4,10,7.613535,mol/kg,81.9499
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,1,6.834098,dimensionless,64.132
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,2,8.688504,dimensionless,78.7632
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,3,8.184795,dimensionless,75.3401
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,4,10.764975,dimensionless,88.9828
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,5,10.931275,dimensionless,89.5596
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,6,27.931939,dimensionless,99.5923
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,7,17.440335,dimensionless,98.2357
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,8,26.987456,dimensionless,99.5564
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,9,27.916771,dimensionless,99.5903
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,2,10,26.717113,dimensionless,99.5465
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,1,2,6.990692,dimensionless,65.5402
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,1,3,6.969887,dimensionless,65.3652
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,1,5.97796,dimensionless,55.2928
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,2,6.980562,dimensionless,65.4507
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,3,3.310075,dimensionless,20.9325
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,4,8.356034,dimensionless,76.5972
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,5,9.321125,dimensionless,82.423
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,6,54.610358,dimensionless,99.8986
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,7,9.178669,dimensionless,81.6413
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,8,7.516343,dimensionless,70.1866
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,9,6.731924,dimensionless,63.1295
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,3,10,12.806607,dimensionless,94.196
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,1,4.585776,dimensionless,38.764
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,2,8.222325,dimensionless,75.6544
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,3,10.958226,dimensionless,89.673
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,4,11.249931,dimensionless,90.5124
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,5,9.888025,dimensionless,85.331
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,6,20.7213,dimensionless,99.0532
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,7,30.971936,dimensionless,99.6917
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,8,30.971936,dimensionless,99.6917
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,9,13.728337,dimensionless,95.5963
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,4,10,23.662832,dimensionless,99.3814
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,5,1,6.700978,dimensionless,62.8292
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.2,5,3,7.004466,dimensionless,65.6735
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,1,7.073165,dimensionless,66.312
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,2,12.233777,dimensionless,93.124
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,3,14.133597,dimensionless,96.0617
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,4,14.622822,dimensionless,96.5232
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,5,14.889587,dimensionless,96.7539
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,6,13.577349,dimensionless,95.3596
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,7,13.2084,dimensionless,94.8643
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,8,16.329093,dimensionless,97.7663
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,9,14.302797,dimensionless,96.2308
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,2,10,11.179014,dimensionless,90.3055
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,1,4.696298,dimensionless,40.0927
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,2,10.08683,dimensionless,86.2539
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,3,10.836461,dimensionless,89.2295
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,5,8.983572,dimensionless,80.5394
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,6,7.556024,dimensionless,70.5028
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,7,11.455437,dimensionless,91.1528
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,8,11.980135,dimensionless,92.5392
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,9,11.337903,dimensionless,90.7968
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,3,10,10.510641,dimensionless,88.0599
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,1,5.669187,dimensionless,51.9393
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,2,8.262263,dimensionless,75.9468
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,3,10.068417,dimensionless,86.1644
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,4,10.342379,dimensionless,87.3737
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,5,9.810388,dimensionless,84.965
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,6,11.518163,dimensionless,91.306
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,7,10.639455,dimensionless,88.5552
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,8,10.645247,dimensionless,88.581
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,9,7.644271,dimensionless,71.2209
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,4,10,9.580051,dimensionless,83.7875
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,1,6.013583,dimensionless,55.7145
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,2,8.577701,dimensionless,78.0313
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,3,9.119258,dimensionless,81.2933
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,4,9.992497,dimensionless,85.7865
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,5,12.360529,dimensionless,93.3606
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,6,10.052606,dimensionless,86.0888
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,7,9.46406,dimensionless,83.2047
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,8,10.196278,dimensionless,86.7571
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,9,9.872495,dimensionless,85.2395
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,1,10,10.97125,dimensionless,89.7168
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,1,5.513718,dimensionless,50.1472
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,2,9.195835,dimensionless,81.7368
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,3,6.525329,dimensionless,61.0053
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,4,8.015969,dimensionless,74.095
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,5,9.59253,dimensionless,83.8651
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,6,8.941243,dimensionless,80.3007
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,7,9.709657,dimensionless,84.4399
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,8,9.631075,dimensionless,84.062
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,9,10.376658,dimensionless,87.5109
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-opus-5,5,10,12.419412,dimensionless,93.47
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,1,3.373244,dimensionless,21.919
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,2,7.32438,dimensionless,68.5078
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,3,8.405116,dimensionless,76.9154
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,4,12.02747,dimensionless,92.6347
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,5,9.04787,dimensionless,80.9034
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,6,26.941568,dimensionless,99.5525
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,7,12.916411,dimensionless,94.3969
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,9,10.23557,dimensionless,86.9202
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,1,10,23.825991,dimensionless,99.3973
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,2,11.188073,dimensionless,90.3294
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,3,3.415676,dimensionless,22.5674
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,4,9.763643,dimensionless,84.7502
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,5,8.307057,dimensionless,76.2431
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,6,13.766136,dimensionless,95.6421
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,7,10.956478,dimensionless,89.6631
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,8,18.925721,dimensionless,98.7071
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,9,11.604539,dimensionless,91.5367
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,2,10,8.517435,dimensionless,77.6534
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,1,9.684894,dimensionless,84.3345
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,2,13.023205,dimensionless,94.562
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,3,14.596634,dimensionless,96.5073
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,4,20.294571,dimensionless,98.9816
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,5,14.140364,dimensionless,96.0657
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,6,11.292627,dimensionless,90.6456
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,7,32.792596,dimensionless,99.7315
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,9,14.989684,dimensionless,96.8394
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,3,10,15.707689,dimensionless,97.3645
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,4,1,6.790615,dimensionless,63.7441
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,4,2,11.108025,dimensionless,90.1464
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,4,4,10.868442,dimensionless,89.3468
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,4,5,10.277437,dimensionless,87.1032
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,4,6,9.84438,dimensionless,85.1181
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,4,7,25.881429,dimensionless,99.5226
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,4,8,11.399402,dimensionless,91.0056
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,4,9,9.438256,dimensionless,83.0695
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,1,6.061578,dimensionless,56.2117
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,2,5.228451,dimensionless,46.8554
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,3,12.483404,dimensionless,93.5695
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,4,10.641014,dimensionless,88.5592
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,5,11.089061,dimensionless,90.0927
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,6,55.242964,dimensionless,99.9025
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,7,13.446124,dimensionless,95.1687
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,8,13.175483,dimensionless,94.8007
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,9,11.614922,dimensionless,91.5646
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.6-sol,5,10,13.496553,dimensionless,95.2542
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,1,7.461457,dimensionless,69.6953
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,2,10.65401,dimensionless,88.6089
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,3,9.379449,dimensionless,82.7393
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,4,9.717076,dimensionless,84.4777
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,5,12.386883,dimensionless,93.4064
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,6,11.19404,dimensionless,90.3473
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,7,13.566128,dimensionless,95.3477
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,8,10.663799,dimensionless,88.6467
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,9,13.029757,dimensionless,94.572
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,3,10,9.881692,dimensionless,85.2991
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,1,6.109233,dimensionless,56.7269
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,2,7.172482,dimensionless,67.2011
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,3,8.09434,dimensionless,74.6559
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,4,7.657217,dimensionless,71.3303
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,5,12.601919,dimensionless,93.7962
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,6,10.265991,dimensionless,87.0475
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,7,9.375889,dimensionless,82.7154
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,8,9.961793,dimensionless,85.6552
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,9,10.32726,dimensionless,87.312
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,5,10,9.390469,dimensionless,82.795
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,1,6.702765,dimensionless,62.8451
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,2,16.394968,dimensionless,97.8001
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,3,8.283545,dimensionless,76.1139
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,4,8.919649,dimensionless,80.1575
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,5,9.341037,dimensionless,82.5324
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,6,7.671833,dimensionless,71.4834
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,7,7.019228,dimensionless,65.8107
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,8,7.212517,dimensionless,67.581
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,4,9,6.494016,dimensionless,60.6333
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,1,6.891561,dimensionless,64.6571
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,2,10.752133,dimensionless,88.9291
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,3,8.215294,dimensionless,75.5927
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,4,10.361441,dimensionless,87.4453
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,5,10.237717,dimensionless,86.9301
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,6,9.935617,dimensionless,85.5319
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,7,7.933934,dimensionless,73.3988
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,8,9.328598,dimensionless,82.4608
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,9,10.527521,dimensionless,88.1216
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,1,10,10.378976,dimensionless,87.5249
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,1,6.799608,dimensionless,63.8297
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,2,8.657446,dimensionless,78.5564
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,3,10.257167,dimensionless,87.0097
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,4,9.449528,dimensionless,83.1351
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,5,9.709125,dimensionless,84.4399
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,6,10.372946,dimensionless,87.497
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,7,10.351536,dimensionless,87.4115
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,8,11.779964,dimensionless,91.9942
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,9,12.225919,dimensionless,93.1001
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-sonnet-5,2,10,11.851272,dimensionless,92.2011
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,1,3.989466,dimensionless,30.7125
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,3,9.293849,dimensionless,82.2738
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,4,7.92767,dimensionless,73.3591
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,5,8.998431,dimensionless,80.625
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,6,11.202784,dimensionless,90.3891
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,7,10.33793,dimensionless,87.3498
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,8,12.029599,dimensionless,92.6347
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,9,8.457062,dimensionless,77.2357
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,1,10,8.959764,dimensionless,80.4201
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,2,8,3.989466,dimensionless,30.7125
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,2,9,3.989466,dimensionless,30.7125
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,2,10,3.989466,dimensionless,30.7125
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,3,2,7.098184,dimensionless,66.5387
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,3,3,6.645086,dimensionless,62.2703
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,3,5,4.007276,dimensionless,30.979
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,3,6,7.904667,dimensionless,73.2099
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,3,7,6.70077,dimensionless,62.8292
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,3,8,6.969383,dimensionless,65.3533
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,3,10,8.7203,dimensionless,78.9761
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,4,2,4.072983,dimensionless,31.8581
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,4,3,6.94169,dimensionless,65.1384
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,4,4,10.912759,dimensionless,89.5019
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,4,5,12.444887,dimensionless,93.5138
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,4,7,9.534184,dimensionless,83.5369
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,4,8,3.948179,dimensionless,30.0959
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,4,9,5.292841,dimensionless,47.6072
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,4,10,2.705676,dimensionless,12.1171
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,5,1,8.166857,dimensionless,75.2009
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,gpt-5.4-nano,5,2,9.235412,dimensionless,81.9516
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,2,9.346442,dimensionless,82.5722
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,3,12.604004,dimensionless,93.7982
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,4,8.638879,dimensionless,78.435
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,5,8.335232,dimensionless,76.4301
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,6,8.194506,dimensionless,75.4316
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,7,12.823806,dimensionless,94.2259
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,8,13.902718,dimensionless,95.7952
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,9,14.468361,dimensionless,96.3859
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,3,10,13.666223,dimensionless,95.5148
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,2,6.990056,dimensionless,65.5362
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,3,5.081067,dimensionless,45.0812
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,4,8.658113,dimensionless,78.5564
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,5,8.524349,dimensionless,77.6852
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,6,7.911322,dimensionless,73.2536
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,7,8.713756,dimensionless,78.9303
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,8,17.297896,dimensionless,98.18
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,9,11.206161,dimensionless,90.401
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,5,10,12.036145,dimensionless,92.6506
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,4,3,3.989466,dimensionless,30.7125
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,4,4,6.791241,dimensionless,63.7441
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,4,5,5.145752,dimensionless,45.841
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,4,6,14.040841,dimensionless,95.9862
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,4,7,14.240374,dimensionless,96.1731
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,4,8,10.142952,dimensionless,86.5184
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,4,9,12.11673,dimensionless,92.8395
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,4,10,12.009625,dimensionless,92.6008
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,1,6.22257,dimensionless,57.8646
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,2,4.951838,dimensionless,43.4521
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,3,7.319395,dimensionless,68.4641
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,4,8.07722,dimensionless,74.5525
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,5,6.163735,dimensionless,57.2937
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,6,7.203153,dimensionless,67.4994
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,7,7.196557,dimensionless,67.4437
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,8,5.882119,dimensionless,54.1889
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,9,5.767258,dimensionless,52.9736
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,claude-haiku-4.5,2,10,7.921528,dimensionless,73.3213
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,1,0.913056,eV,80.4545
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,2,0.905528,eV,80.7294
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,3,1.082749,eV,75.1436
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,4,1.172962,eV,73.3863
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,5,0.903105,eV,80.8717
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,6,1.117766,eV,74.4417
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,7,1.007621,eV,76.6456
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,8,1.090838,eV,74.9276
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,9,1.090838,eV,74.9276
+Band gap < 0.1 eV,BG_below01,gpt-5.2,1,10,1.181665,eV,73.1851
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,1,0.700921,eV,87.2871
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,3,1.150731,eV,73.8281
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,4,0.768128,eV,85.363
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,5,0.855962,eV,82.7566
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,6,0.710124,eV,87.0269
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,7,0.66737,eV,88.1461
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,8,0.928535,eV,79.7232
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,9,0.961323,eV,78.1623
+Band gap < 0.1 eV,BG_below01,gpt-5.2,2,10,0.892872,eV,81.338
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,1,0.779381,eV,85.0292
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,3,0.730116,eV,86.4428
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,4,0.516089,eV,91.3955
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,5,0.928939,eV,79.6986
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,6,0.754165,eV,85.7213
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,7,0.915827,eV,80.3269
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,8,0.608301,eV,89.5303
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,9,0.943942,eV,78.928
+Band gap < 0.1 eV,BG_below01,gpt-5.2,3,10,0.56577,eV,90.3745
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,1,0.789389,eV,84.7887
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,2,1.162624,eV,73.5925
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,3,1.125479,eV,74.2748
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,4,1.576884,eV,64.9732
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,5,1.397598,eV,68.8411
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,6,1.931666,eV,56.3295
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,7,0.004696,eV,99.9166
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,8,0.004696,eV,99.9166
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,9,0.822133,eV,83.8659
+Band gap < 0.1 eV,BG_below01,gpt-5.2,5,10,0.004696,eV,99.9166
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,2,0.780145,eV,84.9998
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,3,0.853265,eV,82.8793
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,4,0.69,eV,87.5816
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,5,2.631816,eV,33.3333
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,6,0.806422,eV,84.2831
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,7,0.641196,eV,88.7645
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,8,0.06454,eV,99.3079
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,9,0.569079,eV,90.3205
+Band gap < 0.1 eV,BG_below01,gpt-5.2,4,10,0.06454,eV,99.3079
+Band gap < 0.1 eV,BG_below01,claude-opus-5,2,1,0.937525,eV,79.2029
+Band gap < 0.1 eV,BG_below01,claude-opus-5,2,3,0.728934,eV,86.4723
+Band gap < 0.1 eV,BG_below01,claude-opus-5,2,5,0.890467,eV,81.4215
+Band gap < 0.1 eV,BG_below01,claude-opus-5,2,8,1.023994,eV,76.2872
+Band gap < 0.1 eV,BG_below01,claude-opus-5,2,9,0.832802,eV,83.5272
+Band gap < 0.1 eV,BG_below01,claude-opus-5,2,10,0.761757,eV,85.5544
+Band gap < 0.1 eV,BG_below01,claude-opus-5,3,1,0.917481,eV,80.268
+Band gap < 0.1 eV,BG_below01,claude-opus-5,3,2,1.514846,eV,66.2347
+Band gap < 0.1 eV,BG_below01,claude-opus-5,3,3,1.009272,eV,76.5916
+Band gap < 0.1 eV,BG_below01,claude-opus-5,3,4,0.757773,eV,85.6869
+Band gap < 0.1 eV,BG_below01,claude-opus-5,3,5,0.570573,eV,90.3009
+Band gap < 0.1 eV,BG_below01,claude-opus-5,3,8,0.890964,eV,81.4068
+Band gap < 0.1 eV,BG_below01,claude-opus-5,3,9,0.501896,eV,91.744
+Band gap < 0.1 eV,BG_below01,claude-opus-5,3,10,0.624964,eV,89.1474
+Band gap < 0.1 eV,BG_below01,claude-opus-5,4,1,1.07956,eV,75.1877
+Band gap < 0.1 eV,BG_below01,claude-opus-5,4,3,0.533,eV,91.0421
+Band gap < 0.1 eV,BG_below01,claude-opus-5,4,4,0.509008,eV,91.5624
+Band gap < 0.1 eV,BG_below01,claude-opus-5,4,6,0.900474,eV,80.9945
+Band gap < 0.1 eV,BG_below01,claude-opus-5,4,7,0.628111,eV,89.0787
+Band gap < 0.1 eV,BG_below01,claude-opus-5,4,10,0.792899,eV,84.666
+Band gap < 0.1 eV,BG_below01,claude-opus-5,1,1,2.007433,eV,54.1599
+Band gap < 0.1 eV,BG_below01,claude-opus-5,1,3,1.150403,eV,73.8281
+Band gap < 0.1 eV,BG_below01,claude-opus-5,1,4,0.854631,eV,82.8106
+Band gap < 0.1 eV,BG_below01,claude-opus-5,1,6,0.890748,eV,81.4166
+Band gap < 0.1 eV,BG_below01,claude-opus-5,1,7,0.99486,eV,77.053
+Band gap < 0.1 eV,BG_below01,claude-opus-5,1,8,0.971328,eV,77.7941
+Band gap < 0.1 eV,BG_below01,claude-opus-5,1,9,1.072144,eV,75.2957
+Band gap < 0.1 eV,BG_below01,claude-opus-5,1,10,0.562491,eV,90.4236
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,1,1.227375,eV,72.3065
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,3,1.041443,eV,75.8995
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,4,0.760668,eV,85.5937
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,5,0.795011,eV,84.5973
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,6,0.52751,eV,91.1697
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,7,0.8307,eV,83.591
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,8,0.859725,eV,82.6437
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,9,0.458669,eV,92.7649
+Band gap < 0.1 eV,BG_below01,claude-opus-5,5,10,0.512458,eV,91.4838
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,1,2,0.530087,eV,91.0961
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,1,4,0.654628,eV,88.4357
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,1,5,0.577239,eV,90.1487
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,1,6,0.413223,eV,93.9037
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,1,7,1.097508,eV,74.7951
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,1,8,0.3845,eV,94.4878
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,1,9,0.395531,eV,94.2964
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,1,10,0.335344,eV,95.5186
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,2,3,0.504651,eV,91.6753
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,2,4,0.370093,eV,94.8019
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,2,5,0.461052,eV,92.6913
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,2,7,0.472848,eV,92.4312
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,2,9,1.043026,eV,75.87
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,2,10,0.077361,eV,99.2196
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,3,2,1.189716,eV,73.0378
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,3,3,0.271094,eV,96.5543
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,3,4,0.360781,eV,94.9786
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,3,5,0.440149,eV,93.2803
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,3,6,0.358959,eV,95.0081
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,3,7,0.3845,eV,94.4878
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,3,9,0.358959,eV,95.0081
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,3,10,0.465994,eV,92.5931
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,4,2,0.3845,eV,94.4878
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,4,3,0.394645,eV,94.3111
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,4,4,0.358959,eV,95.0081
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,4,5,2.247399,eV,46.5273
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,4,7,2.145951,eV,49.8847
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,4,8,2.572337,eV,35.4096
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,4,9,2.247399,eV,46.5273
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,4,10,2.572337,eV,35.4096
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,2,0.846982,eV,83.0216
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,3,1.019867,eV,76.3854
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,4,0.948522,eV,78.7562
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,5,0.857864,eV,82.6977
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,6,1.458242,eV,67.5796
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,7,0.691431,eV,87.5374
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,8,0.55832,eV,90.4972
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,9,0.868114,eV,82.359
+Band gap < 0.1 eV,BG_below01,gpt-5.6-sol,5,10,0.905676,eV,80.7245
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,1,0.791224,eV,84.7102
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,2,1.008593,eV,76.6161
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,3,1.061472,eV,75.5117
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,4,1.015684,eV,76.459
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,6,0.719162,eV,86.7521
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,7,0.719162,eV,86.7521
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,8,1.096102,eV,74.8294
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,9,1.128947,eV,74.2159
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,3,10,0.669617,eV,88.0921
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,1,0.929616,eV,79.6495
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,2,1.137084,eV,74.0588
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,3,0.984025,eV,77.2984
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,4,1.314164,eV,70.5738
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,5,1.087029,eV,75.0405
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,6,1.157421,eV,73.7005
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,7,1.045988,eV,75.7817
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,8,1.109676,eV,74.5889
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,9,1.067674,eV,75.3939
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,5,10,0.78767,eV,84.8476
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,1,0.791224,eV,84.7102
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,2,1.104663,eV,74.6871
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,3,0.793718,eV,84.6316
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,4,1.061164,eV,75.5215
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,5,1.007184,eV,76.6505
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,6,0.862596,eV,82.5701
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,7,1.027276,eV,76.1793
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,8,0.738613,eV,86.1729
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,9,0.939677,eV,79.0949
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,4,10,0.95331,eV,78.5304
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,1,0.865548,eV,82.467
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,2,1.110275,eV,74.584
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,3,0.878231,eV,81.9761
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,4,0.839704,eV,83.2523
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,5,0.937425,eV,79.2029
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,6,0.669566,eV,88.0921
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,7,1.027726,eV,76.1645
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,8,1.107892,eV,74.6184
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,9,0.797853,eV,84.4991
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,1,10,0.811262,eV,84.1948
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,2,1,1.595565,eV,64.5757
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,2,2,0.591979,eV,89.8493
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,2,3,0.895314,eV,81.2104
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,2,5,0.893479,eV,81.3184
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,2,6,1.018158,eV,76.405
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,2,7,0.949543,eV,78.7169
+Band gap < 0.1 eV,BG_below01,claude-sonnet-5,2,8,0.853645,eV,82.8695
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,1,0.930127,eV,79.6299
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,2,0.777856,eV,85.0537
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,3,0.849672,eV,82.9873
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,4,1.062697,eV,75.4872
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,5,1.29775,eV,70.9272
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,6,0.94476,eV,78.8887
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,7,1.004316,eV,76.7486
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,8,1.337606,eV,70.1271
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,9,1.007184,eV,76.6505
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,1,10,0.889943,eV,81.446
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,2,1,0.40844,eV,94.0264
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,2,2,0.3845,eV,94.4878
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,2,3,1.519066,eV,66.1464
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,2,4,0.825501,eV,83.7579
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,2,6,0.831,eV,83.5812
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,2,7,1.62553,eV,63.7854
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,2,8,0.934007,eV,79.4237
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,2,9,0.837479,eV,83.3211
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,3,2,0.950609,eV,78.6482
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,3,3,0.950609,eV,78.6482
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,3,4,0.984503,eV,77.2886
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,3,6,0.950609,eV,78.6482
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,1,0.476745,eV,92.3624
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,2,1.013205,eV,76.513
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,3,0.979507,eV,77.4555
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,4,2.760957,eV,29.2446
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,5,0.883582,eV,81.7209
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,6,0.787621,eV,84.8476
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,7,0.953435,eV,78.5304
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,8,0.886154,eV,81.608
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,9,0.910902,eV,80.5232
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,4,10,0.998039,eV,76.9303
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,5,1,0.858864,eV,82.6584
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,5,3,1.155434,eV,73.7299
+Band gap < 0.1 eV,BG_below01,gpt-5.4-nano,5,4,1.022482,eV,76.3314
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,2,1,0.773853,eV,85.1568
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,2,2,0.760672,eV,85.5937
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,2,3,0.937601,eV,79.198
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,2,4,2.293582,eV,45.0351
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,2,6,2.446032,eV,39.8714
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,2,9,2.352134,eV,43.2337
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,2,10,1.451646,eV,67.6925
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,1,0.935045,eV,79.3403
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,2,1.170893,eV,73.4109
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,3,1.007151,eV,76.6505
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,4,0.935681,eV,79.3059
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,5,0.635653,eV,88.8774
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,6,0.84022,eV,83.2523
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,7,0.948577,eV,78.7562
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,8,0.9277,eV,79.7575
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,5,9,0.556357,eV,90.5316
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,1,0.551435,eV,90.6641
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,2,0.934548,eV,79.3698
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,3,0.936648,eV,79.252
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,4,0.9202,eV,80.1306
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,5,1.241979,eV,72.0169
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,6,0.870094,eV,82.2608
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,7,0.833173,eV,83.5125
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,8,0.823105,eV,83.8266
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,9,0.971348,eV,77.7941
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,4,10,0.828723,eV,83.645
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,1,0.960314,eV,78.1868
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,2,0.905715,eV,80.7196
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,3,0.934568,eV,79.3698
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,4,0.960682,eV,78.1672
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,5,0.874179,eV,82.0989
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,6,0.751308,eV,85.8195
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,7,0.596484,eV,89.761
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,8,1.01067,eV,76.5719
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,9,0.89999,eV,81.0141
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,1,10,0.458742,eV,92.7649
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,1,1.02019,eV,76.3707
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,2,0.833919,eV,83.4487
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,3,1.79403,eV,59.7212
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,4,0.60571,eV,89.5793
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,5,1.727302,eV,61.2772
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,6,1.113495,eV,74.53
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,7,1.281033,eV,71.261
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,8,0.632482,eV,88.9903
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,9,1.022324,eV,76.3363
+Band gap < 0.1 eV,BG_below01,claude-haiku-4.5,3,10,0.645091,eV,88.6664
+Band gap > 4 eV,BG_above4,gpt-5.2,1,1,2.621669,eV,66.3427
+Band gap > 4 eV,BG_above4,gpt-5.2,1,2,2.804321,eV,72.1396
+Band gap > 4 eV,BG_above4,gpt-5.2,1,3,2.511259,eV,62.627
+Band gap > 4 eV,BG_above4,gpt-5.2,1,4,2.754822,eV,70.618
+Band gap > 4 eV,BG_above4,gpt-5.2,1,5,3.648923,eV,92.4263
+Band gap > 4 eV,BG_above4,gpt-5.2,1,6,3.102048,eV,81.7896
+Band gap > 4 eV,BG_above4,gpt-5.2,1,7,2.820985,eV,72.7139
+Band gap > 4 eV,BG_above4,gpt-5.2,1,8,4.96066,eV,99.3864
+Band gap > 4 eV,BG_above4,gpt-5.2,1,9,4.944738,eV,99.3521
+Band gap > 4 eV,BG_above4,gpt-5.2,1,10,2.783297,eV,71.526
+Band gap > 4 eV,BG_above4,gpt-5.2,2,1,2.486201,eV,61.7091
+Band gap > 4 eV,BG_above4,gpt-5.2,2,2,2.525208,eV,63.0933
+Band gap > 4 eV,BG_above4,gpt-5.2,2,3,3.226454,eV,85.2403
+Band gap > 4 eV,BG_above4,gpt-5.2,2,4,2.132603,eV,49.6441
+Band gap > 4 eV,BG_above4,gpt-5.2,2,5,3.439642,eV,89.7855
+Band gap > 4 eV,BG_above4,gpt-5.2,2,6,3.220846,eV,85.1126
+Band gap > 4 eV,BG_above4,gpt-5.2,2,7,3.095108,eV,81.6129
+Band gap > 4 eV,BG_above4,gpt-5.2,2,8,3.208438,eV,84.8574
+Band gap > 4 eV,BG_above4,gpt-5.2,2,9,2.774878,eV,71.2463
+Band gap > 4 eV,BG_above4,gpt-5.2,2,10,2.972547,eV,77.7941
+Band gap > 4 eV,BG_above4,gpt-5.2,3,1,3.163949,eV,83.5027
+Band gap > 4 eV,BG_above4,gpt-5.2,3,2,2.257421,eV,53.8556
+Band gap > 4 eV,BG_above4,gpt-5.2,3,3,2.816981,eV,72.547
+Band gap > 4 eV,BG_above4,gpt-5.2,3,4,2.298456,eV,55.1171
+Band gap > 4 eV,BG_above4,gpt-5.2,3,5,4.64103,eV,98.4146
+Band gap > 4 eV,BG_above4,gpt-5.2,3,6,3.468857,eV,90.2027
+Band gap > 4 eV,BG_above4,gpt-5.2,3,7,3.030573,eV,79.6103
+Band gap > 4 eV,BG_above4,gpt-5.2,3,8,3.183502,eV,84.0328
+Band gap > 4 eV,BG_above4,gpt-5.2,3,9,3.184996,eV,84.0671
+Band gap > 4 eV,BG_above4,gpt-5.2,3,10,3.357366,eV,88.3522
+Band gap > 4 eV,BG_above4,gpt-5.2,5,1,2.109143,eV,48.7753
+Band gap > 4 eV,BG_above4,gpt-5.2,5,3,2.363411,eV,57.1884
+Band gap > 4 eV,BG_above4,gpt-5.2,5,4,2.219834,eV,52.6039
+Band gap > 4 eV,BG_above4,gpt-5.2,5,5,2.861277,eV,74.0883
+Band gap > 4 eV,BG_above4,gpt-5.2,5,6,3.203247,eV,84.7052
+Band gap > 4 eV,BG_above4,gpt-5.2,5,7,2.572108,eV,64.5806
+Band gap > 4 eV,BG_above4,gpt-5.2,5,8,2.908481,eV,75.6639
+Band gap > 4 eV,BG_above4,gpt-5.2,5,9,3.136442,eV,82.7713
+Band gap > 4 eV,BG_above4,gpt-5.2,5,10,2.546119,eV,63.6823
+Band gap > 4 eV,BG_above4,gpt-5.2,4,1,2.266598,eV,54.1059
+Band gap > 4 eV,BG_above4,gpt-5.2,4,2,2.483283,eV,61.5815
+Band gap > 4 eV,BG_above4,gpt-5.2,4,3,3.096973,eV,81.6522
+Band gap > 4 eV,BG_above4,gpt-5.2,4,4,3.302517,eV,87.2184
+Band gap > 4 eV,BG_above4,gpt-5.2,4,5,3.168414,eV,83.6647
+Band gap > 4 eV,BG_above4,gpt-5.2,4,6,3.497799,eV,90.6494
+Band gap > 4 eV,BG_above4,gpt-5.2,4,7,3.139496,eV,82.8302
+Band gap > 4 eV,BG_above4,gpt-5.2,4,8,4.659485,eV,98.4931
+Band gap > 4 eV,BG_above4,gpt-5.2,4,9,4.172391,eV,95.5824
+Band gap > 4 eV,BG_above4,gpt-5.2,4,10,3.243516,eV,85.6968
+Band gap > 4 eV,BG_above4,claude-opus-5,3,1,2.884884,eV,74.8834
+Band gap > 4 eV,BG_above4,claude-opus-5,3,2,4.458814,eV,97.3298
+Band gap > 4 eV,BG_above4,claude-opus-5,3,4,3.089333,eV,81.4755
+Band gap > 4 eV,BG_above4,claude-opus-5,3,5,4.61987,eV,98.3017
+Band gap > 4 eV,BG_above4,claude-opus-5,3,6,3.095108,eV,81.6129
+Band gap > 4 eV,BG_above4,claude-opus-5,3,7,4.907233,eV,99.2834
+Band gap > 4 eV,BG_above4,claude-opus-5,3,10,4.371658,eV,96.7555
+Band gap > 4 eV,BG_above4,claude-opus-5,4,1,3.052338,eV,80.322
+Band gap > 4 eV,BG_above4,claude-opus-5,4,2,4.434439,eV,97.1924
+Band gap > 4 eV,BG_above4,claude-opus-5,4,3,3.912711,eV,94.1049
+Band gap > 4 eV,BG_above4,claude-opus-5,4,4,4.019317,eV,94.694
+Band gap > 4 eV,BG_above4,claude-opus-5,4,5,4.576143,eV,98.0808
+Band gap > 4 eV,BG_above4,claude-opus-5,4,6,3.853062,eV,93.8203
+Band gap > 4 eV,BG_above4,claude-opus-5,4,7,6.201046,eV,99.9902
+Band gap > 4 eV,BG_above4,claude-opus-5,4,8,4.158468,eV,95.5186
+Band gap > 4 eV,BG_above4,claude-opus-5,4,9,4.117418,eV,95.3222
+Band gap > 4 eV,BG_above4,claude-opus-5,2,2,2.743432,eV,70.2793
+Band gap > 4 eV,BG_above4,claude-opus-5,2,3,3.255416,eV,85.9569
+Band gap > 4 eV,BG_above4,claude-opus-5,2,5,4.626389,eV,98.3458
+Band gap > 4 eV,BG_above4,claude-opus-5,2,6,3.658405,eV,92.4999
+Band gap > 4 eV,BG_above4,claude-opus-5,2,7,4.673074,eV,98.5618
+Band gap > 4 eV,BG_above4,claude-opus-5,2,8,2.263923,eV,54.0372
+Band gap > 4 eV,BG_above4,claude-opus-5,2,9,5.220608,eV,99.7349
+Band gap > 4 eV,BG_above4,claude-opus-5,2,10,5.323001,eV,99.7791
+Band gap > 4 eV,BG_above4,claude-opus-5,1,1,3.049642,eV,80.2631
+Band gap > 4 eV,BG_above4,claude-opus-5,1,2,3.26536,eV,86.2563
+Band gap > 4 eV,BG_above4,claude-opus-5,1,3,3.235137,eV,85.4759
+Band gap > 4 eV,BG_above4,claude-opus-5,1,4,4.525455,eV,97.7176
+Band gap > 4 eV,BG_above4,claude-opus-5,1,5,4.552608,eV,97.8943
+Band gap > 4 eV,BG_above4,claude-opus-5,1,6,3.312298,eV,87.4196
+Band gap > 4 eV,BG_above4,claude-opus-5,1,8,3.224598,eV,85.2108
+Band gap > 4 eV,BG_above4,claude-opus-5,1,9,4.647394,eV,98.444
+Band gap > 4 eV,BG_above4,claude-opus-5,1,10,4.579719,eV,98.0906
+Band gap > 4 eV,BG_above4,claude-opus-5,5,1,2.362385,eV,57.1541
+Band gap > 4 eV,BG_above4,claude-opus-5,5,2,3.684309,eV,92.7502
+Band gap > 4 eV,BG_above4,claude-opus-5,5,3,4.277431,eV,96.2696
+Band gap > 4 eV,BG_above4,claude-opus-5,5,4,3.759821,eV,93.2411
+Band gap > 4 eV,BG_above4,claude-opus-5,5,6,3.537528,eV,91.2335
+Band gap > 4 eV,BG_above4,claude-opus-5,5,7,3.286247,eV,86.8502
+Band gap > 4 eV,BG_above4,claude-opus-5,5,8,3.430884,eV,89.5843
+Band gap > 4 eV,BG_above4,claude-opus-5,5,9,3.41977,eV,89.3732
+Band gap > 4 eV,BG_above4,claude-opus-5,5,10,4.563506,eV,98.0023
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,1,2.157659,eV,50.454
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,3,1.898575,eV,42.8263
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,4,2.863382,eV,74.1619
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,5,3.136041,eV,82.7517
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,6,2.8812,eV,74.7558
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,7,3.140124,eV,82.8499
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,8,2.957012,eV,77.2591
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,9,2.979292,eV,78.0445
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,1,10,2.068239,eV,47.558
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,2,3.379183,eV,88.7105
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,3,2.579803,eV,64.8309
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,4,3.117252,eV,82.1872
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,5,4.275348,eV,96.2401
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,6,3.364056,eV,88.4602
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,7,3.82114,eV,93.6485
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,8,4.259221,eV,96.1223
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,9,5.060686,eV,99.5484
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,2,10,5.060686,eV,99.5484
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,4,4,2.155633,eV,50.3951
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,5,6,3.007963,eV,78.8887
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,5,7,4.559576,eV,97.9581
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,5,8,4.552305,eV,97.8894
+Band gap > 4 eV,BG_above4,gpt-5.6-sol,5,10,3.429645,eV,89.5548
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,1,2.333098,eV,56.192
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,2,2.330368,eV,56.1184
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,3,2.90741,eV,75.6148
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,4,2.785055,eV,71.5604
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,5,3.249308,eV,85.8244
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,6,2.874866,eV,74.5546
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,7,2.947271,eV,76.9744
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,8,2.792821,eV,71.8205
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,9,2.851339,eV,73.7545
+Band gap > 4 eV,BG_above4,claude-sonnet-5,3,10,3.21569,eV,85.0194
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,2,2.743372,eV,70.2744
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,3,2.768908,eV,71.0008
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,4,3.107601,eV,81.9614
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,5,4.492327,eV,97.5065
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,6,4.520926,eV,97.6832
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,7,2.579179,eV,64.8309
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,8,4.455809,eV,97.3249
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,9,4.523706,eV,97.7078
+Band gap > 4 eV,BG_above4,claude-sonnet-5,5,10,2.933051,eV,76.4885
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,1,2.606028,eV,65.8175
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,2,2.678732,eV,68.1637
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,3,3.045774,eV,80.1158
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,4,2.956999,eV,77.2591
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,5,2.946096,eV,76.9352
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,6,2.861841,eV,74.1079
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,7,2.713007,eV,69.1651
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,8,3.149358,eV,83.1051
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,9,3.001675,eV,78.7022
+Band gap > 4 eV,BG_above4,claude-sonnet-5,2,10,2.736296,eV,69.9946
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,1,2.561901,eV,64.1732
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,2,2.210402,eV,52.2505
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,3,3.099592,eV,81.716
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,4,3.368504,eV,88.5044
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,5,3.990528,eV,94.5516
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,6,4.360632,eV,96.7113
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,7,4.408075,eV,96.9813
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,8,2.65446,eV,67.3539
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,9,3.78547,eV,93.3883
+Band gap > 4 eV,BG_above4,claude-sonnet-5,4,10,4.495984,eV,97.5458
+Band gap > 4 eV,BG_above4,claude-sonnet-5,1,1,2.014852,eV,45.9775
+Band gap > 4 eV,BG_above4,claude-sonnet-5,1,2,3.05631,eV,80.484
+Band gap > 4 eV,BG_above4,claude-sonnet-5,1,3,3.227633,eV,85.2697
+Band gap > 4 eV,BG_above4,claude-sonnet-5,1,5,2.791861,eV,71.796
+Band gap > 4 eV,BG_above4,claude-sonnet-5,1,6,2.842483,eV,73.4502
+Band gap > 4 eV,BG_above4,claude-sonnet-5,1,7,3.088011,eV,81.4608
+Band gap > 4 eV,BG_above4,claude-sonnet-5,1,8,2.40808,eV,58.7444
+Band gap > 4 eV,BG_above4,claude-sonnet-5,1,10,3.067933,eV,80.8619
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,1,1.524759,eV,33.9518
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,2,2.713733,eV,69.1798
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,3,2.724613,eV,69.6117
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,4,2.762178,eV,70.8045
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,5,3.017234,eV,79.1685
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,6,3.010972,eV,78.9427
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,7,3.519623,eV,90.9832
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,8,3.016038,eV,79.1194
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,9,3.529963,eV,91.1059
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,1,10,2.925994,eV,76.2283
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,2,1,1.903852,eV,42.9686
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,2,2,2.420829,eV,59.2254
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,2,8,2.293319,eV,54.96
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,3,1,2.384648,eV,57.8903
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,3,2,0.840877,eV,16.7624
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,4,1,2.668086,eV,67.8545
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,4,2,2.625209,eV,66.4409
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,4,3,4.619682,eV,98.2968
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,4,5,4.155428,eV,95.4989
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,4,6,3.471591,eV,90.2469
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,4,9,2.665558,eV,67.7858
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,4,10,3.648689,eV,92.4263
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,5,1,2.620766,eV,66.3034
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,5,2,2.65893,eV,67.5109
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,5,3,3.0506,eV,80.2827
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,5,5,2.900853,eV,75.4626
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,5,6,2.886115,eV,74.9227
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,5,7,2.90151,eV,75.4675
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,5,9,3.311329,eV,87.3902
+Band gap > 4 eV,BG_above4,gpt-5.4-nano,5,10,3.182034,eV,84.0082
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,1,2.11998,eV,49.1484
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,2,2.306827,eV,55.3576
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,3,2.05458,eV,47.131
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,4,2.805464,eV,72.1936
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,5,2.645751,eV,67.0741
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,6,1.961562,eV,44.4952
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,7,5.022632,eV,99.5042
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,8,3.630222,eV,92.2299
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,1,10,3.874147,eV,93.9184
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,1,2.806496,eV,72.2623
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,2,2.956207,eV,77.2444
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,3,2.614904,eV,66.1316
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,4,1.862907,eV,41.9133
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,5,2.585275,eV,65.0616
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,6,2.76696,eV,70.9714
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,7,3.223792,eV,85.1961
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,8,2.628777,eV,66.5587
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,9,2.796595,eV,71.9433
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,3,10,3.0923,eV,81.5344
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,1,2.921,eV,76.0811
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,2,2.785071,eV,71.5604
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,3,2.604052,eV,65.7537
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,4,3.28987,eV,86.9435
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,5,3.037787,eV,79.8213
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,6,2.0047,eV,45.7566
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,7,3.166498,eV,83.5812
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,8,2.635288,eV,66.8139
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,9,3.173194,eV,83.7972
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,2,10,3.156202,eV,83.3112
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,1,2.650476,eV,67.2606
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,2,2.943561,eV,76.8517
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,3,2.058364,eV,47.2292
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,4,2.370215,eV,57.4535
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,5,2.43236,eV,59.6279
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,6,2.5897,eV,65.2334
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,8,2.5897,eV,65.2334
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,9,2.422663,eV,59.3285
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,5,10,2.846826,eV,73.6072
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,4,1,2.549161,eV,63.7363
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,4,2,3.552147,eV,91.4446
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,4,3,1.950986,eV,44.2105
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,4,4,4.529746,eV,97.7372
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,4,5,4.655846,eV,98.4833
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,4,7,3.575616,eV,91.6753
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,4,9,1.748727,eV,39.2038
+Band gap > 4 eV,BG_above4,claude-haiku-4.5,4,10,4.456828,eV,97.3298

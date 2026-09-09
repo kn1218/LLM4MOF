@@ -190,6 +190,7 @@ HPC settings (host, base dir, scheduler) are in the `LIVE SIMULATION CONFIGURATI
 |-- data/                      # Databases (large files via Git LFS)
 |-- hpc/                       # Cluster-side scripts + HPC step helpers (run_prepare_step / run_collect_step)
 |-- scripts/                   # build_canonical_db.py -- rebuilds the shipped data files
+|-- source_data/               # The numbers behind every figure and table, and the reasoning traces
 |-- paper/                     # Publication figures + figure-to-data map
 `-- docs/                      # DATA.md (data manifest), PROVENANCE.md
 ```
@@ -197,13 +198,17 @@ HPC settings (host, base dir, scheduler) are in the `LIVE SIMULATION CONFIGURATI
 ## Code and data availability
 
 - **Code** — this repository (MIT-licensed; see `LICENSE`).
+- **Source data** — [`source_data/`](source_data/) holds the values behind every figure and table, the
+  agent reasoning traces for both modes, the held-out split the geometry surrogate is evaluated on, and
+  the structures the paper names as CIFs. [`source_data/MANIFEST.csv`](source_data/MANIFEST.csv) lists
+  every file with the display item it supports, and `source_data/README.md` states the conventions.
 - **Figures** — publication figures and a figure-to-data map are in [`paper/`](paper/).
 - **Databases & model** — the three evaluation databases (PORMAKE, hMOF, QMOF) and the MOF2Zeo model
   checkpoint ship in-repo via Git LFS; see [`DATA.md`](docs/DATA.md) for the file manifest, integrity
   hashes, and the third-party database citations they derive from.
-- **Experiment logs** — the full closed-loop run logs behind the figures (~1.6 GB; see [`paper/`](paper/)
-  for the figure-to-run map) are **available from the authors upon reasonable request**, and will be
-  deposited in a public archive with a DOI upon publication.
+- **Experiment logs** — the raw closed-loop run logs (~1.6 GB) are orchestration records; the reasoning
+  they contain is already in `source_data/` as the agent traces. The logs themselves are **available
+  from the authors upon reasonable request**.
 
 See [`PROVENANCE.md`](docs/PROVENANCE.md) for how this repository was derived. Licensed under MIT — see `LICENSE`.
 

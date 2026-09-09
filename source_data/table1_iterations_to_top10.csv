@@ -1,0 +1,7 @@
+backend,vol_5bar,vol_100bar,CH4_hmof,CO2_hmof,XeKr_hmof,BG_below01,BG_above4
+gpt-5.2,2.8,3.4,4.8,4.8,5.3,6.3,5.3
+claude-opus-5,2.0,2.2,7.5,6.7,6.0,6.0,3.0
+gpt-5.6-sol,2.8,4.4,3.4,3.4,2.6,3.6,6.0
+claude-sonnet-5,2.8,2.2,6.2,4.2,5.0,never,5.0
+gpt-5.4-nano,5.5,5.8,5.0,5.3,5.5,1.0,5.0
+claude-haiku-4.5,3.8,2.8,6.0,3.5,5.7,6.7,4.5

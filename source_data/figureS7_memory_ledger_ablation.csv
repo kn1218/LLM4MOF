@@ -1,0 +1,770 @@
+task,task_key,configuration,replicate,iteration,beam1_median,unit
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,1,1,23.797684287320426,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,1,2,26.95731915552779,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,1,4,26.95731915552779,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,1,5,26.95731915552779,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,1,7,26.95731915552779,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,1,9,26.95731915552779,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,2,1,25.20086121174266,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,2,2,30.35924112929419,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,2,3,32.54482244597127,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,2,5,28.654059193004368,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,2,6,29.690356137414113,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,2,7,34.48700980886945,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,2,10,32.04621486266955,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,3,1,21.61444101436602,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,3,2,28.018088499687693,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,3,3,28.434422226108683,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,3,4,31.090583985009367,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,3,7,26.9035956427233,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,3,9,23.13272655590256,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,1,22.00301332167395,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,2,28.902806915677697,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,3,28.902806915677697,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,4,28.902806915677697,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,5,27.033956117426605,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,6,27.41541706433479,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,7,29.180253631480323,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,8,28.106124172392253,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,4,10,26.61299416868354,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,5,1,24.941815780137414,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,5,3,26.95731915552779,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,5,4,26.95731915552779,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,5,5,28.95492691068083,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,5,6,32.393202453466586,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,Without memory ledger,5,10,37.01151354900073,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,1,1,23.797684287320426,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,1,4,26.95731915552779,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,1,7,31.99305249219238,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,1,8,31.206349101811362,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,2,1,15.70778699812617,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,2,3,27.360444727045596,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,2,5,30.94594952154903,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,2,6,30.912749606495936,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,2,7,30.657647535290437,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,2,10,37.01151354900073,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,1,17.741465808869457,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,2,26.177425004372264,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,3,25.917332941911305,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,4,30.931603352904435,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,5,28.902806915677697,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,6,28.910772697064335,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,7,28.902806915677697,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,8,28.106124172392253,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,9,28.549310615865082,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,3,10,28.90280693813976,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,1,10.315215725171766,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,2,28.692671475327924,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,3,29.02237053841349,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,4,28.47759614241099,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,5,31.317774430980638,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,6,31.34591550281074,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,7,31.34591550281074,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,8,30.34193194253591,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,4,9,29.542767875078077,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,5,1,19.57412475702686,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,5,2,28.106124172392253,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,5,3,31.025636207370393,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,5,4,30.94594952154903,g/L
+"H2 volumetric uptake (77 K, 5 bar)",vol_5bar,With memory ledger,5,5,29.075076247345407,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,1,47.631672719550274,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,2,48.01457915302936,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,3,48.79518498438476,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,5,49.28512731043097,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,6,51.70495394878202,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,7,53.59556525171768,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,8,54.878511350405994,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,9,49.80345805371642,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,1,10,52.75115206695815,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,1,46.1359464284822,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,2,48.29310114678325,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,3,49.13670621361649,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,4,51.544479305434095,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,5,50.147898678326044,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,6,50.70580356277327,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,7,50.147898678326044,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,8,49.30140263835103,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,2,10,48.19442062261086,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,3,1,45.88067674703311,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,3,2,49.60966674828232,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,3,3,51.05128582635853,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,3,4,52.42905057339163,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,3,6,49.01885763897564,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,3,7,50.66967071580263,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,3,8,52.43267211492817,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,3,9,51.19986958650843,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,1,36.368945539038094,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,2,50.02875396876952,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,3,48.95498154153653,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,5,49.37952259337913,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,6,50.978905004372265,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,7,50.046107362898184,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,8,50.978905004372265,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,9,50.25289689444097,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,4,10,50.97890499537789,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,1,36.368945539038094,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,2,50.02875396876952,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,3,49.78213948782012,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,4,51.67934888694565,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,5,53.83361429606495,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,6,53.83361429606495,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,7,54.164216349781384,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,8,52.59915729668956,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,Without memory ledger,5,10,52.59297385933792,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,1,46.046383330418486,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,2,50.416939292941905,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,3,49.76385027357901,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,4,49.7890666433479,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,5,50.769544834478445,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,6,51.06810666333541,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,7,52.914995347907556,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,8,52.914995347907556,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,9,47.97832749031854,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,1,10,51.791701846845726,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,1,48.00837105309181,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,2,51.11290060212367,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,3,51.40255903060587,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,4,51.613779777638975,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,5,52.36323249968769,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,6,52.584261796377255,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,7,52.08813214740787,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,8,53.080391445346656,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,2,9,51.56684202873204,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,1,39.54542800249843,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,2,47.071176014990634,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,4,47.40600533666459,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,5,51.263068901936286,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,6,47.53706022236103,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,7,50.461564811992496,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,8,50.13747176514678,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,9,50.4920420387258,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,3,10,53.69749104659587,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,1,47.35323154028732,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,2,51.04024491193004,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,3,51.47618876702061,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,4,51.511015045596494,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,5,51.90383737663959,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,6,52.19366926171143,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,7,51.494644961898814,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,8,51.20257568019988,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,9,51.74249234728295,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,4,10,48.86479143185508,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,1,44.4215314478451,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,2,50.39174208119925,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,3,51.61854329044347,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,4,51.47003931043097,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,5,50.859314308557146,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,6,51.4420323447845,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,7,51.196426223610246,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,8,51.5187136039975,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,9,52.42905057339163,g/L
+"H2 volumetric uptake (77 K, 100 bar)",vol_100bar,With memory ledger,5,10,50.15203989706433,g/L
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,1,1,20.932366000000002,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,1,2,21.9915095,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,1,3,26.967975,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,1,5,30.870438,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,1,7,30.870438,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,1,9,30.552431,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,2,1,21.195883,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,2,3,21.8209175,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,2,5,21.7577205,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,2,6,22.633017000000002,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,2,7,22.091844000000002,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,2,8,26.3301145,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,2,9,21.434915,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,2,10,23.470875434162554,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,3,1,19.5581325,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,3,2,20.344979000000002,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,3,3,21.843244499999997,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,3,4,31.72124,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,3,5,31.72124,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,3,7,19.7149425,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,3,8,31.72124,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,3,9,33.23252,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,4,1,16.0618455,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,4,2,19.5350675,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,4,5,19.1502025,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,4,6,18.665047,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,4,7,20.3186235,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,4,8,18.287962,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,4,9,22.3711365,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,4,10,20.398112759519783,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,5,1,20.668849,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,5,3,20.414171,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,5,4,22.807024499999997,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,5,5,23.233793499999997,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,5,7,18.9622405,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,5,8,21.371742,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,5,9,18.634690499999998,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,Without memory ledger,5,10,20.505836722644894,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,1,1,21.331892,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,1,8,27.454797,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,1,9,30.041128999999998,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,1,10,30.870438055023826,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,2,1,20.119372,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,2,3,17.280648499999998,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,2,4,19.855855,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,2,6,19.7481795,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,2,7,19.106772,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,2,8,19.3832965,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,2,9,20.471198,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,2,10,22.382468498842755,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,1,18.3224105,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,3,26.799113,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,4,20.067552999999997,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,5,23.003269500000002,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,6,26.799113,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,7,16.603060499999998,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,8,26.799113,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,9,26.799113,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,3,10,19.04557052012447,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,4,1,22.190191,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,4,5,22.310505,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,4,7,29.706162,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,4,8,30.552431,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,4,9,29.706162,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,4,10,28.859892748366423,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,1,20.5475815,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,2,20.668849,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,4,19.254671,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,5,30.024169,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,6,30.024169,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,7,28.102304,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,8,28.859893,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,9,28.102304,mol/kg
+"H2 gravimetric uptake (77 K, 5 bar)",grav_5bar,With memory ledger,5,10,28.859892748366423,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,1,1,72.132904,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,1,4,84.776932,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,1,5,136.97115,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,1,6,136.97115,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,1,7,136.97115,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,1,8,143.501444,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,1,10,136.97115030946404,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,2,1,73.5168525,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,2,2,109.630008,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,2,3,92.758639,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,2,4,135.1184835,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,2,6,135.1184835,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,2,8,133.265817,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,2,9,133.265817,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,3,1,55.657337,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,3,4,109.630008,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,3,6,109.630008,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,3,8,115.87862150000001,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,3,10,115.87862156467423,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,4,1,55.493519,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,4,3,151.204195,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,4,4,151.915765,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,4,5,151.204195,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,4,6,264.355304,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,4,8,264.355304,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,5,4,264.355304,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,5,5,264.355304,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,5,7,235.8274065,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,Without memory ledger,5,10,261.3776501837484,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,1,21.635468000000003,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,3,110.7929495,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,4,140.9085905,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,5,175.2249365,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,6,162.6821205,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,7,183.407409,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,8,206.948429,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,9,206.948429,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,1,10,206.9484289731223,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,2,1,59.711963,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,2,2,22.792335,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,2,3,109.924395,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,2,4,187.92523699999998,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,2,5,206.948429,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,2,6,126.1358835,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,2,8,102.79342700000001,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,3,1,72.132904,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,3,6,137.541126,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,3,8,264.355304,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,3,9,264.355304,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,3,10,264.3553039495603,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,4,1,30.332207,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,4,4,107.56959,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,4,5,110.467982,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,4,6,136.97115,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,4,7,136.97115,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,4,9,137.1887295,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,5,1,46.528354,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,5,2,109.630008,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,5,3,168.902045,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,5,5,168.902045,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,5,6,210.277163,mol/kg
+"H2 gravimetric uptake (77 K, 100 bar)",grav_100bar,With memory ledger,5,10,167.90238662157788,mol/kg
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,1,104.98671633800302,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,2,122.62220041045775,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,3,115.0369420897653,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,4,125.75949674310695,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,5,120.32003747657711,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,6,117.29724101008296,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,7,135.76320692424375,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,8,143.38245739270099,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,9,142.34945391273308,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,1,10,149.38547068796285,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,1,112.44888730257874,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,2,118.3359694833586,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,3,133.0492022842866,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,4,137.55226733291693,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,5,137.65603283661994,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,6,147.42716516462923,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,7,149.1185428749888,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,8,135.60827429285266,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,9,138.14587757651466,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,2,10,143.4747729097885,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,1,104.43461229588648,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,2,125.30686445971266,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,3,130.5187552422593,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,4,117.96026679753726,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,5,102.14067903988577,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,6,133.2395583117694,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,7,131.44155260105288,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,8,138.5988676719907,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,9,160.61397162487728,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,3,10,166.50856785937356,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,1,102.39794592665297,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,2,127.20541536539662,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,3,135.68269920585348,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,4,139.55207905773176,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,5,134.97351565985542,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,6,140.49205139644863,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,7,147.81038190416703,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,8,139.7714178638351,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,9,141.89360132060318,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,4,10,140.62515749085392,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,1,112.70472294101899,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,2,118.23864459712678,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,3,121.20347550637993,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,4,120.65852770589808,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,5,139.81149281698936,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,6,126.70698313554026,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,7,154.74370661193893,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,8,167.07176407602387,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,9,164.12804407959308,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,Without memory ledger,5,10,167.07176407602387,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,1,110.37751316141697,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,2,126.47225840992236,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,3,136.24482198625856,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,4,136.6223137324886,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,5,151.96815829392344,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,6,154.57517712144193,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,7,181.4350566610154,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,8,176.7348371553493,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,9,176.7348371553493,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,1,10,175.9565958775765,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,1,97.66981707861157,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,2,126.5015990006246,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,3,146.78274560542516,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,4,146.7430284643526,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,5,132.28527348978315,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,6,141.25991612385116,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,7,142.94127509592218,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,8,151.51194788971176,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,9,144.98760239136251,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,2,10,139.58392433300614,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,1,106.21580083876148,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,2,132.53287945034353,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,3,141.7977076826983,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,4,151.53592129918798,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,5,156.93602123672704,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,6,158.63419737663958,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,7,162.9884125992683,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,8,147.92309270991342,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,9,162.9884125992683,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,3,10,144.45195770500578,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,1,92.22642187918262,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,2,153.60085482287855,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,4,139.82580530025874,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,5,154.84675649147852,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,6,159.31690282858926,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,7,161.60511109128223,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,8,154.54977246363876,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,9,159.06893905594714,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,4,10,158.39553671812257,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,1,116.5093388061033,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,2,150.24493530828943,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,3,159.26358882841078,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,4,162.54794592665297,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,5,144.60867939680557,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,6,162.54794592665297,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,7,162.54794592665297,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,8,158.53472561791736,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,9,178.11169804586416,g/L
+"CH4 uptake (298 K, 35 bar)",CH4_hmof,With memory ledger,5,10,178.11169804586416,g/L
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,1,4.50936,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,2,8.114145,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,3,7.638515,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,4,8.60383,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,5,9.090395000000001,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,6,11.1131,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,7,11.00615,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,8,11.25215,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,9,10.983,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,1,10,11.24685,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,1,4.646865,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,2,6.14809,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,3,10.927299999999999,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,4,11.4955,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,5,11.299199999999999,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,6,10.83295,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,7,7.94553,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,8,10.83295,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,9,11.48925,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,2,10,12.2192,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,1,6.24239,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,2,6.7801849999999995,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,3,6.39281,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,4,4.736750000000001,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,5,5.56229,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,6,8.502825000000001,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,7,6.418900000000001,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,8,9.343985,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,9,9.188825000000001,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,3,10,9.613745000000002,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,1,4.5244800000000005,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,2,8.264524999999999,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,3,6.69932,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,4,7.418405,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,5,12.3436,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,6,13.73245,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,7,13.8201,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,8,11.642045,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,4,9,8.28437,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,1,5.489965,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,2,9.027735,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,3,9.826630000000002,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,4,8.864535,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,5,12.8856,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,6,12.8651,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,7,12.8856,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,8,14.5229,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,9,15.3409,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,Without memory ledger,5,10,10.694565,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,1,3.392065,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,2,6.657115,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,3,7.0310500000000005,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,4,8.358685,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,5,8.490555,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,6,10.11889,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,7,8.14522,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,8,11.1492,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,9,11.6704,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,1,10,12.6201,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,1,5.373775,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,2,4.939220000000001,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,3,6.6654800000000005,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,4,8.43072,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,5,7.51288,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,6,8.144675,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,7,9.095575,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,8,9.628955,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,9,7.768134999999999,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,2,10,11.4648,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,1,5.040535,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,2,4.928,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,3,7.6606950000000005,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,4,6.360945,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,5,8.027915,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,6,10.214485,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,7,11.90625,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,8,11.8479,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,9,11.8479,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,3,10,11.5766,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,1,5.171435,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,2,6.922575,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,4,8.75272,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,5,7.91835,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,6,8.731655,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,7,10.8895,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,8,8.38407,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,9,10.655505,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,4,10,12.27365,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,1,5.03833,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,2,5.9883500000000005,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,3,7.95146,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,4,7.656219999999999,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,5,9.627324999999999,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,6,8.27816,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,7,7.860215,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,8,12.8795,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,9,12.8147,mol/kg
+"CO2 uptake (298 K, 2.5 bar)",CO2_hmof,With memory ledger,5,10,13.6199,mol/kg
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,1,6.0603134999999995,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,2,7.721211,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,3,7.145361,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,4,12.133709,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,5,8.353121000000002,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,6,9.006914,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,7,5.9946269999999995,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,8,11.858854000000001,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,9,12.498218,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,1,10,25.284742317083833,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,1,6.5975965,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,2,8.638458499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,3,10.377381,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,4,7.601882,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,5,8.171546,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,6,10.792977,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,7,7.954814000000001,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,8,8.3190035,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,9,16.2276935,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,2,10,11.110957429044653,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,1,9.7512075,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,2,9.0124975,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,3,11.5478925,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,4,18.226016,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,5,17.35863,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,6,17.6108565,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,7,15.426641499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,8,15.486371,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,3,9,15.941333499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,1,7.4572445,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,2,7.1855735,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,3,7.7579674999999995,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,4,8.430263,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,5,8.7705025,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,6,12.8480115,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,7,13.1434865,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,8,10.7203085,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,4,9,9.21945,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,1,7.239546,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,2,10.324913,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,3,10.5355575,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,4,11.005207,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,5,10.1598605,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,6,10.6407435,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,7,9.041649,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,8,13.9567945,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,9,12.5898605,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,Without memory ledger,5,10,11.5350938183409,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,1,7.263249,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,2,9.0761505,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,3,10.985334,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,4,10.985334,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,5,8.793432,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,6,29.427915000000002,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,7,67.02365499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,8,67.02365499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,9,67.02365499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,1,10,30.338551303952382,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,1,5.535795,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,2,12.606555499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,3,10.407413,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,4,6.577624999999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,5,10.406397,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,6,9.672312,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,7,11.7934485,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,8,6.5885915,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,2,10,6.252435480608742,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,1,6.595121499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,2,9.851821000000001,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,3,9.6983575,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,4,11.362251,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,5,30.562618,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,6,30.562618,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,8,11.5128895,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,9,36.941165,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,3,10,69.19896208253118,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,1,6.530904,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,2,10.0106805,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,3,9.6196345,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,4,10.732711,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,5,8.8500105,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,6,10.457611499999999,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,7,14.4984,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,8,13.560716,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,9,9.408578,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,4,10,11.083650076961025,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,5,1,6.833719,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,5,2,2.9712315,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,5,3,9.174882,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,5,4,7.795886,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,5,6,5.3522,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,5,8,5.7599335,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,5,9,3.996289,dimensionless
+"Xe/Kr selectivity (273 K, 1 bar)",XeKr_hmof,With memory ledger,5,10,9.50427908954185,dimensionless
+Band gap > 4 eV,BG_above4,Without memory ledger,1,1,3.0553935,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,1,3,1.809074,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,1,4,2.1359459999999997,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,1,5,4.007734,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,1,6,3.2468190000000003,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,1,7,5.501479,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,1,8,3.424469,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,1,9,4.556038,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,1,10,4.554155,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,1,2.709491,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,2,2.4821725,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,3,3.100499,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,4,1.8091995,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,5,3.8434515,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,6,3.2574680000000003,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,7,4.246326,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,8,4.6952545,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,2,10,2.8166005,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,1,2.3991819999999997,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,2,2.3272695,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,4,2.7057255,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,5,2.240696,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,6,2.448496,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,7,2.5502165000000003,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,8,3.0753805,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,9,3.2498484999999997,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,3,10,4.5875710000000005,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,4,1,2.2322315,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,4,2,3.1865465,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,4,3,2.5065045,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,4,4,3.735257,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,4,5,3.744676,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,4,7,2.9940115,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,4,9,2.9522484999999996,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,1,2.2752625,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,2,3.170403,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,3,2.7597805,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,4,2.6004009999999997,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,5,3.809802,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,6,4.307614,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,7,4.5244545,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,8,4.5244545,eV
+Band gap > 4 eV,BG_above4,Without memory ledger,5,10,4.1099250000000005,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,1,2.3984535,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,2,3.0631435,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,3,3.533039,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,4,4.762881,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,5,3.212859,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,6,4.976582,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,7,5.843074,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,8,4.912219,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,9,6.201046,eV
+Band gap > 4 eV,BG_above4,With memory ledger,1,10,5.485102,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,1,2.44575,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,2,2.7149265,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,3,3.1957430000000002,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,4,3.3229345,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,5,3.125489,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,6,4.518485,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,7,2.8725829999999997,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,8,5.709182,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,9,3.2415555,eV
+Band gap > 4 eV,BG_above4,With memory ledger,2,10,3.3261105,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,1,1.823383,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,2,4.203474,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,3,3.957626,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,4,4.670638,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,5,4.5297465,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,6,4.7457329999999995,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,7,4.808806,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,8,4.4890735,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,9,4.5297465,eV
+Band gap > 4 eV,BG_above4,With memory ledger,3,10,4.9615325,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,1,2.846037,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,2,3.423738,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,3,2.7975700000000003,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,4,3.699569,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,5,3.2450855,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,6,4.2276,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,7,3.880669,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,8,3.7099135,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,9,3.423738,eV
+Band gap > 4 eV,BG_above4,With memory ledger,4,10,4.460262999999999,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,1,2.529518,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,2,3.114328,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,3,1.9059,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,4,2.928104,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,5,3.3373505,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,6,2.563763,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,7,2.563763,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,8,2.3311710000000003,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,9,4.434438500000001,eV
+Band gap > 4 eV,BG_above4,With memory ledger,5,10,4.927543999999999,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,1,0.849065,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,2,0.89795,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,3,0.1290115,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,5,0.073275,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,6,0.041412500000000005,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,7,0.041412500000000005,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,8,1.090838,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,9,1.090838,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,1,10,1.090838,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,2,1,1.1048909999999998,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,1,0.602812,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,2,1.291523,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,3,0.9001669999999999,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,4,1.0879515,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,5,0.8563419999999999,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,6,0.9314659999999999,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,7,0.5983805,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,9,1.623449,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,3,10,0.053226499999999996,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,1,0.9491565000000001,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,2,0.506527,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,3,0.581097,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,4,1.003471,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,5,0.22426849999999998,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,6,0.341742,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,7,0.816851,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,8,0.9533545000000001,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,9,1.3243755,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,4,10,1.345729,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,1,0.4968165,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,2,0.8924775,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,3,0.9941804999999999,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,4,0.9941804999999999,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,5,1.090838,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,6,0.5620895,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,7,0.09708149999999999,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,8,0.09708149999999999,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,9,0.954919,eV
+Band gap < 0.1 eV,BG_below01,Without memory ledger,5,10,0.09708149999999999,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,1,0.945586,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,2,0.9593769999999999,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,3,0.480286,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,4,1.0471295,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,5,0.008153,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,6,0.55279,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,7,0.6769555,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,8,0.968512,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,9,0.728621,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,1,10,0.4269955,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,1,1.0285085,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,2,1.1750720000000001,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,3,2.5760635,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,4,0.545787,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,5,1.2371219999999998,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,6,0.1208515,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,7,0.44363949999999996,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,8,0.6430255,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,9,0.2308695,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,2,10,0.218286,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,1,0.943442,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,2,0.9304140000000001,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,3,0.46290749999999997,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,4,0.8638539999999999,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,5,0.9840255,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,6,0.9147725,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,7,0.8484970000000001,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,8,0.9147725,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,9,0.854918,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,3,10,1.0089299999999999,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,1,0.8991979999999999,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,2,0.581392,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,3,1.3790235,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,4,1.1332375,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,5,1.050325,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,6,1.131488,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,7,1.1178270000000001,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,8,1.1283885,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,9,0.671804,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,4,10,1.347257,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,1,0.800233,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,2,0.35895900000000003,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,3,0.3845,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,4,0.3434665,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,5,0.298692,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,6,0.369834,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,7,0.333653,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,8,0.2295515,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,9,0.3623305,eV
+Band gap < 0.1 eV,BG_below01,With memory ledger,5,10,0.2393215,eV

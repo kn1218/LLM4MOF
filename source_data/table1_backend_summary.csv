@@ -1,0 +1,7 @@
+backend,final-iteration percentile (first attempt),completed cells / 35,mean iterations to top-10%,iterations with no match,unparseable replies
+gpt-5.2,91.3,35,4.7,8.3%,0%
+gpt-5.6-sol,91.3,34,3.7,24.6%,0%
+claude-opus-5,91.2,35,4.8,8.0%,0%
+claude-sonnet-5,86.7,35,4.2,2.3%,0%
+claude-haiku-4.5,86.6,23,4.7,11.8%,7.1%
+gpt-5.4-nano,79.5,35,4.7,34.9%,0%

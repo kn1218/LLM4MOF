@@ -1,0 +1,10 @@
+task,threshold,unit,beam4_hits,beam4_n,beam4_rate,beam1_hits,beam1_n,beam1_rate,enrichment
+"H2 volumetric, 5 bar",32.08,g/L,12,500,2.4,24,207,11.6,4.8x
+"H2 volumetric, 100 bar",52.21,g/L,28,500,5.6,87,360,24.2,4.3x
+"H2 gravimetric, 5 bar",26.63,mol/kg,32,500,6.4,63,177,35.6,5.6x
+"H2 gravimetric, 100 bar",175.32,mol/kg,21,500,4.2,36,155,23.2,5.5x
+"CH4 volumetric, 35 bar",157.29,g/L,1,500,0.2,136,419,32.5,162x
+"CO2 gravimetric, 2.5 bar",11.95,mol/kg,13,500,2.6,84,452,18.6,7.1x
+Xe/Kr selectivity,20.39,,8,500,1.6,56,384,14.6,9.1x
+Band gap > 4 eV,4.79,eV,5,500,1.0,75,428,17.5,18x
+Band gap < 0.1 eV,0.1,eV,4,500,0.8,34,473,7.2,9.0x
