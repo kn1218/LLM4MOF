@@ -4,9 +4,7 @@ Deep learning model that predicts seven geometric descriptors (SA, CV, density, 
 
 ## Overview
 
-mof2zeo is a PyTorch Lightning model following the MOF-NET architecture. It embeds three categorical
-identifiers, combines them through an interaction layer and predicts each descriptor with its own
-output head. The identifiers are:
+mof2zeo is a PyTorch Lightning model (MOF-NET architecture) that predicts MOF geometric descriptors from:
 - **Topology**: Network topology (e.g., pcu, sql, etc.)
 - **Node**: Metal cluster / SBU
 - **Edge**: Organic linker
@@ -32,9 +30,6 @@ mof2zeo/
     ├── mean.csv          # per-descriptor mean used for normalization
     └── std.csv           # per-descriptor standard deviation
 ```
-
-The training split is not shipped. The held-out split the model is evaluated on is
-`source_data/figureS6_mof2zeo_validation_split.csv`.
 
 ## Usage (via filter_candidate.py)
 
@@ -99,9 +94,3 @@ The checkpoint ships via Git LFS:
 ```bash
 git lfs pull
 ```
-
-## Loading the model
-
-`core/filter_candidate.py` loads the model. It reads `config.yaml`, the normalization statistics in
-`data/mean.csv` and `data/std.csv`, and the checkpoint in `ckpt/`; the paths are set in the
-`MOF2ZEO_*` constants of `config.py`.

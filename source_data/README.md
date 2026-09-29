@@ -130,9 +130,8 @@ distribution is computed from the reference index in the code repository.
 One name per thing, across every file: `structure` for the assembly identifier,
 `replicate` for the run, `iteration` for the plotted step and `iteration_raw`
 for the number on disk, `backend` for the language model, `beam` for the
-diagnostic beam, and the measured quantity named with its unit, `uptake_g_L`.
-The two Figure 5 files name it `value`: the selectivity is dimensionless and
-the SF6 uptake is in mol/kg.
+diagnostic beam, and the measured quantity named with its unit, `uptake_g_L`
+(`value` in the two Figure 5 files).
 
 The baseline files carry the evaluated uptake of every structure.
 

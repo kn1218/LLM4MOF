@@ -5,17 +5,13 @@ experiment logs that produced it.
 
 ## Figures (`figures/`)
 
-| File | Content | Backing data |
-|------|---------|--------------|
-| `Figure1.{png,svg}` | Framework schematic (method overview) | — (schematic) |
-| `Figure2.{png,pdf}` | Database-mode reasoning-beam comparison | all `database_mode/*` runs |
-| `Figure3/<task>.{png,pdf}` | Search-space design surfaces, the descriptor-space panels of Figures 3, S3 and S4 (one panel per task) | one replicate per task (below) |
-| `Figure4.{png,pdf}` | Live-discovery composite (H₂, 77 K & 160 K / 5 bar) | `live_simulation/H2_{77K,160K}_5bar/*` |
-| `Figure5.{png,pdf,svg}` | Live performance + operating cost (H₂, 77 K / 5 bar); Figure 6 of the current version | `live_simulation/H2_77K_5bar/*` |
-
-File names follow the numbering of the first preprint version. Figures 5 and 7 of the current
-version are not provided as image files; the values behind them are in
-[`source_data/`](../source_data/).
+| File | Paper | Content | Backing data |
+|------|-------|---------|--------------|
+| `Figure1.{png,svg}` | Figure 1 | Framework schematic (method overview) | — (schematic) |
+| `Figure2.{png,pdf}` | Figure 2 | Database-mode reasoning-beam comparison | all `database_mode/*` runs |
+| `Figure3/<task>.{png,pdf}` | Figures 3, S3, S4 | Search-space design surfaces (one panel per task) | one replicate per task (below) |
+| `Figure4.{png,pdf}` | Figure 4 | Live-discovery composite (H₂, 77 K & 160 K / 5 bar) | `live_simulation/H2_{77K,160K}_5bar/*` |
+| `Figure5.{png,pdf,svg}` | Figure 6 | Live performance + operating cost (H₂, 77 K / 5 bar) | `live_simulation/H2_77K_5bar/*` |
 
 **Figure 3 panels** — the replicate each was drawn from:
 
@@ -33,9 +29,7 @@ version are not provided as image files; the values behind them are in
 
 ## Experimental data
 
-The values behind every figure and table, and the agent reasoning traces, are in
-[`source_data/`](../source_data/). The full closed-loop experiment logs are not included in this
-repository (~1.6 GB).
+The full closed-loop experiment logs behind these figures are not included in this repository (~1.6 GB).
 They are **available from the authors upon reasonable request**, and will be deposited in a public archive
 with a DOI upon publication. Structure:
 
