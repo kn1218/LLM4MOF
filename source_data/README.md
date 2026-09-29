@@ -28,7 +28,7 @@ the replicate, the iteration, the simulated property and the pore geometry
 computed for that structure: hydrogen at 77 K and at 160 K, ethane/ethylene
 selectivity at 298 K, and SF6 capture at 298 K, five replicates each.
 
-For the two new chemistries two iteration columns are provided. `iteration`
+Every discovery file carries two iteration columns. `iteration`
 counts productive iterations, which is what the figures plot, because a
 campaign retries an iteration that returns no results and the raw numbering
 therefore differs between replicates. `iteration_raw` is the number on disk,
@@ -84,7 +84,7 @@ every database-mode run: the hypothesis the first agent produced and the
 constraints the second agent derived from it. Together with the beam values in
 the same deposit, this makes each design decision in the paper inspectable.
 
-## Two things that are deliberately not duplicated here
+## What is deliberately not duplicated here
 
 The random-baseline beam draws from the full reference table, which the loop
 records again at every iteration. Those rows are the property tables already
@@ -101,9 +101,9 @@ larger and nothing in the paper depends on it.
 
 ## Structures
 
-`winner_structures/` holds the nine frameworks the paper names, as CIFs: the
+`winner_structures/` holds the seven frameworks the paper names, as CIFs: the
 four database-mode winners and the global best of Supplementary Table S1, and
-the best structure of each of the four discovery campaigns. They are assembled
+the best structure of each of the two hydrogen discovery campaigns. They are assembled
 from the released building-block library, in the form the identifier denotes,
 before the structural relaxation described in Supplementary Note S12. The hMOF
 and QMOF winners are entries in public databases and are cited by their own
@@ -131,6 +131,8 @@ One name per thing, across every file: `structure` for the assembly identifier,
 `replicate` for the run, `iteration` for the plotted step and `iteration_raw`
 for the number on disk, `backend` for the language model, `beam` for the
 diagnostic beam, and the measured quantity named with its unit, `uptake_g_L`.
+The two Figure 5 files name it `value`: the selectivity is dimensionless and
+the SF6 uptake is in mol/kg.
 
 The baseline files carry the evaluated uptake of every structure.
 

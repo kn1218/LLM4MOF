@@ -14,5 +14,3 @@ umw+N515+E33.cif       Table S1, Figure S4b     H2 gravimetric 77 K 100 bar, 200
 uoj+N50+E28.cif        Table S1 footnote        H2 gravimetric 77 K 100 bar, best of run, 264.4 mol/kg
 lvt+N115+E84.cif       Figure 4e                discovery, H2 77 K 5 bar, 35.75 g/L
 fcu+N565+E84.cif       Figure 4f                discovery, H2 160 K 5 bar, 5.37 g/L
-pcu+N9+E48.cif         Figure 5a                discovery, C2H6/C2H4 selectivity, 3.04
-lsz+N261+E47.cif       Figure 5b                discovery, SF6 uptake 298 K 1 bar, 12.93 mol/kg

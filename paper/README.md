@@ -9,9 +9,13 @@ experiment logs that produced it.
 |------|---------|--------------|
 | `Figure1.{png,svg}` | Framework schematic (method overview) | — (schematic) |
 | `Figure2.{png,pdf}` | Database-mode reasoning-beam comparison | all `database_mode/*` runs |
-| `Figure3/<task>.{png,pdf}` | Search-space design surfaces (one panel per task) | one replicate per task (below) |
+| `Figure3/<task>.{png,pdf}` | Search-space design surfaces, the descriptor-space panels of Figures 3, S3 and S4 (one panel per task) | one replicate per task (below) |
 | `Figure4.{png,pdf}` | Live-discovery composite (H₂, 77 K & 160 K / 5 bar) | `live_simulation/H2_{77K,160K}_5bar/*` |
-| `Figure5.{png,pdf,svg}` | Live performance + operating cost (H₂, 77 K / 5 bar) | `live_simulation/H2_77K_5bar/*` |
+| `Figure5.{png,pdf,svg}` | Live performance + operating cost (H₂, 77 K / 5 bar); Figure 6 of the current version | `live_simulation/H2_77K_5bar/*` |
+
+File names follow the numbering of the first preprint version. Figures 5 and 7 of the current
+version are not provided as image files; the values behind them are in
+[`source_data/`](../source_data/).
 
 **Figure 3 panels** — the replicate each was drawn from:
 
@@ -29,14 +33,16 @@ experiment logs that produced it.
 
 ## Experimental data
 
-The full closed-loop experiment logs behind these figures are not included in this repository (~1.6 GB).
+The values behind every figure and table, and the agent reasoning traces, are in
+[`source_data/`](../source_data/). The full closed-loop experiment logs are not included in this
+repository (~1.6 GB).
 They are **available from the authors upon reasonable request**, and will be deposited in a public archive
 with a DOI upon publication. Structure:
 
 ```
 experiments/
 ├── database_mode/     45 runs — 9 tasks × 5 replicates
-└── live_simulation/   10 runs — H2_160K_5bar + H2_77K_5bar, 5 replicates each
+└── live_simulation/   20 runs — H2_77K_5bar, H2_160K_5bar, C2H6_C2H4, SF6, 5 replicates each
 ```
 
 Each `replicate_N/` holds the 10-iteration record: `raw_user_input.txt`, `conversation_history.json`,
@@ -45,5 +51,5 @@ Each `replicate_N/` holds the 10-iteration record: `raw_user_input.txt`, `conver
 surface / percentile), `feedback_selected.txt`, `sensitivity_report.csv`; live runs add `batch_manifest.json`
 and `hpc_results/batch_results.json` (RASPA GCMC results).
 
-**Live-simulation scope:** only the two live conditions used in the paper are included — H₂ 160 K / 5 bar and
-H₂ 77 K / 5 bar.
+**Live-simulation scope:** the four discovery campaigns of the paper — H₂ at 77 K and at 160 K (5 bar),
+and C₂H₆/C₂H₄ selectivity and SF₆ uptake (298 K, 1 bar).
