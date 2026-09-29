@@ -180,8 +180,8 @@ HPC settings (host, base dir, scheduler) are in the `LIVE SIMULATION CONFIGURATI
 | `AGENT2_PROMPT_PATH` | `prompts/agent2_v4.1.md` | Active Agent 2 prompt |
 | `FEEDBACK_SAMPLE_SIZE` | 10 | Samples per beam |
 | `STOCHASTIC_SAMPLING` | True | New samples each iteration |
-| `STRATIFIED_SAMPLING` | True | Metal-stratified feedback sampling (env: `LLM2POR_STRATIFIED_SAMPLING`) |
-| `USE_MEMORY_LEDGER` | True | Facts-only design-memory prepend (env: `LLM2POR_USE_MEMORY_LEDGER`) |
+| `STRATIFIED_SAMPLING` | True | Metal-stratified feedback sampling (env: `LLM4MOF_STRATIFIED_SAMPLING`) |
+| `USE_MEMORY_LEDGER` | True | Facts-only design-memory prepend (env: `LLM4MOF_USE_MEMORY_LEDGER`) |
 
 ## Repository layout
 
