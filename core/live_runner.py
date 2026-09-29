@@ -2,7 +2,7 @@
 Live Simulation Runner — generator-style MOF simulation with refill-on-failure.
 
 Orchestrates the full pipeline per beam:
-  matchmaker → HAN_SAFE filter → mof2zeo prefilter → ranked pool
+  matchmaker → SIM_SAFE filter → mof2zeo prefilter → ranked pool
   → PORMAKE build → LAMMPS optimize → RASPA3 GCMC → parse results
 
 Each beam targets N successful simulations.  On failure, the next
@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
-from core.han_safe_topologies import HAN_SAFE_TOPOS, filter_matchmaker_result
+from core.sim_safe_topologies import SIM_SAFE_TOPOS, filter_matchmaker_result
 from core.filter_candidate import (
     MOFComponent, PredictedGeometry, RankedMOF, GeometryPredictor, MOFRanker,
     ComponentGenerator,
@@ -876,13 +876,13 @@ def _build_random_pool(
     n_candidates: int,
 ) -> List[MOFComponent]:
     """
-    Build a random pool from HAN_SAFE_TOPOS × all nodes × all edges.
+    Build a random pool from SIM_SAFE_TOPOS × all nodes × all edges.
     Used for Beam 4 (global baseline).
     """
     from core.filter_candidate import ComponentGenerator
 
     gen = ComponentGenerator()
-    safe_topos = list(HAN_SAFE_TOPOS)
+    safe_topos = list(SIM_SAFE_TOPOS)
 
     components = []
     attempts = 0
@@ -1006,11 +1006,11 @@ def run_live_iteration(
                 live_results.aborted_beams.append(beam_id)
                 continue
 
-            # Apply HAN_SAFE filter
+            # Apply SIM_SAFE filter
             mm_result = filter_matchmaker_result(mm_result)
 
             if not mm_result.get("topology"):
-                print(f"[Beam {beam_id}] No HAN-safe topologies after filter")
+                print(f"[Beam {beam_id}] No simulation-safe topologies after filter")
                 live_results.beams[beam_id] = BeamResult(
                     beam_id=beam_id, beam_label=beam_label,
                     pool_size=0, target_n=n_per_beam,
@@ -1437,7 +1437,7 @@ def prepare_beam_pools(
             mm_result = filter_matchmaker_result(mm_result)
 
             if not mm_result.get("topology"):
-                print(f"[Prepare] Beam {beam_id} no HAN-safe topologies")
+                print(f"[Prepare] Beam {beam_id} no simulation-safe topologies")
                 beam_pools[beam_id] = []
                 continue
 

@@ -93,7 +93,7 @@ if __name__ == '__main__':
         )
     else:
         accumulate_grad_batches = config["batch_size"] // (
-            config["per_gpu_batchsize"] * num_device * config["num_nodes"]
+            config["per_gpu_batchsize"] * args.devices * config["num_nodes"]
         ) 
 
     

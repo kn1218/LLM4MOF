@@ -6,6 +6,7 @@
 # Pins are the versions used for the paper (the MOF2Zeo checkpoint loads under this torch/lightning line).
 torch==2.2.0
 pytorch-lightning==2.6.1
+transformers==5.5.0
 pormake==0.2.2
 ase==3.28.0
 lammps-interface==0.2.2

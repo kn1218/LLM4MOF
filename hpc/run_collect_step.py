@@ -74,6 +74,12 @@ def main():
         n_per_beam=config.LIVE_SIM_N_PER_BEAM,
     )
 
+    user_inquiry = ""
+    inquiry_file = os.path.join(experiment_dir, "raw_user_input.txt")
+    if os.path.exists(inquiry_file):
+        with open(inquiry_file, "r", encoding="utf-8") as f:
+            user_inquiry = f.read().strip()
+
     # Derive metric_name from inquiry: adsorbate keyword detection + T/P parsed from inquiry text
     import re as _re
     _ads_kw = [
@@ -117,12 +123,6 @@ def main():
     logger.log_feedback_selection("4-Beam Diagnostic (Live)", feedback)
 
     # Memory
-    user_inquiry = ""
-    inquiry_file = os.path.join(experiment_dir, "raw_user_input.txt")
-    if os.path.exists(inquiry_file):
-        with open(inquiry_file, "r", encoding="utf-8") as f:
-            user_inquiry = f.read().strip()
-
     memory = MemoryManager(experiment_dir, user_inquiry, model_name=ACTIVE_MODEL)
 
     live_summary = {

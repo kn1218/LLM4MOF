@@ -1,5 +1,5 @@
 # =============================================================================
-# LLM2POR Autonomous System v3 - Live Simulation Entry Point
+# LLM4MOF Autonomous System v3 - Live Simulation Entry Point
 # =============================================================================
 # run_live_experiment.py
 # Mirrors run_experiment.py but replaces the markscheme/sensitivity-analyzer
@@ -55,7 +55,7 @@ from core.hpc.collect_results import collect_results
 def print_banner(smoke: bool = False) -> None:
     mode_label = "SMOKE TEST" if smoke else "LIVE SIMULATION"
     print("\n" + "=" * 60)
-    print(f"   LLM2POR AUTONOMOUS MOF DESIGNER v3 — {mode_label}")
+    print(f"   LLM4MOF AUTONOMOUS MOF DESIGNER v3 — {mode_label}")
     print(f"   Model: {ACTIVE_MODEL}")
     print(f"   Beams: {config.LIVE_SIM_N_BEAMS} × "
           f"{config.LIVE_SIM_N_PER_BEAM} successes/beam")
@@ -68,7 +68,7 @@ def print_banner(smoke: bool = False) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="LLM2POR Live Simulation Experiment"
+        description="LLM4MOF Live Simulation Experiment"
     )
     parser.add_argument(
         "--resume", type=str, default=None,
@@ -143,9 +143,9 @@ def parse_args() -> argparse.Namespace:
              "parallel chains started in the same minute would share one directory.",
     )
     parser.add_argument(
-        "--job-prefix", type=str, default="llm2por", dest="job_prefix",
+        "--job-prefix", type=str, default="llm4mof", dest="job_prefix",
         help="PBS job name prefix for queue isolation when running parallel experiments. "
-             "Default 'llm2por' preserves existing behavior. E.g., --job-prefix xekr.",
+             "Default 'llm4mof' preserves existing behavior. E.g., --job-prefix xekr.",
     )
     parser.set_defaults(zeo=True)
     return parser.parse_args()
@@ -592,7 +592,7 @@ def _hpc_poll(
     results_remote_dir: str,
     n_jobs: int,
     beam_filenames: dict,
-    job_prefix: str = "llm2por",
+    job_prefix: str = "llm4mof",
 ) -> int:
     """
     Poll HPC via SSH until all .DONE files appear or per-beam sufficiency is met.
@@ -615,7 +615,7 @@ def _hpc_poll(
     # The cluster admins traced the anode failures to concentrated job
     # start/stop/REQUEUE activity confusing pbs_mom's state tracking until
     # Torque 4.2.10 segfaults. This block was our requeue source: on a stale
-    # poll it re-fired a batch of qsub scripts through qas in one go - a burst
+    # poll it re-fired a batch of qsub scripts in one go - a burst
     # of state changes at exactly the moment the queue was already unhealthy,
     # which is the worst possible time to add any.
     #
@@ -656,7 +656,7 @@ def _hpc_poll(
 
         queue_empty = False
         q_result = _ssh_run(
-            f"(myqstat 2>/dev/null; myqinfo 2>/dev/null) | grep {job_prefix} | wc -l",
+            f"{config.HPC_STATUS_CMD} 2>/dev/null | grep {job_prefix} | wc -l",
             check=False,
         )
         try:
@@ -706,9 +706,9 @@ def _hpc_poll(
                     scripts_str = " ".join(scripts)
                     _resubmit_count += 1
                     print(f"[HPC] Stale detected: resubmitting {len(scripts)} qsub scripts "
-                          f"for {len(missing)} missing jobs via qas "
+                          f"for {len(missing)} missing jobs via {config.HPC_SUBMIT_CMD} "
                           f"(attempt {_resubmit_count}/{_MAX_RESUBMIT})...", flush=True)
-                    _ssh_run(f"cd {hpc_iter_dir} && qas {scripts_str}", check=False, idempotent=False)
+                    _ssh_run(f"cd {hpc_iter_dir} && {config.HPC_SUBMIT_CMD} {scripts_str}", check=False, idempotent=False)
                     _stale_count = 0
                     continue
 
@@ -776,7 +776,7 @@ def _hpc_simulate_two_stage(
     hpc_remote_scripts: str,
     zeo_flag: str,
     ads_flag: str = "",
-    job_prefix: str = "llm2por",
+    job_prefix: str = "llm4mof",
 ) -> "LiveResults":
     """
     Two-stage HPC pipeline (--zeo mode):
@@ -1076,7 +1076,7 @@ def _hpc_simulate_single(
     hpc_remote_scripts: str = None,
     zeo_flag: str = "",
     ads_flag: str = "",
-    job_prefix: str = "llm2por",
+    job_prefix: str = "llm4mof",
 ) -> "LiveResults":
     """Single-stage HPC pipeline (standard flow). Used internally by _hpc_simulate()."""
     from collections import defaultdict
@@ -1155,7 +1155,7 @@ def _hpc_simulate(
     sim_cache,
     use_zeo: bool = False,
     geometry_filter: dict = None,
-    job_prefix: str = "llm2por",
+    job_prefix: str = "llm4mof",
 ) -> "LiveResults":
     """
     Run one iteration's simulations on HPC via SSH polling.

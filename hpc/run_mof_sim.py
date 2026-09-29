@@ -275,14 +275,14 @@ def stage_lammps(cif_path: str, work_dir: str, cfg: dict) -> tuple:
             "\nthermo_style custom step pe press pxx pyy pzz lx ly lz xy xz yz\n"
             "thermo 1000\n"
             "min_style cg\n"
-            "\nvariable llm2por_i loop 2\n"
-            "label llm2por_loop\n"
+            "\nvariable llm4mof_i loop 2\n"
+            "label llm4mof_loop\n"
             "\nminimize 1.0e-4 1.0e-6 1000 10000\n"
-            "\nfix llm2por_relax all box/relax aniso 0.0 vmax 0.001\n"
+            "\nfix llm4mof_relax all box/relax aniso 0.0 vmax 0.001\n"
             "minimize 1.0e-4 1.0e-6 1000 10000\n"
-            "unfix llm2por_relax\n"
-            "\nnext llm2por_i\n"
-            "jump SELF llm2por_loop\n"
+            "unfix llm4mof_relax\n"
+            "\nnext llm4mof_i\n"
+            "jump SELF llm4mof_loop\n"
             "\nminimize 1.0e-4 1.0e-6 1000 10000\n"
             "\nrun 0\n"
             f"\nwrite_data  {opt_data_path}\n"
@@ -735,7 +735,7 @@ def main():
         ff_name = ads_cfg["forcefield"]
         ff_dir = os.path.join(_proj_root, "core", "simulation", "gcmc", "forcefield", ff_name)
         if not os.path.exists(ff_dir):
-            ff_dir = os.path.join(os.path.expanduser("~"), "llm2por", "forcefields", ff_name)
+            ff_dir = os.path.join(os.path.expanduser("~"), "llm4mof", "forcefields", ff_name)
 
     ff_dir = os.path.abspath(ff_dir)
 

@@ -58,14 +58,14 @@ def find_raspa3():
     return None
 
 
-# FIX 2026-04-09: Han's original used 3x dirname which lands on .../core/, not
+# FIX 2026-04-09: the original used 3x dirname which lands on .../core/, not
 # the project root, which causes `from core import __root_dir__` to either fail
 # or import a stale `core` package from a sibling LLM2AUTO project elsewhere on
 # disk (whichever Python finds first via sys.path). 4x dirname is correct:
 #   __file__              = .../core/simulation/gcmc/run_raspa.py
 #   dirname x1            = .../core/simulation/gcmc/
 #   dirname x2            = .../core/simulation/
-#   dirname x3            = .../core/             (Han's bug -- wrong)
+#   dirname x3            = .../core/             (too shallow -- wrong)
 #   dirname x4            = .../                  (project root -- correct)
 _project_root = os.path.dirname(
     os.path.dirname(
@@ -353,7 +353,7 @@ def run_simulation_background(
         print(f"   [SKIP] {filename} - already completed")
         return True
 
-    # FIX 2026-04-09: Han's original used a bash-style "cd && raspa3 ..." shell
+    # FIX 2026-04-09: the original used a bash-style "cd && raspa3 ..." shell
     # string via subprocess.Popen(shell=True). On Windows that becomes
     # `cmd.exe /c "cd <path> && raspa3 simulation.json > log 2>&1 && ..."`
     # which fails with "The system cannot find the path specified" because of

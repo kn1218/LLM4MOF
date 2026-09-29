@@ -1,5 +1,5 @@
 # =============================================================================
-# LLM2POR Autonomous System - Configuration
+# LLM4MOF Autonomous System - Configuration
 # =============================================================================
 
 import os
@@ -110,53 +110,23 @@ TOPO_DICTIONARY_PATH = os.path.join(DATA_DIR, "pormake_topo_dictionary_v3.json")
 TOPO_DICTIONARY_V3_PATH = TOPO_DICTIONARY_PATH
 
 # Canonical Vocabulary (source of truth for functional group synonyms)
-UNIFIED_ONTOLOGY_PATH = os.path.join(DATA_DIR, "unified_ontology.json")
+UNIFIED_VOCABULARY_PATH = os.path.join(DATA_DIR, "unified_vocabulary.json")
 
 # QMOF Databases for Band Gap
 QMOF_CSV_PATH = os.path.join(DATA_DIR, "qmof.csv")
-QMOF_TOPOLOGY_IDS_PATH = os.path.join(DATA_DIR, "qmof_ids_with_topology.txt")
 QMOF_INDEX_PATH = os.path.join(DATA_DIR, "qmof_index_v2.json")
-QMOF_JSONS_V3_DIR = os.path.join(DATA_DIR, "qmof_global_jsons_v3")
-QMOF_BB_FILTERED_PATH = os.path.join(
-    BASE_DIR,
-    "..",
-    "..",
-    "..",
-    "pormake_src",
-    "dictionary_expansion",
-    "qmofbandgap",
-    "Processed data",
-    "qmof-bb-filtered.json",
-)
 
 # hMOF Database for Gas Adsorption (H2, CH4, CO2, Xe/Kr)
 HMOF_INDEX_PATH = os.path.join(DATA_DIR, "hMOF", "hmof_index.json")
 
 # Prompt files
 PROMPTS_DIR = os.path.join(BASE_DIR, "prompts")
-# Agent 1 prompt: v2.2.9.3 (production, 2026-04-21).
-# Multi-family breadth rule + evidence-based exploration + descriptor annotations.
-# PV prompts (v3.0, v3.1) archived to _archive/paper2_pv/ — Paper 2 scope.
-# Agent 1 prompt history:
-#   v2.2.9.3: production prompt (paper canonical batch baseline)
-#   v2.2.9.4: + breadth preservation rules (geometry mins, cadence) — arbitrary numbers, removed
-#   v2.2.9.5: + conditional VF for tail-optimization — removed
-#   v2.2.9.6: v2.2.9.3 + STAG fix + Metal Retention only — tested, good but Metal Retention redundant
-#   v2.2.9_clean: annotations partially removed + STAG original ("completely abandon") — Z=0 8/110
-#   v2.2.9_clean_v2_stag: = clean + STAG fix ("retain+expand") — Z=0 1/110, best cross-app median
-# Key change from v2.2.9.3: STAGNATION TRAP "completely abandon" → "retain+expand"
-#   This single wording change reduces Z=0 from 7.3% to 0.9% across 11 applications.
-#   Descriptor annotations partially removed (no "volumetric adsorption site density" hints).
-#   v3.0_production (2026-06-06): axis-neutral / direction-symmetric UNIVERSAL prompt (research v2.3.0)
-#     + SOFT decoration commit (require PRESENCE or <=2, never a high hard min_group_counts).
-#     Validated on four applications (axis-flip vol/grav/CO2/BG; XeKr soft-count mean 74 vs hard 32).
-#     Now the production prompt. Revert: set path back to "agent1_v2.2.9_clean_v2_stag.md" (file retained).
+# Agent 1: v3.0_production — axis-neutral / direction-symmetric universal prompt with a
+#   SOFT decoration commit (require presence or <=2, never a high hard min_group_counts).
 AGENT1_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent1_v3.0_production.md")
-# Agent 2 prompt history:
-#   v4.0: original production
-#   v4.1: + PORMAKE single-building-block decomposition rule
-#     Prevents Z=0 from composite linker AND conditions (e.g., ["Biphenyl","Butadiyne"])
-#     that match zero PORMAKE edge BBs. Decomposes into separate OR branches.
+# Agent 2: v4.1 — adds the PORMAKE single-building-block decomposition rule, which prevents
+#   empty matches from composite AND-conditions (e.g. ["Biphenyl","Butadiyne"]) that match
+#   zero edge building blocks, by splitting them into separate OR branches.
 AGENT2_PROMPT_PATH = os.path.join(PROMPTS_DIR, "agent2_v4.1.md")
 
 # Output directory
@@ -245,8 +215,7 @@ UNIT_REGISTRY: dict[str, dict[str, str]] = {
     "outputs.pbe.bandgap": {"display": "eV", "type": "energy"},
     # hMOF gas uptakes — units are PER-FIELD per Wilmer source DOIs (verified 2026-05-26
     # from hmof_raw_cache.jsonl `adsorptionUnits` field). Pipeline performs NO unit
-    # conversion (01_hmof_pipeline_v2.py:148, 02_build_hmof_index.py:94 are pass-through).
-    # See memory project-hmof-unit-truth for full audit.
+    # conversion (the build pipeline is pass-through).
     "h2_uptake_100bar_77K": {"display": "g/L", "type": "volumetric_mass"},
     "h2_uptake_2bar_77K": {"display": "g/L", "type": "volumetric_mass"},
     "ch4_uptake_35bar_298K": {"display": "cm³(STP)/cm³", "type": "volumetric"},
@@ -345,12 +314,7 @@ def get_master_db_path() -> str:
 
 
 def get_agent1_prompt_path() -> str:
-    """Return the Agent 1 prompt path.
-
-    v2.2.9.2 (2026-04-15): Production prompt. Database/application-agnostic
-    with concrete examples and incremental constraint discipline.
-    Prior versions in prompts/_archive/ for reproducibility.
-    """
+    """Return the active Agent 1 prompt path (AGENT1_PROMPT_PATH)."""
     return AGENT1_PROMPT_PATH
 
 
@@ -438,29 +402,29 @@ AGENT2_TEMPERATURE = 0.0   # Deterministic constraint extraction (validated via 
 def _env_flag(name: str, default: bool) -> bool:
     """Read a boolean toggle from the environment (override), else use the default.
     Accepts 0/1/true/false/yes/no/on/off (case-insensitive). Enables ops + test control
-    without editing this file (e.g. LLM2POR_STRATIFIED_SAMPLING=0 to disable for a run)."""
+    without editing this file (e.g. LLM4MOF_STRATIFIED_SAMPLING=0 to disable for a run)."""
     v = os.environ.get(name)
     if v is None:
         return default
     return v.strip().lower() not in ("0", "false", "no", "off", "")
 
 
-STRATIFIED_SAMPLING = _env_flag("LLM2POR_STRATIFIED_SAMPLING", True)
+STRATIFIED_SAMPLING = _env_flag("LLM4MOF_STRATIFIED_SAMPLING", True)
 # Metal balancing exists so the agent's OWN chosen chemistry is not represented only by its
 # most common metal. The baseline beam has no chosen chemistry, so balancing it makes the
 # baseline a diversity draw rather than a pool-uniform one, and the difference is not
 # cosmetic: on the 77 K / 5 bar task a balanced baseline medians 196.6 against 183.1 uniform.
 # Default 1: reproduce the published runs, whose baseline beam was metal balanced like the
 # other three. Set 0 for a pool-uniform baseline.
-STRATIFY_RANDOM_BEAM = _env_flag("LLM2POR_STRATIFY_RANDOM_BEAM", True)
+STRATIFY_RANDOM_BEAM = _env_flag("LLM4MOF_STRATIFY_RANDOM_BEAM", True)
 
 # Default 0: visit metals in first-appearance order, as the published runs
 # did. Set 1 to shuffle. Shuffling matters only where a beam's pool holds
 # more metals than there are feedback slots - then the unshuffled order
 # takes the first n metals every time, which on a target-sorted table is
 # the same n metals in every iteration of every run.
-SHUFFLE_METAL_ORDER = _env_flag("LLM2POR_SHUFFLE_METAL_ORDER", False)
-USE_MEMORY_LEDGER = _env_flag("LLM2POR_USE_MEMORY_LEDGER", True)
+SHUFFLE_METAL_ORDER = _env_flag("LLM4MOF_SHUFFLE_METAL_ORDER", False)
+USE_MEMORY_LEDGER = _env_flag("LLM4MOF_USE_MEMORY_LEDGER", True)
 
 # Geometry-ranking margin for mof2zeo preranking (LIVE only). The ranking window is
 # the agent's geometry_filter expanded by a per-descriptor margin so mof2zeo is not
@@ -472,9 +436,9 @@ USE_MEMORY_LEDGER = _env_flag("LLM2POR_USE_MEMORY_LEDGER", True)
 # the agent's narrow window. The faithful local strict-pass-yield test ranks off > mae >
 # train_std; we deploy "mae" (a small error-sized margin) rather than "off" because live
 # PORMAKE-assembled MOFs have higher prediction error than the in-distribution valid set, so
-# keeping a small cushion is safer. Override per-run with LLM2POR_GEOM_MARGIN_MODE=train_std
+# keeping a small cushion is safer. Override per-run with LLM4MOF_GEOM_MARGIN_MODE=train_std
 # (reversible, no code edit).
-GEOM_MARGIN_MODE = os.environ.get("LLM2POR_GEOM_MARGIN_MODE", "mae").strip().lower()
+GEOM_MARGIN_MODE = os.environ.get("LLM4MOF_GEOM_MARGIN_MODE", "mae").strip().lower()
 
 # Conventional single-node single-edge scope is now BAKED INTO THE DATA: the PORMAKE markscheme
 # DBs are pre-filtered to the core/mof2zeo/data whitelist (scripts/build_canonical_db.py) and the
@@ -501,7 +465,7 @@ def is_memory_ledger_enabled() -> bool:
     return USE_MEMORY_LEDGER
 
 
-# Agent 0 archived — Paper 2 scope (see _archive/paper2_agent0/)
+# Agent 0 (the optional consultant-interview front-end) is out of scope for this release.
 
 # =============================================================================
 # LLM CLIENT SETTINGS
@@ -559,7 +523,7 @@ def is_mof2zeo_available() -> bool:
 
 
 # =============================================================================
-# LIVE SIMULATION CONFIGURATION (Han pipeline as feedback source)
+# LIVE SIMULATION CONFIGURATION (live-simulation pipeline as feedback source)
 # =============================================================================
 # These settings control the live-simulation loop (run_live_experiment.py).
 # The markscheme path (run_experiment.py) is unaffected.
@@ -586,7 +550,7 @@ LIVE_SIM_MAX_COMBOS = 5000        # Max mof2zeo prediction candidates per beam (
 LAMMPS_TOPOLOGY_BLACKLIST: set = set()
 
 LIVE_SIM_RASPA_CYCLES = 5000       # Production: 5k cycles (reduced for speed; 5bar converges fast)
-LIVE_SIM_RASPA_INIT_CYCLES = 5000  # Production: 5k init cycles (Han's default)
+LIVE_SIM_RASPA_INIT_CYCLES = 5000  # Production: 5k init cycles (production default)
 LIVE_SIM_RASPA_TEMPERATURE = 77.0  # K (hydrogen storage standard)
 LIVE_SIM_RASPA_PRESSURE = 10000000.0  # Pa (~100 bar)
 
@@ -763,11 +727,13 @@ LIVE_SIM_CACHE_DIR = os.path.join(BASE_DIR, "experiments")
 
 LIVE_SIM_MAX_ITERATIONS = 10       # 10 iterations for production run
 
-# HPC Configuration (defaults; override per site)
-HPC_HOST = "hpc"                      # SSH hostname (must be in ~/.ssh/config)
-HPC_BASE_DIR = "~/llm2por"          # Base directory on HPC
-HPC_NODE_PROPERTY = "ac"            # PBS node property for qsub
-HPC_SUBMIT_SCRIPT = "submit_iteration.sh"  # Submit script name on HPC
+# HPC Configuration (PBS/Torque cluster — adapt these to your own environment)
+HPC_HOST = "my-hpc"                 # SSH host alias (define it in ~/.ssh/config)
+HPC_BASE_DIR = "~/llm4mof"          # Base directory on HPC
+HPC_NODE_PROPERTY = "ac"            # optional PBS node property (cluster-specific)
+HPC_SUBMIT_SCRIPT = "submit_iteration.sh"  # submit script on HPC (packed variant: submit_iteration_packed.sh)
+HPC_SUBMIT_CMD = "qsub"             # batch submit command (set to your scheduler's)
+HPC_STATUS_CMD = "qstat"            # job-status command (set to your scheduler's)
 HPC_POLL_INTERVAL = 300             # 5 minutes between SSH polls
 HPC_POLL_MAX_HOURS = 24             # Give up polling after this many hours
 HPC_SSH_RETRIES = 3                 # Cluster rule: at most 3, and only on rc=255

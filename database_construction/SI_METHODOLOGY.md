@@ -771,7 +771,6 @@ SI_data_provenance/
 |   +-- 04_smarts_engine.py       SMARTS matching for QMOF linkers
 |   +-- 05_llm_enricher.py        GPT-4o-mini enrichment (batch + checkpoint)
 |   +-- 06_validator_v2.py        Quality checks
-|   +-- 06b_quality_report.py     Quality report generation
 |   +-- 07_build_qmof_index_v2.py Aggregate JSONs -> flat index
 |   +-- 08_enrich_qmof_tags.py    Add parent/abstract tags
 |   +-- output_samples/           qmof-0000295.json
